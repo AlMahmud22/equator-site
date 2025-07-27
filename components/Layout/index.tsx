@@ -25,22 +25,30 @@ export default function Layout({
 
   // Initialize scroll animations
   useEffect(() => {
-    // Load ScrollReveal dynamically
+    // Simple intersection observer for scroll animations
     if (typeof window !== 'undefined') {
-      import('scrollreveal').then((ScrollReveal) => {
-        const sr = ScrollReveal.default({
-          distance: '30px',
-          duration: 800,
-          easing: 'ease-out',
-          reset: false,
-          viewFactor: 0.2,
+      const observerCallback = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in')
+            entry.target.classList.remove('opacity-0')
+          }
         })
+      }
 
-        // Reveal elements with the animate-on-scroll class
-        sr.reveal('.animate-on-scroll', {
-          interval: 100,
-        })
+      const observer = new IntersectionObserver(observerCallback, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       })
+
+      // Observe elements with the animate-on-scroll class
+      const elements = document.querySelectorAll('.animate-on-scroll')
+      elements.forEach((el) => {
+        el.classList.add('opacity-0', 'transition-all', 'duration-700')
+        observer.observe(el)
+      })
+
+      return () => observer.disconnect()
     }
   }, [router.pathname])
 

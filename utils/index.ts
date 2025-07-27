@@ -27,6 +27,8 @@ export function debounce<T extends (...args: any[]) => any>(
  * Scroll to element utility
  */
 export function scrollToElement(elementId: string, offset: number = 80) {
+  if (typeof window === 'undefined') return
+  
   const element = document.getElementById(elementId)
   if (element) {
     const elementPosition = element.getBoundingClientRect().top
@@ -121,6 +123,8 @@ export function getStaggerDelay(index: number, baseDelay = 0.1): number {
  * Check if element is in viewport
  */
 export function isInViewport(element: Element): boolean {
+  if (typeof window === 'undefined') return false
+  
   const rect = element.getBoundingClientRect()
   return (
     rect.top >= 0 &&

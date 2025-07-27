@@ -1,13 +1,15 @@
+'use client'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { ArrowRight, Download, ExternalLink } from 'lucide-react'
 import { products } from '@/config/site'
 import { useScrollReveal } from '@/hooks/useAnimations'
 import { getOSSpecificDownload } from '@/utils'
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -17,12 +19,12 @@ const containerVariants = {
   },
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6 },
   },
 }
 

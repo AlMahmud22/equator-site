@@ -1,13 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['localhost'],
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'localhost',
+      },
+    ],
+    unoptimized: false,
   },
   eslint: {
     dirs: ['pages', 'utils', 'components', 'hooks'],
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
   },
 }
 

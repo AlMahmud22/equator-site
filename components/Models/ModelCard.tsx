@@ -1,7 +1,10 @@
+'use client'
+
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Download, Star, Users, Calendar, HardDrive, Check, Loader } from 'lucide-react'
 import { cn } from '@/utils'
+import { formatDate } from '@/utils/dateUtils'
 
 interface AIModel {
   id: string
@@ -32,19 +35,11 @@ const modelTypeColors = {
   'classification': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
 }
 
-const formatNumber = (num: number): string => {
-  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
-  if (num >= 1000) return `${(num / 1000).toFixed(1)}K`
-  return num.toString()
-}
-
 export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCardProps) {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`
+    return num.toString()
   }
 
   if (layout === 'list') {
@@ -139,7 +134,7 @@ export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCar
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>{formatDate(model.lastUpdated)}</span>
+                <span>{formatDate.toLocaleDateString(model.lastUpdated)}</span>
               </div>
             </div>
 
@@ -164,7 +159,7 @@ export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCar
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -4 }}
-      className="group bg-gradient-to-br from-slate-900/40 to-slate-800/40 border border-slate-700 rounded-lg overflow-hidden hover:border-blue-400/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-[320px] flex flex-col"
+      className="group bg-gradient-to-br from-slate-900/40 to-slate-800/40 border border-slate-700 rounded-lg overflow-hidden hover:border-blue-400/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col h-full"
     >
       {/* Header */}
       <div className="p-6 flex-1 flex flex-col">
@@ -187,23 +182,23 @@ export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCar
         </div>
 
         {/* Description */}
-        <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed mb-4 flex-1">
+        <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed mb-4 flex-1 min-h-[4.5rem]">
           {model.description}
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 mb-4">
-          {model.tags.slice(0, 3).map((tag) => (
+        <div className="flex flex-wrap gap-1 mb-4 min-h-[2rem]">
+          {model.tags.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="px-2 py-1 bg-slate-700/50 text-slate-300 rounded-md text-xs border border-slate-600"
+              className="px-2 py-1 bg-slate-700/50 text-slate-300 rounded-md text-xs border border-slate-600 truncate max-w-[6rem]"
             >
               {tag}
             </span>
           ))}
-          {model.tags.length > 3 && (
+          {model.tags.length > 2 && (
             <span className="px-2 py-1 bg-slate-700/30 text-slate-400 rounded-md text-xs">
-              +{model.tags.length - 3}
+              +{model.tags.length - 2}
             </span>
           )}
         </div>
