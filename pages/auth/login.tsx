@@ -1,13 +1,20 @@
 import { useState, FormEvent } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
 import Layout from '@/components/Layout'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const { login, loading: authLoading } = useAuth()
+  
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,12 +24,34 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
+    setFieldErrors({})
     
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      const result = await login(formData.email, formData.password)
+      
+      if (result.success) {
+        // Redirect to dashboard or home page
+        router.push('/')
+      } else {
+        setError(result.message)
+        
+        // Handle field-specific errors
+        if (result.errors && Array.isArray(result.errors)) {
+          const errors: Record<string, string> = {}
+          result.errors.forEach((err: any) => {
+            if (err.field) {
+              errors[err.field] = err.message
+            }
+          })
+          setFieldErrors(errors)
+        }
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.')
+    } finally {
       setIsLoading(false)
-      // Handle login logic here
-    }, 1500)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +100,14 @@ export default function LoginPage() {
                 Sign in to your account to continue using our applications.
               </p>
             </div>
+
+            {/* Error Display */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center">
+                <AlertCircle className="h-5 w-5 text-red-400 mr-3" />
+                <p className="text-red-400 text-sm">{error}</p>
+              </div>
+            )}
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">

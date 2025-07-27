@@ -1,0 +1,155 @@
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\auth\huggingface-token.ts =====
+
+import { withCors, withAuth } from '@/lib/middleware/auth'
+import { updateHuggingFaceToken } from '@/lib/controllers/oauthController'
+
+export default withCors(withAuth(updateHuggingFaceToken))
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\auth\login.ts =====
+
+import { withCors } from '@/lib/middleware/auth'
+import { loginUser } from '@/lib/controllers/authController'
+
+export default withCors(loginUser)
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\auth\oauth.ts =====
+
+import { withCors } from '@/lib/middleware/auth'
+import { oauthLogin } from '@/lib/controllers/oauthController'
+
+export default withCors(oauthLogin)
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\auth\profile.ts =====
+
+import { withCors, withAuth } from '@/lib/middleware/auth'
+import { getUserProfile } from '@/lib/controllers/authController'
+
+export default withCors(withAuth(getUserProfile))
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\auth\register.ts =====
+
+import { withCors } from '@/lib/middleware/auth'
+import { registerUser } from '@/lib/controllers/authController'
+
+export default withCors(registerUser)
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\seed.ts =====
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+import connectDB from '@/lib/database'
+import User from '@/lib/models/User'
+import TrainingLog from '@/lib/models/TrainingLog'
+import AccessLog from '@/lib/models/AccessLog'
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  await connectDB()
+
+  try {
+    const user = await User.create({
+      fullName: 'Test User',
+      email: 'test@example.com',
+      password: 'testpassword',
+      authType: 'email'
+    })
+
+    await TrainingLog.create({
+      userId: user._id,
+      modelId: 'model123',
+      modelName: 'Test Model',
+      trainedAt: new Date(),
+      duration: 120
+    })
+
+    await AccessLog.create({
+      userId: user._id,
+      endpoint: '/api/test',
+      accessTime: new Date(),
+      ipAddress: '127.0.0.1'
+    })
+
+    res.status(200).json({ message: 'Seeded test data' })
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to seed test data', details: error })
+  }
+}
+
+
+===== FILE: C:\Users\mahmu\Desktop\Final Sem\EQ-site\equators-site\pages\api\test.ts =====
+
+/**
+ * Mongoose Connection Test API Route
+ * GET /api/test - Tests Mongoose + MongoDB connectivity and returns user list
+ */
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+import connectDB from '../../lib/database'
+import User from '../../lib/models/User'
+
+type TestResponse =
+  | {
+      message: string
+      usersCount: number
+      firstUser?: {
+        fullName: string
+        email: string
+        authType: string
+        createdAt: string
+      }
+      timestamp: string
+    }
+  | {
+      error: string
+      details: string
+      timestamp: string
+    }
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<TestResponse>
+) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      error: 'Method Not Allowed',
+      details: 'Only GET requests are allowed',
+      timestamp: new Date().toISOString(),
+    })
+  }
+
+  try {
+    await connectDB()
+
+    const users = await User.find().sort({ createdAt: -1 }).limit(1).lean()
+
+    const response: TestResponse = {
+      message: '✅ Mongoose connected & User model working!',
+      usersCount: users.length,
+      firstUser: users[0]
+        ? {
+            fullName: users[0].fullName,
+            email: users[0].email,
+            authType: users[0].authType,
+            createdAt: users[0].createdAt.toLocaleString(),
+          }
+        : undefined,
+      timestamp: new Date().toISOString(),
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    console.error('❌ Test failed:', error)
+
+    return res.status(500).json({
+      error: 'Server Error',
+      details: error.message || 'Something went wrong',
+      timestamp: new Date().toISOString(),
+    })
+  }
+}
+

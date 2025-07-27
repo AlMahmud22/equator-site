@@ -1,0 +1,221 @@
+import bcrypt from 'bcryptjs'
+import { NextApiRequest, NextApiResponse } from 'next'
+import connectDB from '@/lib/database'
+import User, { IUser } from '@/lib/models/User'
+import { generateToken } from '@/lib/auth'
+import { validateRegistrationData, validateLoginData } from '@/lib/validation'
+import { logUserAccess } from '@/lib/utils/accessLogger'
+
+interface ApiResponse<T = any> {
+  success: boolean
+  message: string
+  data?: T
+  errors?: Array<{ field: string; message: string }>
+}
+
+// Registration Controller
+export async function registerUser(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  try {
+    await connectDB()
+
+    const { fullName, email, password, confirmPassword } = req.body
+
+    // Validate input data
+    const validation = validateRegistrationData({
+      fullName,
+      email,
+      password,
+      confirmPassword
+    })
+
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: validation.errors
+      })
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: email.toLowerCase() })
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User with this email already exists',
+        errors: [{ field: 'email', message: 'Email is already registered' }]
+      })
+    }
+
+    // Hash password
+    const saltRounds = 12
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+    // Create new user
+    const newUser = new User({
+      fullName: fullName.trim(),
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      authType: 'email'
+    })
+
+    const savedUser = await newUser.save()
+
+    // Generate JWT token
+    const token = generateToken({
+      userId: savedUser._id.toString(),
+      email: savedUser.email,
+      authType: savedUser.authType
+    })
+
+    // Return success response (password is automatically excluded by schema)
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: {
+        user: savedUser,
+        token
+      }
+    })
+
+  } catch (error) {
+    console.error('Registration error:', error)
+    
+    // Handle MongoDB duplicate key error
+    if ((error as any).code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'User with this email already exists',
+        errors: [{ field: 'email', message: 'Email is already registered' }]
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+}
+
+// Login Controller
+export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  try {
+    await connectDB()
+
+    const { email, password } = req.body
+
+    // Validate input data
+    const validation = validateLoginData({ email, password })
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: validation.errors
+      })
+    }
+
+    // Find user and include password field for verification
+    const user = await User.findOne({ 
+      email: email.toLowerCase(),
+      authType: 'email'
+    }).select('+password')
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password',
+        errors: [{ field: 'email', message: 'Invalid credentials' }]
+      })
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password!)
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password',
+        errors: [{ field: 'password', message: 'Invalid credentials' }]
+      })
+    }
+
+    // Generate JWT token
+    const token = generateToken({
+      userId: user._id.toString(),
+      email: user.email,
+      authType: user.authType
+    })
+
+    // Log the access
+    await logUserAccess(user._id.toString(), 'email', req)
+
+    // Remove password from response
+    const userResponse = user.toJSON()
+
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        user: userResponse,
+        token
+      }
+    })
+
+  } catch (error) {
+    console.error('Login error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+}
+
+// Get User Profile Controller
+export async function getUserProfile(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  try {
+    await connectDB()
+
+    // User ID should be added to req by auth middleware
+    const userId = (req as any).userId
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile retrieved successfully',
+      data: { user }
+    })
+
+  } catch (error) {
+    console.error('Get profile error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+}

@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { siteConfig } from '@/config/site'
+import { AuthProvider } from '@/hooks/useAuth'
 import '@/styles/globals.css'
 
 // Font configurations
@@ -82,7 +83,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       
       <div className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </div>
     </>
   )
