@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { parse as parseCookies } from 'cookie'
 import { getTokenPayload } from '@/lib/auth'
 
 interface AuthenticatedRequest extends NextApiRequest {

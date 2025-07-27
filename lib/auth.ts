@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { NextApiRequest } from 'next'
+import { parse as parseCookies } from 'cookie'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'
@@ -35,14 +36,15 @@ export function verifyToken(token: string): JWTPayload {
 }
 
 export function extractTokenFromRequest(req: NextApiRequest): string | null {
+  // First check for Bearer token in Authorization header
   const authHeader = req.headers.authorization
-
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.substring(7)
   }
 
-  // Also check for token in cookies as fallback
-  return req.cookies.token || null
+  // Then check for token in cookies
+  const cookies = parseCookies(req.headers.cookie || '')
+  return cookies.token || null
 }
 
 export function getTokenPayload(req: NextApiRequest): JWTPayload | null {

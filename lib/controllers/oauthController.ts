@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { serialize } from 'cookie'
 import connectDB from '@/lib/database'
 import User from '@/lib/models/User'
 import { generateToken } from '@/lib/auth'
@@ -18,7 +19,274 @@ interface OAuthUserData {
   providerId: string
 }
 
-// OAuth Login Controller
+interface GoogleTokenResponse {
+  access_token: string
+  token_type: string
+  expires_in: number
+}
+
+interface GoogleUserInfo {
+  id: string
+  email: string
+  name: string
+  given_name: string
+  family_name: string
+}
+
+interface GitHubTokenResponse {
+  access_token: string
+  token_type: string
+  scope: string
+}
+
+interface GitHubUserInfo {
+  id: number
+  login: string
+  name: string
+  email: string
+}
+
+// OAuth redirect handler - redirects to provider authorization URL
+export async function redirectToProvider(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  const { provider } = req.query
+  const baseUrl = process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
+  const redirectUri = `${baseUrl}/api/auth/oauth/callback`
+
+  try {
+    let authUrl: string
+
+    switch (provider) {
+      case 'google':
+        const googleClientId = process.env.GOOGLE_CLIENT_ID
+        if (!googleClientId) {
+          throw new Error('Google OAuth not configured')
+        }
+        
+        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+          `client_id=${encodeURIComponent(googleClientId)}&` +
+          `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+          `scope=${encodeURIComponent('openid email profile')}&` +
+          `response_type=code&` +
+          `state=google`
+        break
+
+      case 'github':
+        const githubClientId = process.env.GITHUB_CLIENT_ID
+        if (!githubClientId) {
+          throw new Error('GitHub OAuth not configured')
+        }
+        
+        authUrl = `https://github.com/login/oauth/authorize?` +
+          `client_id=${encodeURIComponent(githubClientId)}&` +
+          `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+          `scope=${encodeURIComponent('user:email')}&` +
+          `state=github`
+        break
+
+      default:
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid OAuth provider',
+          errors: [{ field: 'provider', message: 'Provider must be either google or github' }]
+        })
+    }
+
+    // Redirect to OAuth provider
+    res.redirect(authUrl)
+
+  } catch (error) {
+    console.error('OAuth redirect error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'OAuth configuration error'
+    })
+  }
+}
+
+// OAuth callback handler - handles the code exchange and user creation
+export async function handleProviderCallback(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  const { code, state, error } = req.query
+
+  // Handle OAuth errors
+  if (error) {
+    console.error('OAuth error:', error)
+    return res.redirect('/auth/login?error=oauth_denied')
+  }
+
+  if (!code || !state) {
+    return res.redirect('/auth/login?error=oauth_invalid')
+  }
+
+  const provider = state as string
+  const baseUrl = process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
+  const redirectUri = `${baseUrl}/api/auth/oauth/callback`
+
+  try {
+    await connectDB()
+    
+    let userInfo: { id: string; email: string; name: string }
+
+    if (provider === 'google') {
+      // Exchange code for access token
+      const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: process.env.GOOGLE_CLIENT_ID!,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+          code: code as string,
+          grant_type: 'authorization_code',
+          redirect_uri: redirectUri,
+        }),
+      })
+
+      const tokenData: GoogleTokenResponse = await tokenResponse.json()
+
+      if (!tokenData.access_token) {
+        throw new Error('Failed to get access token from Google')
+      }
+
+      // Get user info from Google
+      const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${tokenData.access_token}`,
+        },
+      })
+
+      const googleUser: GoogleUserInfo = await userResponse.json()
+      userInfo = {
+        id: googleUser.id,
+        email: googleUser.email,
+        name: googleUser.name,
+      }
+
+    } else if (provider === 'github') {
+      // Exchange code for access token
+      const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: process.env.GITHUB_CLIENT_ID!,
+          client_secret: process.env.GITHUB_CLIENT_SECRET!,
+          code: code as string,
+          redirect_uri: redirectUri,
+        }),
+      })
+
+      const tokenData: GitHubTokenResponse = await tokenResponse.json()
+
+      if (!tokenData.access_token) {
+        throw new Error('Failed to get access token from GitHub')
+      }
+
+      // Get user info from GitHub
+      const userResponse = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${tokenData.access_token}`,
+          'User-Agent': 'Equators-App',
+        },
+      })
+
+      const githubUser: GitHubUserInfo = await userResponse.json()
+
+      // Get user email (might be private)
+      let email = githubUser.email
+      if (!email) {
+        const emailResponse = await fetch('https://api.github.com/user/emails', {
+          headers: {
+            Authorization: `Bearer ${tokenData.access_token}`,
+            'User-Agent': 'Equators-App',
+          },
+        })
+        const emails = await emailResponse.json()
+        const primaryEmail = emails.find((e: any) => e.primary)
+        email = primaryEmail?.email || emails[0]?.email
+      }
+
+      userInfo = {
+        id: githubUser.id.toString(),
+        email: email,
+        name: githubUser.name || githubUser.login,
+      }
+
+    } else {
+      throw new Error('Invalid provider state')
+    }
+
+    if (!userInfo.email) {
+      return res.redirect('/auth/login?error=no_email')
+    }
+
+    // Check if user already exists
+    let user = await User.findOne({ email: userInfo.email.toLowerCase() })
+
+    if (user) {
+      // User exists - update auth type if needed
+      if (user.authType !== provider) {
+        user.authType = provider as 'google' | 'github'
+        await user.save()
+      }
+    } else {
+      // Create new user
+      user = new User({
+        fullName: userInfo.name.trim(),
+        email: userInfo.email.toLowerCase(),
+        authType: provider as 'google' | 'github'
+      })
+      await user.save()
+    }
+
+    // Generate JWT token
+    const token = generateToken({
+      userId: user._id.toString(),
+      email: user.email,
+      authType: user.authType
+    })
+
+    // Log the access
+    await logUserAccess(user._id.toString(), provider, req)
+
+    // Set HTTP-only cookie
+    const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: maxAge,
+      path: '/',
+    }
+
+    res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
+
+    // Redirect to home page with success
+    res.redirect('/?auth=success')
+
+  } catch (error) {
+    console.error('OAuth callback error:', error)
+    res.redirect('/auth/login?error=oauth_failed')
+  }
+}
+
+// Legacy OAuth Login Controller (for direct API calls)
 export async function oauthLogin(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -83,6 +351,18 @@ export async function oauthLogin(req: NextApiRequest, res: NextApiResponse<ApiRe
     // Log the access
     await logUserAccess(user._id.toString(), provider, req)
 
+    // Set HTTP-only cookie
+    const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: maxAge,
+      path: '/',
+    }
+
+    res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
+
     // Return success response
     res.status(200).json({
       success: true,
@@ -93,8 +373,7 @@ export async function oauthLogin(req: NextApiRequest, res: NextApiResponse<ApiRe
           fullName: user.fullName,
           email: user.email,
           authType: user.authType
-        },
-        token
+        }
       }
     })
 

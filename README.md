@@ -1,6 +1,6 @@
 # Equators - Desktop Applications Suite
 
-A modern, elegant website for the Equators brand showcasing and distributing desktop applications.
+Equators is a local-first desktop software suite for AI, chatbots, and productivity apps.
 
 ## 🌟 Features
 

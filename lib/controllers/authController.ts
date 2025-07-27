@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { serialize } from 'cookie'
 import connectDB from '@/lib/database'
 import User, { IUser } from '@/lib/models/User'
 import { generateToken } from '@/lib/auth'
@@ -74,13 +75,24 @@ export async function registerUser(req: NextApiRequest, res: NextApiResponse<Api
       authType: savedUser.authType
     })
 
+    // Set HTTP-only cookie
+    const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: maxAge,
+      path: '/',
+    }
+
+    res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
+
     // Return success response (password is automatically excluded by schema)
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
       data: {
-        user: savedUser,
-        token
+        user: savedUser
       }
     })
 
@@ -161,6 +173,18 @@ export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiRes
     // Log the access
     await logUserAccess(user._id.toString(), 'email', req)
 
+    // Set HTTP-only cookie
+    const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: maxAge,
+      path: '/',
+    }
+
+    res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
+
     // Remove password from response
     const userResponse = user.toJSON()
 
@@ -168,8 +192,7 @@ export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiRes
       success: true,
       message: 'Login successful',
       data: {
-        user: userResponse,
-        token
+        user: userResponse
       }
     })
 

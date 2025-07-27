@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
+import Cookies from 'js-cookie'
 
 interface User {
   _id: string
@@ -18,7 +19,9 @@ interface AuthContextType {
   loading: boolean
   login: (email: string, password: string) => Promise<{ success: boolean; message: string; errors?: any[] }>
   register: (data: RegisterData) => Promise<{ success: boolean; message: string; errors?: any[] }>
-  logout: () => void
+  loginWithGoogle: () => void
+  loginWithGithub: () => void
+  logout: () => Promise<void>
   refreshUser: () => Promise<void>
 }
 
@@ -37,12 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Check for existing token on mount
   useEffect(() => {
-    const token = localStorage.getItem('auth_token')
-    if (token) {
-      refreshUser()
-    } else {
-      setLoading(false)
-    }
+    refreshUser()
   }, [])
 
   const login = async (email: string, password: string) => {
@@ -52,13 +50,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
 
       if (data.success) {
-        localStorage.setItem('auth_token', data.data.token)
         setUser(data.data.user)
         return { success: true, message: data.message }
       } else {
@@ -77,13 +75,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(registerData),
       })
 
       const data = await response.json()
 
       if (data.success) {
-        localStorage.setItem('auth_token', data.data.token)
         setUser(data.data.user)
         return { success: true, message: data.message }
       } else {
@@ -95,23 +93,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem('auth_token')
-    setUser(null)
+  const loginWithGoogle = () => {
+    window.location.href = '/api/auth/oauth?provider=google'
+  }
+
+  const loginWithGithub = () => {
+    window.location.href = '/api/auth/oauth?provider=github'
+  }
+
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      setUser(null)
+      // Force reload to clear any cached state
+      window.location.href = '/'
+    }
   }
 
   const refreshUser = async () => {
     try {
-      const token = localStorage.getItem('auth_token')
-      if (!token) {
-        setLoading(false)
-        return
-      }
-
       const response = await fetch('/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        credentials: 'include',
       })
 
       const data = await response.json()
@@ -119,13 +127,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.success) {
         setUser(data.data.user)
       } else {
-        // Token is invalid, remove it
-        localStorage.removeItem('auth_token')
+        // Token is invalid or expired
         setUser(null)
       }
     } catch (error) {
       console.error('Refresh user error:', error)
-      localStorage.removeItem('auth_token')
       setUser(null)
     } finally {
       setLoading(false)
@@ -137,6 +143,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading,
     login,
     register,
+    loginWithGoogle,
+    loginWithGithub,
     logout,
     refreshUser,
   }
