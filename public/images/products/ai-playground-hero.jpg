@@ -1,0 +1,10 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#1e1b4b"/>
+  <rect x="50" y="50" width="700" height="350" rx="10" fill="#312e81"/>
+  <circle cx="100" cy="100" r="20" fill="#6366f1"/>
+  <rect x="140" y="85" width="200" height="10" rx="5" fill="#64748b"/>
+  <rect x="140" y="105" width="150" height="8" rx="4" fill="#475569"/>
+  <rect x="100" y="150" width="600" height="200" rx="8" fill="#4338ca" fill-opacity="0.3"/>
+  <text x="400" y="260" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#6366f1">AI Playground</text>
+  <text x="400" y="290" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#a5b4fc">Experiment with AI Models</text>
+</svg>
