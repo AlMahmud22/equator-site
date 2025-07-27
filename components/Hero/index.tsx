@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Download, Play, Star } from 'lucide-react'
@@ -23,16 +23,17 @@ export default function Hero() {
   const heroRef = useScrollReveal()
   const backgroundRef = useParallax(0.3)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoError, setVideoError] = useState(false)
 
   // Auto-play background video
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && !videoError) {
       videoRef.current.play().catch(() => {
         // Auto-play failed, which is expected in some browsers
         console.log('Auto-play prevented')
       })
     }
-  }, [])
+  }, [videoError])
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -42,18 +43,28 @@ export default function Hero() {
         className="absolute inset-0 z-0"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-secondary-950/90 via-secondary-900/80 to-primary-950/90 z-10" />
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          muted
-          loop
-          playsInline
-          poster="/images/hero-bg.jpg"
-        >
-          <source src="/videos/hero-bg.mp4" type="video/mp4" />
-        </video>
-        {/* Fallback gradient if video fails */}
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary-950 via-primary-950 to-accent-950" />
+        {!videoError && (
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            muted
+            loop
+            playsInline
+            poster="/images/hero-bg.jpg"
+            onError={() => {
+              setVideoError(true)
+            }}
+          >
+            <source src="/videos/hero-bg.mp4" type="video/mp4" />
+          </video>
+        )}
+        {/* Background image fallback */}
+        <div 
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${videoError ? 'opacity-100' : 'opacity-0'}`}
+          style={{
+            backgroundImage: 'url(/images/hero-bg.jpg)'
+          }}
+        />
       </div>
 
       {/* Floating Elements */}

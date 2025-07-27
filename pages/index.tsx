@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Layout from '@/components/Layout'
 import Hero from '@/components/Hero'
+import NoSSR from '@/components/NoSSR'
 import ProductShowcase from '@/components/Product/ProductShowcase'
 import { siteConfig } from '@/config/site'
 
@@ -42,7 +43,21 @@ export default function HomePage() {
       </Head>
 
       {/* Hero Section */}
-      <Hero />
+      <NoSSR fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-950 via-primary-950 to-accent-950">
+          <div className="text-center text-white">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6">
+              <span className="text-white">Powerful</span>{' '}
+              <span className="text-gradient">Desktop Apps</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-secondary-300 mb-8">
+              Loading the future of desktop applications...
+            </p>
+          </div>
+        </div>
+      }>
+        <Hero />
+      </NoSSR>
 
       {/* Product Showcase */}
       <ProductShowcase />

@@ -16,7 +16,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(options:
 
   useEffect(() => {
     const element = elementRef.current
-    if (!element) return
+    if (!element || typeof window === 'undefined') return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -42,7 +42,9 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(options:
     observer.observe(element)
 
     return () => {
-      observer.unobserve(element)
+      if (element) {
+        observer.unobserve(element)
+      }
     }
   }, [threshold, rootMargin, triggerOnce])
 
@@ -78,7 +80,7 @@ export function useParallax<T extends HTMLElement = HTMLDivElement>(speed: numbe
 
   useEffect(() => {
     const element = elementRef.current
-    if (!element) return
+    if (!element || typeof window === 'undefined') return
 
     const handleScroll = throttle(() => {
       const scrolled = window.scrollY
