@@ -1,63 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Users, Target, Zap, Heart, Github, Twitter, Linkedin } from 'lucide-react'
+import { Users, Target, Zap, Heart } from 'lucide-react'
 import Layout from '@/components/Layout'
 import { useScrollReveal } from '@/hooks/useAnimations'
-
-const teamMembers = [
-  {
-    name: 'Alex Chen',
-    role: 'CEO & Founder',
-    image: '/images/team/alex-chen.jpg',
-    bio: 'Visionary leader with 10+ years in tech innovation.',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-      github: '#',
-    },
-  },
-  {
-    name: 'Sarah Johnson',
-    role: 'CTO',
-    image: '/images/team/sarah-johnson.jpg',
-    bio: 'Technical architect passionate about user experience.',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-      github: '#',
-    },
-  },
-  {
-    name: 'Michael Rodriguez',
-    role: 'Lead Designer',
-    image: '/images/team/michael-rodriguez.jpg',
-    bio: 'Design expert creating beautiful, intuitive interfaces.',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-      github: '#',
-    },
-  },
-  {
-    name: 'Emily Zhang',
-    role: 'AI Research Lead',
-    image: '/images/team/emily-zhang.jpg',
-    bio: 'AI researcher pushing the boundaries of machine learning.',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-      github: '#',
-    },
-  },
-]
 
 const values = [
   {
     icon: <Users className="w-8 h-8" />,
     title: 'User-Centric',
-    description: 'Everything we build starts with understanding our users\' needs and creating solutions that truly matter.',
+    description: 'Everything we build starts with understanding our users\' needs and creating tools that truly empower digital freedom.',
   },
   {
     icon: <Target className="w-8 h-8" />,
@@ -109,12 +61,12 @@ export default function AboutPage() {
 
   return (
     <Layout
-      title="About Equators - Our Story, Mission & Team"
-      description="Learn about Equators' mission to create innovative desktop applications. Meet our team and discover the values that drive us forward."
+      title="About Equators - Privacy-First AI Innovation"
+      description="Learn about Equators' mission to create decentralized, privacy-focused AI applications. Discover our commitment to digital sovereignty and user control."
     >
       <Head>
-        <meta property="og:title" content="About Equators - Our Story, Mission & Team" />
-        <meta property="og:description" content="Learn about Equators' mission to create innovative desktop applications. Meet our team and discover the values that drive us forward." />
+        <meta property="og:title" content="About Equators - Privacy-First AI Innovation" />
+        <meta property="og:description" content="Learn about Equators' mission to create decentralized, privacy-focused AI applications. Discover our commitment to digital sovereignty and user control." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -293,7 +245,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="section-padding bg-secondary-950">
+      <section className="section-padding bg-pitch-black">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -302,59 +254,13 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Meet Our <span className="text-gradient">Team</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6 heading-3d">
+              Our <span className="text-gradient">Team</span>
             </h2>
-            <p className="text-lg text-secondary-300 max-w-3xl mx-auto">
-              The passionate individuals behind Equators who make our vision a reality.
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              Built by <strong className="text-neon-cyan">Axios</strong> - a dedicated team of developers and innovators passionate about creating privacy-focused, decentralized applications that put user control and digital sovereignty first.
             </p>
           </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card-hover text-center group"
-              >
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-1">{member.name}</h3>
-                <p className="text-primary-400 font-medium mb-3">{member.role}</p>
-                <p className="text-sm text-secondary-300 mb-4">{member.bio}</p>
-                
-                <div className="flex justify-center space-x-3">
-                  <a
-                    href={member.social.twitter}
-                    className="w-8 h-8 bg-secondary-800 rounded-full flex items-center justify-center text-secondary-400 hover:text-blue-400 hover:bg-secondary-700 transition-colors duration-200"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={member.social.linkedin}
-                    className="w-8 h-8 bg-secondary-800 rounded-full flex items-center justify-center text-secondary-400 hover:text-blue-600 hover:bg-secondary-700 transition-colors duration-200"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={member.social.github}
-                    className="w-8 h-8 bg-secondary-800 rounded-full flex items-center justify-center text-secondary-400 hover:text-white hover:bg-secondary-700 transition-colors duration-200"
-                  >
-                    <Github className="w-4 h-4" />
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 

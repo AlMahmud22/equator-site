@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Github, Twitter, Youtube, MessageCircle, Mail, Heart } from 'lucide-react'
+import { Github, Twitter, Youtube, MessageCircle, Mail, EyeOff } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { useScrollReveal } from '@/hooks/useAnimations'
 
@@ -32,18 +32,18 @@ const footerLinks = [
   {
     title: 'Support',
     links: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'Documentation', href: '/docs' },
-      { name: 'API Reference', href: '/api' },
+      { name: 'Help Center', href: '/help-center' },
+      { name: 'Documentation', href: '/documentation' },
+      { name: 'API Reference', href: '/api-reference' },
       { name: 'Status Page', href: '/status' },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
+      { name: 'Privacy Policy', href: '/privacy-policy' },
+      { name: 'Terms of Service', href: '/terms-of-service' },
+      { name: 'Cookie Policy', href: '/cookie-policy' },
       { name: 'DMCA', href: '/dmca' },
     ],
   },
@@ -102,8 +102,9 @@ export default function Footer() {
               </Link>
               
               <p className="text-secondary-300 mb-6 leading-relaxed">
-                Building the future with powerful desktop applications. 
-                Join thousands of users who trust Equators for their daily workflow.
+                Equators is a decentralized suite of AI tools—browser, chatbot, playground—designed 
+                for maximum user control and privacy. Experience true digital sovereignty with 
+                our open-architecture, privacy-first applications.
               </p>
               
               {/* Newsletter Signup */}
@@ -147,9 +148,9 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Copyright */}
               <div className="flex items-center text-secondary-400 text-sm">
-                <span>© 2024 Equators. Made with</span>
-                <Heart className="w-4 h-4 mx-1 text-red-500 fill-current animate-pulse" />
-                <span>by the Equators team.</span>
+                <span>© 2025 Equators. Made with</span>
+                <EyeOff className="w-4 h-4 mx-1 text-blue-500 fill-current animate-pulse" />
+                <span>by Axios.</span>
               </div>
 
               {/* Social Links */}

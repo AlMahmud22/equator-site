@@ -168,7 +168,7 @@ export default function ProductsPage() {
                       
                       <div className="grid grid-cols-3 gap-2 mb-4">
                         <a
-                          href={`/downloads/${product.downloads.windows}`}
+                          href={product.downloads.windows}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -176,7 +176,7 @@ export default function ProductsPage() {
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">Windows</span>
                         </a>
                         <a
-                          href={`/downloads/${product.downloads.mac}`}
+                          href={product.downloads.mac}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -184,7 +184,7 @@ export default function ProductsPage() {
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">macOS</span>
                         </a>
                         <a
-                          href={`/downloads/${product.downloads.linux}`}
+                          href={product.downloads.linux}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -196,7 +196,7 @@ export default function ProductsPage() {
                       {/* Primary Actions */}
                       <div className="flex flex-col gap-3">
                         <a
-                          href={`/downloads/${product.downloads.windows}`}
+                          href={download.url}
                           className="btn-primary w-full group/btn"
                           download
                         >

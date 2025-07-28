@@ -8,6 +8,7 @@ import { ArrowRight, Download, ExternalLink } from 'lucide-react'
 import { products } from '@/config/site'
 import { useScrollReveal } from '@/hooks/useAnimations'
 import { getOSSpecificDownload } from '@/utils'
+import BinaryOverlay from '@/components/BinaryOverlay'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -33,8 +34,9 @@ export default function ProductShowcase() {
   const sectionRef = useScrollReveal()
 
   return (
-    <section className="section-padding bg-gradient-to-b from-secondary-950 to-secondary-900">
-      <div className="container-custom">
+    <section className="section-padding bg-pitch-black relative">
+      <BinaryOverlay />
+      <div className="container-custom relative z-10">
         <motion.div
           ref={sectionRef}
           variants={containerVariants}
@@ -44,10 +46,10 @@ export default function ProductShowcase() {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 heading-3d">
               Our <span className="text-gradient">Product Suite</span>
             </h2>
-            <p className="text-lg sm:text-xl text-secondary-300 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
               Discover powerful desktop applications designed to enhance your productivity, 
               creativity, and digital experience.
             </p>
@@ -126,10 +128,10 @@ export default function ProductShowcase() {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                      <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
                         <Link
                           href={`/products/${product.id}`}
-                          className="btn-primary flex-1 group/btn"
+                          className="btn-primary group/btn text-center flex items-center justify-center"
                         >
                           <Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
                           {download.label}
@@ -137,7 +139,7 @@ export default function ProductShowcase() {
                         
                         <Link
                           href={`/products/${product.id}`}
-                          className="btn-ghost flex-shrink-0 group/btn"
+                          className="btn-ghost group/btn text-center flex items-center justify-center"
                         >
                           Learn More
                           <ExternalLink className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-200" />

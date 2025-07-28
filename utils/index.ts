@@ -79,33 +79,51 @@ export function detectOS(): 'windows' | 'mac' | 'linux' | 'unknown' {
 /**
  * Get the appropriate download file based on OS
  */
-export function getOSSpecificDownload(appName: string): {
+export function getOSSpecificDownload(productId: string): {
   filename: string
   label: string
   icon: string
+  url: string
 } {
   const os = detectOS()
   
+  // Import products to get version info
+  const { products } = require('../config/site')
+  const product = products.find((p: any) => p.id === productId)
+  
+  if (!product) {
+    return {
+      filename: `${productId}-setup.exe`,
+      label: 'Download',
+      icon: '💻',
+      url: `/downloads/${productId}-setup.exe`
+    }
+  }
+  
   const downloads = {
     windows: {
-      filename: `${appName}-setup.exe`,
+      filename: `${productId}-setup.exe`,
       label: 'Download for Windows',
-      icon: '🪟'
+      icon: '🪟',
+      url: product.downloads.windows
     },
     mac: {
-      filename: `${appName}.dmg`,
+      filename: `${productId}.dmg`,
       label: 'Download for macOS',
-      icon: '🍎'
+      icon: '🍎',
+      url: product.downloads.mac
     },
     linux: {
-      filename: `${appName}.AppImage`,
+      filename: `${productId}.AppImage`,
       label: 'Download for Linux',
-      icon: '🐧'
+      icon: '🐧',
+      url: product.downloads.linux
     },
     unknown: {
-      filename: `${appName}-setup.exe`,
+      filename: `${productId}-setup.exe`,
       label: 'Download',
-      icon: '💻'
+      icon: '💻',
+      url: product.downloads.windows
     }
   }
   

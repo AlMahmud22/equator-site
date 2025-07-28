@@ -14,7 +14,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,7 +24,6 @@ export default function LoginPage() {
     e.preventDefault()
     setIsLoading(true)
     setError('')
-    setFieldErrors({})
     
     try {
       const result = await login(formData.email, formData.password)
@@ -36,18 +34,9 @@ export default function LoginPage() {
       } else {
         setError(result.message)
         
-        // Handle field-specific errors
-        if (result.errors && Array.isArray(result.errors)) {
-          const errors: Record<string, string> = {}
-          result.errors.forEach((err: any) => {
-            if (err.field) {
-              errors[err.field] = err.message
-            }
-          })
-          setFieldErrors(errors)
-        }
+        // Handle field-specific errors (simplified to general error)
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)

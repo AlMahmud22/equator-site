@@ -47,7 +47,7 @@ export default function RegisterPage() {
       } else {
         setError(result.message || 'Registration failed')
       }
-    } catch (error) {
+    } catch {
       setError('Network error occurred')
     } finally {
       setIsLoading(false)

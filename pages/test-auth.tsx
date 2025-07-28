@@ -1,5 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import Layout from '@/components/Layout'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 export default function AuthTestPage() {
@@ -128,21 +129,21 @@ export default function AuthTestPage() {
                   <div className="space-y-2 text-sm">
                     <p className="text-secondary-300">
                       <strong>Login:</strong> 
-                      <a href="/auth/login" className="text-primary-400 hover:text-primary-300 ml-1">
+                      <Link href="/auth/login" className="text-primary-400 hover:text-primary-300 ml-1">
                         /auth/login
-                      </a>
+                      </Link>
                     </p>
                     <p className="text-secondary-300">
                       <strong>Register:</strong> 
-                      <a href="/auth/register" className="text-primary-400 hover:text-primary-300 ml-1">
+                      <Link href="/auth/register" className="text-primary-400 hover:text-primary-300 ml-1">
                         /auth/register  
-                      </a>
+                      </Link>
                     </p>
                     <p className="text-secondary-300">
                       <strong>Profile API:</strong> 
-                      <a href="/api/auth/profile" className="text-primary-400 hover:text-primary-300 ml-1">
+                      <Link href="/api/auth/profile" className="text-primary-400 hover:text-primary-300 ml-1">
                         /api/auth/profile
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>
@@ -162,7 +163,7 @@ export default function AuthTestPage() {
             </h2>
             
             <ol className="list-decimal list-inside space-y-2 text-secondary-300">
-              <li>Click "Test Google OAuth" or "Test GitHub OAuth" button</li>
+              <li>Click &quot;Test Google OAuth&quot; or &quot;Test GitHub OAuth&quot; button</li>
               <li>Browser redirects to <code className="text-primary-400">/api/auth/oauth?provider=google|github</code></li>
               <li>Server redirects to OAuth provider authorization page</li>
               <li>User authorizes the application</li>

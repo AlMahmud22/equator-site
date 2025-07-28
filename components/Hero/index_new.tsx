@@ -17,8 +17,8 @@ const floatingElements = [
   { icon: Eye, delay: 1, x: '15%', y: '70%' },
   { icon: Zap, delay: 1.5, x: '85%', y: '75%' },
   { icon: Target, delay: 2, x: '50%', y: '10%' },
-  { icon: Skull, delay: 2.2, x: '70%', y: '30%' },
-  { icon: Shield, delay: 2.5, x: '25%', y: '50%' },
+  { icon: Shield, delay: 2.2, x: '70%', y: '30%' },
+  { icon: Skull, delay: 2.5, x: '25%', y: '50%' },
   { icon: Target, delay: 2.8, x: '90%', y: '60%' },
   { icon: Eye, delay: 3.1, x: '5%', y: '85%' },
   { icon: Zap, delay: 3.3, x: '60%', y: '65%' },
@@ -47,8 +47,11 @@ export default function Hero() {
         return (
           <motion.div
             key={index}
-            className="absolute floating-icon pointer-events-none z-20"
-            style={{ left: element.x, top: element.y } as React.CSSProperties}
+            className="absolute floating-icon pointer-events-none z-20 neon-glow"
+            style={{
+              left: element.x,
+              top: element.y,
+            } as React.CSSProperties}
             animate={{
               y: [0, -20, 0],
               rotate: [0, 5, -5, 0],

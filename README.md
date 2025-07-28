@@ -1,14 +1,15 @@
-# Equators - Desktop Applications Suite
+# Equators - Privacy-Focused AI Desktop Suite
 
-Equators is a local-first desktop software suite for AI, chatbots, and productivity apps.
+Equators is a decentralized, privacy-first desktop software suite featuring secure AI applications built for digital sovereignty and user control.
 
 ## 🌟 Features
 
-- **Modern Design**: Inspired by zeytal.com with scroll-reactive animations like xe.works
-- **Product Showcase**: Dedicated pages for Equators Chatbot, AI Playground, and Browser
-- **Download System**: Direct downloads for Windows (.exe), macOS (.dmg), and Linux (.AppImage)
-- **Authentication**: Login/register system for unified user accounts
-- **News & Updates**: Blog-style news section for announcements and changelogs
+- **Privacy-First Design**: All processing happens locally with zero data transmission
+- **Decentralized Architecture**: Open-source, transparent algorithms with user sovereignty
+- **Product Showcase**: Privacy-focused Chatbot, secure AI Playground, and freedom-focused Browser
+- **Secure Downloads**: Verified downloads for Windows (.exe), macOS (.dmg), and Linux (.AppImage)
+- **Authentication**: Local-first user management with encrypted storage
+- **News & Updates**: Privacy-focused announcements and security updates
 - **Responsive Design**: Fully responsive across all device sizes
 
 ## 🛠️ Tech Stack
@@ -132,4 +133,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Equators Team** - Building the future of desktop software
+**Axios** - Building the future of desktop software

@@ -143,7 +143,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                   className="flex flex-col sm:flex-row gap-4"
                 >
                   <a
-                    href={`/downloads/${product.downloads.windows}`}
+                    href={download.url}
                     className="btn-primary text-lg px-8 py-4 group"
                     download
                   >
@@ -276,7 +276,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                 <h3 className="text-lg font-semibold text-white mb-4">Download Options</h3>
                 <div className="space-y-3">
                   <a
-                    href={`/downloads/${product.downloads.windows}`}
+                    href={product.downloads.windows}
                     className="flex items-center justify-between p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200"
                     download
                   >
@@ -287,7 +287,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                     <ExternalLink className="w-4 h-4 text-secondary-400" />
                   </a>
                   <a
-                    href={`/downloads/${product.downloads.mac}`}
+                    href={product.downloads.mac}
                     className="flex items-center justify-between p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200"
                     download
                   >
@@ -298,7 +298,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                     <ExternalLink className="w-4 h-4 text-secondary-400" />
                   </a>
                   <a
-                    href={`/downloads/${product.downloads.linux}`}
+                    href={product.downloads.linux}
                     className="flex items-center justify-between p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200"
                     download
                   >

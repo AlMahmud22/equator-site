@@ -30,8 +30,8 @@ interface ModelCardProps {
 
 const modelTypeColors = {
   'text-generation': 'bg-green-500/20 text-green-300 border-green-500/30',
-  'image-generation': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  'embedding': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  'image-generation': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  'embedding': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
   'classification': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
 }
 
@@ -50,7 +50,7 @@ export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCar
       >
         <div className="flex items-start gap-6">
           {/* Model Icon/Avatar */}
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center text-2xl flex-shrink-0 border border-slate-600">
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center text-2xl flex-shrink-0 border border-slate-600">
             🤖
           </div>
 
@@ -165,7 +165,7 @@ export function ModelCard({ model, layout, onDownload, isDownloading }: ModelCar
       <div className="p-6 flex-1 flex flex-col">
         {/* Model Icon and Type */}
         <div className="flex items-start justify-between mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center text-xl border border-slate-600">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center text-xl border border-slate-600">
             🤖
           </div>
           <span className={cn('px-2 py-1 rounded-md text-xs border', modelTypeColors[model.modelType])}>

@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Equators',
-  title: 'Equators - Desktop Applications Suite',
-  description: 'Discover and download powerful desktop applications including Equators Chatbot, AI Playground, and Browser.',
+  title: 'Equators - Privacy-Focused AI Desktop Suite',
+  description: 'Secure, decentralized AI applications: Privacy-first Chatbot, open-architecture AI Playground, and freedom-focused Browser. Built for digital sovereignty.',
   url: 'https://equators.com',
   ogImage: '/images/og-image.jpg',
   
@@ -18,27 +18,71 @@ export const siteConfig = {
         {
           name: 'Chatbot',
           href: '/products/chatbot',
-          description: 'AI-powered conversational assistant'
+          description: 'Your on-device AI companion, built for data security'
         },
         {
           name: 'AI Playground',
           href: '/products/ai-playground',
-          description: 'Interactive AI experimentation platform'
+          description: 'Explore open-architecture ML, safe and private'
         },
         {
           name: 'Browser',
           href: '/products/browser',
-          description: 'Privacy-focused web browser'
+          description: 'Decentralized web browsing with maximum privacy'
         }
       ]
     },
     {
-      name: 'News',
-      href: '/news',
+      name: 'Resources',
+      href: '#',
+      children: [
+        {
+          name: 'Documentation',
+          href: '/documentation',
+          description: 'Developer guides and tutorials'
+        },
+        {
+          name: 'API Reference',
+          href: '/api-reference',
+          description: 'Complete API documentation'
+        },
+        {
+          name: 'Help Center',
+          href: '/help-center',
+          description: 'Knowledge base and FAQs'
+        },
+        {
+          name: 'Status',
+          href: '/status',
+          description: 'System status and uptime'
+        }
+      ]
     },
     {
-      name: 'About',
-      href: '/about',
+      name: 'Company',
+      href: '#',
+      children: [
+        {
+          name: 'About Us',
+          href: '/about',
+          description: 'Learn about our mission and team'
+        },
+        {
+          name: 'News',
+          href: '/news',
+          description: 'Latest updates and announcements'
+        },
+        {
+          name: 'Careers',
+          href: '/careers',
+          description: 'Join our growing team'
+        },
+        {
+          name: 'Contact',
+          href: '/contact',
+          description: 'Get in touch with us'
+        }
+      ]
     },
   ],
 
@@ -69,14 +113,15 @@ export const products = [
   {
     id: 'chatbot',
     name: 'Equators Chatbot',
-    tagline: 'AI-Powered Conversations',
-    description: 'An intelligent chatbot that understands context and provides helpful responses for various tasks.',
+    tagline: 'Privacy-First AI Companion',
+    description: 'Your on-device AI companion that processes conversations locally, ensuring complete data sovereignty and privacy.',
     longDescription: `
-      Experience the future of AI conversation with Equators Chatbot. Our advanced AI assistant is designed to understand context, 
-      provide intelligent responses, and help you with a wide range of tasks from creative writing to technical support.
+      Experience true AI freedom with Equators Chatbot. Our privacy-first AI assistant runs entirely on your device, 
+      with zero data transmission to external servers. Built on open-architecture principles, it provides intelligent 
+      responses while maintaining complete user control over your conversations and data.
       
-      Features include natural language processing, context awareness, multi-language support, and seamless integration 
-      with your workflow.
+      Features include local processing, encrypted storage, context awareness, multi-language support, and 
+      customizable privacy settings that put you in complete control.
     `,
     icon: '🤖',
     image: '/images/products/chatbot-hero.jpg',
@@ -86,19 +131,19 @@ export const products = [
       '/images/products/chatbot-screenshot-3.jpg',
     ],
     features: [
-      'Natural Language Processing',
-      'Context-Aware Responses',
-      'Multi-Language Support',
-      'Custom Training',
-      'API Integration',
-      'Offline Mode',
+      'Local Processing',
+      'Zero Data Transmission',
+      'Encrypted Storage',
+      'Open Architecture',
+      'Privacy Controls',
+      'Offline Operations',
     ],
     downloads: {
-      windows: 'equators-chatbot-setup.exe',
-      mac: 'equators-chatbot.dmg',
-      linux: 'equators-chatbot.AppImage',
+      windows: '/downloads/equators-chatbot/v1.0.1/equators-chatbot-setup.exe',
+      mac: '/downloads/equators-chatbot/v1.0.1/equators-chatbot.dmg',
+      linux: '/downloads/equators-chatbot/v1.0.1/equators-chatbot.AppImage',
     },
-    version: '2.1.0',
+    version: '1.0.1',
     releaseDate: '2024-12-15',
     size: '145 MB',
     requirements: {
@@ -110,14 +155,15 @@ export const products = [
   {
     id: 'ai-playground',
     name: 'Equators AI Playground',
-    tagline: 'Experiment with AI',
-    description: 'A comprehensive platform for experimenting with various AI models and machine learning algorithms.',
+    tagline: 'Open-Architecture AI Lab',
+    description: 'Explore open-architecture ML models safely and privately on your own hardware with complete data control.',
     longDescription: `
-      Dive deep into the world of artificial intelligence with Equators AI Playground. This powerful platform provides 
-      an intuitive interface for experimenting with cutting-edge AI models, from language models to computer vision.
+      Unleash your AI creativity with Equators AI Playground. This secure, decentralized platform lets you experiment 
+      with cutting-edge AI models while maintaining complete control over your data and computational resources. 
+      Built on open-source principles with transparent algorithms.
       
-      Perfect for researchers, developers, and AI enthusiasts who want to explore, test, and prototype AI solutions 
-      without the complexity of setting up infrastructure.
+      Perfect for researchers, developers, and AI enthusiasts who demand privacy, security, and freedom to explore 
+      without vendor lock-in or data harvesting concerns.
     `,
     icon: '🧪',
     image: '/images/products/ai-playground-hero.jpg',
@@ -127,19 +173,19 @@ export const products = [
       '/images/products/ai-playground-screenshot-3.jpg',
     ],
     features: [
-      'Multiple AI Models',
-      'Visual Interface',
-      'Code Generation',
-      'Model Comparison',
-      'Export Results',
-      'Collaboration Tools',
+      'Open-Source Models',
+      'Local Processing',
+      'Data Sovereignty',
+      'Transparent Algorithms',
+      'Privacy-First Design',
+      'Decentralized Computing',
     ],
     downloads: {
-      windows: 'equators-ai-playground-setup.exe',
-      mac: 'equators-ai-playground.dmg',
-      linux: 'equators-ai-playground.AppImage',
+      windows: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground-setup.exe',
+      mac: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground.dmg',
+      linux: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground.AppImage',
     },
-    version: '1.8.2',
+    version: '1.0.1',
     releaseDate: '2024-12-10',
     size: '280 MB',
     requirements: {
@@ -152,14 +198,15 @@ export const products = [
   {
     id: 'browser',
     name: 'Equators Browser',
-    tagline: 'Privacy-First Browsing',
-    description: 'A fast, secure, and privacy-focused web browser with built-in AI features.',
+    tagline: 'Decentralized Web Freedom',
+    description: 'A decentralized, privacy-first web browser with built-in security features and complete user sovereignty.',
     longDescription: `
-      Browse the web with confidence using Equators Browser. Built from the ground up with privacy and security 
-      as core principles, while integrating AI features that enhance your browsing experience.
+      Reclaim your digital freedom with Equators Browser. Built on decentralized principles, this privacy-first browser 
+      eliminates tracking, blocks surveillance, and gives you complete control over your online experience. 
+      Features encrypted connections, distributed networking, and AI-powered security.
       
-      Features advanced tracking protection, built-in VPN, AI-powered search suggestions, and seamless synchronization 
-      across all your devices.
+      Experience the web as it should be: free, private, and under your complete control. No data harvesting, 
+      no corporate surveillance, no restrictions on your digital sovereignty.
     `,
     icon: '🌐',
     image: '/images/products/browser-hero.jpg',
@@ -169,19 +216,19 @@ export const products = [
       '/images/products/browser-screenshot-3.jpg',
     ],
     features: [
-      'Privacy Protection',
-      'Built-in VPN',
-      'AI Search',
-      'Ad Blocker',
-      'Sync Across Devices',
-      'Extensions Support',
+      'Decentralized Architecture',
+      'Zero Tracking',
+      'Encrypted Connections',
+      'AI-Powered Security',
+      'Distributed Networking',
+      'Complete User Control',
     ],
     downloads: {
-      windows: 'equators-browser-setup.exe',
-      mac: 'equators-browser.dmg',
-      linux: 'equators-browser.AppImage',
+      windows: '/downloads/equators-browser/v1.0.1/equators-browser-setup.exe',
+      mac: '/downloads/equators-browser/v1.0.1/equators-browser.dmg',
+      linux: '/downloads/equators-browser/v1.0.1/equators-browser.AppImage',
     },
-    version: '3.2.1',
+    version: '1.0.1',
     releaseDate: '2024-12-20',
     size: '95 MB',
     requirements: {

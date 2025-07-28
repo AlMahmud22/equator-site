@@ -22,6 +22,15 @@ interface NewsArticle {
   featured: boolean
 }
 
+// Stylized usernames for authors
+const authorNames = ['Blue', 'Grey', 'Red', 'Axsios', 'Nante', 'Echo', 'Vega']
+
+// Function to get a consistent random author for each article
+const getAuthorForArticle = (articleId: string): string => {
+  const index = parseInt(articleId) % authorNames.length
+  return authorNames[index]
+}
+
 const newsArticles: NewsArticle[] = [
   {
     id: '1',
@@ -29,7 +38,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'The latest version of our AI chatbot brings improved natural language processing, better context understanding, and new integrations.',
     content: 'Full article content here...',
     image: '/images/news/chatbot-update.jpg',
-    author: 'Sarah Johnson',
+    author: getAuthorForArticle('1'),
     publishedAt: '2024-12-15',
     readTime: 5,
     category: 'Product Update',
@@ -42,7 +51,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'Learn about the security measures and privacy features we have implemented across all Equators applications.',
     content: 'Full article content here...',
     image: '/images/news/privacy-security.jpg',
-    author: 'Alex Chen',
+    author: getAuthorForArticle('2'),
     publishedAt: '2024-12-10',
     readTime: 7,
     category: 'Security',
@@ -55,7 +64,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'Compare different AI models side-by-side with our new comparison feature in AI Playground.',
     content: 'Full article content here...',
     image: '/images/news/ai-playground-update.jpg',
-    author: 'Emily Zhang',
+    author: getAuthorForArticle('3'),
     publishedAt: '2024-12-05',
     readTime: 4,
     category: 'Feature',
@@ -68,7 +77,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'Browse the web with enhanced privacy using our new built-in VPN feature in Equators Browser.',
     content: 'Full article content here...',
     image: '/images/news/browser-vpn.jpg',
-    author: 'Michael Rodriguez',
+    author: getAuthorForArticle('4'),
     publishedAt: '2024-11-28',
     readTime: 6,
     category: 'Feature',
@@ -81,7 +90,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'Discover creative ways our community is using Equators applications in their daily workflows.',
     content: 'Full article content here...',
     image: '/images/news/community-spotlight.jpg',
-    author: 'Sarah Johnson',
+    author: getAuthorForArticle('5'),
     publishedAt: '2024-11-20',
     readTime: 8,
     category: 'Community',
@@ -94,7 +103,7 @@ const newsArticles: NewsArticle[] = [
     excerpt: 'Get a sneak peek at the exciting features and improvements we\'re planning for the upcoming year.',
     content: 'Full article content here...',
     image: '/images/news/roadmap-2025.jpg',
-    author: 'Alex Chen',
+    author: getAuthorForArticle('6'),
     publishedAt: '2024-11-15',
     readTime: 10,
     category: 'Announcement',
