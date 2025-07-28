@@ -181,7 +181,7 @@ export default function PrivacyPolicyPage() {
                       <li>Request a copy of your data</li>
                       <li>Object to certain processing activities</li>
                     </ul>
-                    <p>To exercise these rights, please contact us at privacy@equators.com.</p>
+                    <p>To exercise these rights, please contact us at privacy@equators.tech.</p>
                   </div>
                 </div>
 
@@ -204,8 +204,8 @@ export default function PrivacyPolicyPage() {
                   <div className="text-secondary-300 space-y-4">
                     <p>If you have any questions about this Privacy Policy, please contact us at:</p>
                     <div className="bg-secondary-800 p-4 rounded-lg">
-                      <p>Email: privacy@equators.com</p>
-                      <p>Address: Equators Inc., 123 Privacy Street, San Francisco, CA 94105</p>
+                      <p>Email: privacy@equators.tech</p>
+                      <p>Address: Equators Inc., Malaysia</p>
                     </div>
                   </div>
                 </div>

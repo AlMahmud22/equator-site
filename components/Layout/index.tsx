@@ -60,7 +60,7 @@ export default function Layout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href={`https://equators.com${router.asPath}`} />
+        <link rel="canonical" href={`https://equators.tech${router.asPath}`} />
         
         {/* Preload critical resources */}
         <link rel="preload" href="/images/logo.svg" as="image" />

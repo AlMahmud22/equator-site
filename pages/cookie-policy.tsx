@@ -306,8 +306,8 @@ export default function CookiePolicyPage() {
                   If you have questions about our cookie policy, please contact us:
                 </p>
                 <div className="bg-secondary-800 p-4 rounded-lg">
-                  <p className="text-secondary-300">Email: privacy@equators.com</p>
-                  <p className="text-secondary-300">Address: Equators Inc., 123 Privacy Street, San Francisco, CA 94105</p>
+                  <p className="text-secondary-300">Email: privacy@equators.tech</p>
+                  <p className="text-secondary-300">Address: Equators Inc., Malaysia</p>
                 </div>
               </motion.div>
             </div>

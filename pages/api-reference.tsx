@@ -56,7 +56,7 @@ console.log(data.response);`,
   python: `# Python Example
 import requests
 
-url = "https://api.equators.com/v1/chatbot/send"
+url = "https://api.equators.tech/v1/chatbot/send"
 headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer your-api-key"
@@ -71,7 +71,7 @@ result = response.json()
 print(result["response"])`,
 
   curl: `# cURL Example
-curl -X POST https://api.equators.com/v1/chatbot/send \\
+curl -X POST https://api.equators.tech/v1/chatbot/send \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer your-api-key" \\
   -d '{

@@ -48,21 +48,21 @@ export default function ContactPage() {
                 icon: <Mail className="w-8 h-8" />,
                 title: 'Email Support',
                 description: 'Get help with technical issues',
-                contact: 'support@equators.com',
+                contact: 'support@equators.tech',
                 action: 'Send Email'
               },
               {
                 icon: <Phone className="w-8 h-8" />,
                 title: 'Business Inquiries',
                 description: 'Partnership and business questions',
-                contact: 'hello@equators.com',
+                contact: 'hello@equators.tech',
                 action: 'Get in Touch'
               },
               {
                 icon: <MapPin className="w-8 h-8" />,
                 title: 'Headquarters',
-                description: 'Visit us in person',
-                contact: 'San Francisco, CA',
+                description: '',
+                contact: 'Malaysia',
                 action: 'View Map'
               },
               {

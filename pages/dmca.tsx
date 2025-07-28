@@ -155,8 +155,8 @@ export default function DMCAPage() {
                     <h3 className="font-semibold text-white mb-3">DMCA Agent Contact Information:</h3>
                     <div className="space-y-2">
                       <p><strong>Name:</strong> DMCA Agent</p>
-                      <p><strong>Email:</strong> dmca@equators.com</p>
-                      <p><strong>Address:</strong> Equators Inc., DMCA Department, 123 Legal Street, San Francisco, CA 94105</p>
+                      <p><strong>Email:</strong> dmca@equators.tech</p>
+                      <p><strong>Address:</strong> Equators Inc., DMCA Department, Malaysia</p>
                       <p><strong>Phone:</strong> +1 (555) 123-DMCA</p>
                     </div>
                   </div>
@@ -248,7 +248,7 @@ export default function DMCAPage() {
                   </p>
                   
                   <div className="bg-secondary-800 p-4 rounded-lg">
-                    <p>Email: legal@equators.com</p>
+                    <p>Email: legal@equators.tech</p>
                     <p>Subject: Intellectual Property Concern</p>
                   </div>
                 </div>
@@ -273,12 +273,12 @@ export default function DMCAPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h3 className="font-semibold text-white mb-2">General Inquiries</h3>
-                        <p>Email: legal@equators.com</p>
+                        <p>Email: legal@equators.tech</p>
                         <p>Phone: +1 (555) 123-4567</p>
                       </div>
                       <div>
                         <h3 className="font-semibold text-white mb-2">DMCA Notices Only</h3>
-                        <p>Email: dmca@equators.com</p>
+                        <p>Email: dmca@equators.tech</p>
                         <p>Phone: +1 (555) 123-DMCA</p>
                       </div>
                     </div>

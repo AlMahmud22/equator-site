@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Equators',
   title: 'Equators - Privacy-Focused AI Desktop Suite',
   description: 'Secure, decentralized AI applications: Privacy-first Chatbot, open-architecture AI Playground, and freedom-focused Browser. Built for digital sovereignty.',
-  url: 'https://equators.com',
+  url: 'https://equators.tech',
   ogImage: '/images/og-image.jpg',
   
   // Navigation links
@@ -96,8 +96,8 @@ export const siteConfig = {
 
   // Contact information
   contact: {
-    email: 'hello@equators.com',
-    support: 'support@equators.com',
+    email: 'hello@equators.tech',
+    support: 'support@equators.tech',
   },
 
   // Feature flags

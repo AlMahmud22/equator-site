@@ -246,11 +246,11 @@ export default function TermsOfServicePage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h3 className="font-semibold text-white mb-2">Email</h3>
-                        <p>legal@equators.com</p>
+                        <p>legal@equators.tech</p>
                       </div>
                       <div>
                         <h3 className="font-semibold text-white mb-2">Address</h3>
-                        <p>Equators Inc.<br />123 Legal Street<br />San Francisco, CA 94105</p>
+                        <p>Equators Inc.<br />Malaysia</p>
                       </div>
                     </div>
                   </div>

@@ -8,14 +8,14 @@ const jobOpenings = [
   {
     title: 'Senior Frontend Developer',
     department: 'Engineering',
-    location: 'San Francisco, CA / Remote',
+    location: 'Malaysia / Remote',
     type: 'Full-time',
     description: 'Build beautiful, responsive user interfaces for our desktop applications.',
   },
   {
     title: 'AI Research Engineer',
     department: 'Research',
-    location: 'San Francisco, CA',
+    location: 'Malaysia',
     type: 'Full-time',
     description: 'Develop cutting-edge AI models and algorithms for our products.',
   },
@@ -29,7 +29,7 @@ const jobOpenings = [
   {
     title: 'DevOps Engineer',
     department: 'Engineering',
-    location: 'San Francisco, CA / Remote',
+    location: 'Malaysia / Remote',
     type: 'Full-time',
     description: 'Scale our infrastructure and improve deployment processes.',
   },
@@ -61,7 +61,7 @@ const benefits = [
   {
     icon: <MapPin className="w-8 h-8" />,
     title: 'Great Office',
-    description: 'Modern workspace in San Francisco with all the amenities you need.',
+    description: 'Modern workspace in Malaysia with all the amenities you need.',
   },
 ]
 

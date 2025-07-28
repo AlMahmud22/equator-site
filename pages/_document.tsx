@@ -23,11 +23,11 @@ export default function Document() {
               "@type": "Organization",
               "name": "Equators",
               "description": "Desktop Applications Suite",
-              "url": "https://equators.com",
-              "logo": "https://equators.com/images/logo.svg",
+              "url": "https://equators.tech",
+              "logo": "https://equators.tech/images/logo.svg",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "email": "hello@equators.com",
+                "email": "hello@equators.tech",
                 "contactType": "customer service"
               },
               "sameAs": [
