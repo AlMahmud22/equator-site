@@ -64,10 +64,11 @@ export function withOptionalAuth(handler: AuthenticatedHandler) {
 export function withCors(handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', process.env.NODE_ENV === 'production' 
-      ? 'https://your-domain.com' 
+    res.setHeader('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_SITE_URL || (
+      process.env.NODE_ENV === 'production' 
+      ? 'https://equators.tech'
       : 'http://localhost:3000'
-    )
+    ))
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Credentials', 'true')

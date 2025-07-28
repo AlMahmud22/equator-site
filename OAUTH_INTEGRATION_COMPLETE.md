@@ -85,6 +85,8 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 # Database & Security
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+# Fallback for development
 API_BASE_URL=http://localhost:3000
 ```
 
@@ -96,19 +98,19 @@ API_BASE_URL=http://localhost:3000
    ```
 
 2. **Test OAuth providers:**
-   - Visit http://localhost:3000/auth/login
+   - Visit your site at the configured NEXT_PUBLIC_SITE_URL/auth/login (or http://localhost:3000/auth/login for development)
    - Click "Google" or "GitHub" buttons
    - Complete OAuth flow
    - Verify redirect to home page
    - Check browser cookies for JWT token
 
 3. **Test registration:**
-   - Visit http://localhost:3000/auth/register
+   - Visit /auth/register on your site
    - Click OAuth buttons or fill form
    - Verify account creation
 
 4. **Test authentication:**
-   - Visit http://localhost:3000/api/auth/profile
+   - Visit /api/auth/profile on your site
    - Should return user data if authenticated
 
 ## 🔐 Security Features

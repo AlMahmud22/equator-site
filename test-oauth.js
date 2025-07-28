@@ -5,6 +5,12 @@
  * Run `npm run dev` and test the following URLs:
  */
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (
+  process.env.NODE_ENV === 'production' 
+  ? 'https://equators.tech' 
+  : 'http://localhost:3000'
+);
+
 console.log(`
 🚀 OAuth Integration Test Guide
 =====================================
@@ -13,21 +19,22 @@ console.log(`
    npm run dev
 
 2. Test OAuth Redirect URLs:
-   - Google OAuth: http://localhost:3000/api/auth/oauth?provider=google
-   - GitHub OAuth: http://localhost:3000/api/auth/oauth?provider=github
+   - Google OAuth: ${siteUrl}/api/auth/oauth?provider=google
+   - GitHub OAuth: ${siteUrl}/api/auth/oauth?provider=github
 
 3. Test Login/Register Pages:
-   - Login: http://localhost:3000/auth/login
-   - Register: http://localhost:3000/auth/register
+   - Login: ${siteUrl}/auth/login
+   - Register: ${siteUrl}/auth/register
 
 4. Test User Profile:
-   - Profile: http://localhost:3000/api/auth/profile
+   - Profile: ${siteUrl}/api/auth/profile
 
 5. Environment Variables Required:
    - GOOGLE_CLIENT_ID
    - GOOGLE_CLIENT_SECRET
    - GITHUB_CLIENT_ID
    - GITHUB_CLIENT_SECRET
+   - NEXT_PUBLIC_SITE_URL (for dynamic URLs)
    - MONGODB_URI
    - JWT_SECRET
 

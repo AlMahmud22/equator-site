@@ -39,7 +39,7 @@ Equators is a decentralized, privacy-first desktop software suite featuring secu
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [https://equators.tech](https://equators.tech) in your browser for production, or [http://localhost:3000](http://localhost:3000) for development.
 
 ## 🏗️ Project Structure
 

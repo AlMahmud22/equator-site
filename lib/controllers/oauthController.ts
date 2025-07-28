@@ -56,7 +56,15 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
   }
 
   const { provider } = req.query
-  const baseUrl = process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
+  
+  // Get base URL and normalize it (remove trailing slashes and /api paths)
+  // let baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
+  let baseUrl = 'https://equators.tech'; // Hardcoded for production only
+
+  // Clean up baseUrl - remove trailing slash and any /api suffix
+  // baseUrl = baseUrl.replace(/\/+$/, '') // Remove trailing slashes
+  // baseUrl = baseUrl.replace(/\/api$/, '') // Remove /api suffix if present
+  
   const redirectUri = `${baseUrl}/api/auth/oauth/callback`
 
   try {
@@ -132,8 +140,16 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
   }
 
   const provider = state as string
-  const baseUrl = process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
-  const redirectUri = `${baseUrl}/api/auth/oauth/callback`
+  
+  // Get base URL and normalize it (remove trailing slashes and /api paths)
+  // let baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
+  
+  // Clean up baseUrl - remove trailing slash and any /api suffix
+  // baseUrl = baseUrl.replace(/\/+$/, '') // Remove trailing slashes
+  // baseUrl = baseUrl.replace(/\/api$/, '') // Remove /api suffix if present
+  
+  // const redirectUri = `${baseUrl}/api/auth/oauth/callback`
+  const redirectUri = 'https://equators.tech/api/auth/oauth/callback'
 
   try {
     await connectDB()
