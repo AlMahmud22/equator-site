@@ -31,6 +31,7 @@ interface GoogleUserInfo {
   name: string
   given_name: string
   family_name: string
+  picture: string
 }
 
 interface GitHubTokenResponse {
@@ -44,6 +45,7 @@ interface GitHubUserInfo {
   login: string
   name: string
   email: string
+  avatar_url: string
 }
 
 // OAuth redirect handler - redirects to provider authorization URL
@@ -154,7 +156,7 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
   try {
     await connectDB()
     
-    let userInfo: { id: string; email: string; name: string }
+    let userInfo: { id: string; email: string; name: string; avatar?: string }
 
     if (provider === 'google') {
       // Exchange code for access token
@@ -190,6 +192,7 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
         id: googleUser.id,
         email: googleUser.email,
         name: googleUser.name,
+        avatar: googleUser.picture,
       }
 
     } else if (provider === 'github') {
@@ -242,6 +245,7 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
         id: githubUser.id.toString(),
         email: email,
         name: githubUser.name || githubUser.login,
+        avatar: githubUser.avatar_url,
       }
 
     } else {
@@ -254,19 +258,27 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
 
     // Check if user already exists
     let user = await User.findOne({ email: userInfo.email.toLowerCase() })
+    let isNewUser = false
 
     if (user) {
-      // User exists - update auth type if needed
+      // User exists - update auth type and avatar if needed
       if (user.authType !== provider) {
         user.authType = provider as 'google' | 'github'
-        await user.save()
       }
+      if (userInfo.avatar && user.avatar !== userInfo.avatar) {
+        user.avatar = userInfo.avatar
+      }
+      user.firstLogin = false // Mark as returning user
+      await user.save()
     } else {
       // Create new user
+      isNewUser = true
       user = new User({
         fullName: userInfo.name.trim(),
         email: userInfo.email.toLowerCase(),
-        authType: provider as 'google' | 'github'
+        authType: provider as 'google' | 'github',
+        avatar: userInfo.avatar,
+        firstLogin: true // Mark as new user
       })
       await user.save()
     }
@@ -293,8 +305,9 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
 
     res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
 
-    // Redirect to home page with success
-    res.redirect('/?auth=success')
+    // Redirect to profile page with success and first login flag
+    const redirectUrl = isNewUser ? '/profile?auth=success&firstLogin=true' : '/?auth=success'
+    res.redirect(redirectUrl)
 
   } catch (error) {
     console.error('OAuth callback error:', error)

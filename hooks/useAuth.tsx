@@ -5,6 +5,16 @@ interface User {
   fullName: string
   email: string
   authType: 'email' | 'google' | 'github'
+  avatar?: string
+  phone?: string
+  firstLogin: boolean
+  huggingFace?: {
+    linked: boolean
+    username?: string
+    linkedAt?: string
+    fullName?: string
+    avatarUrl?: string
+  }
   createdAt: string
   updatedAt: string
   preferences?: {
@@ -22,6 +32,8 @@ interface AuthContextType {
   loginWithGithub: () => void
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
+  updateProfile: (data: Partial<User>) => Promise<{ success: boolean; message: string }>
+  linkHuggingFace: (token: string) => Promise<{ success: boolean; message: string; username?: string }>
 }
 
 interface RegisterData {
@@ -137,6 +149,57 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const updateProfile = async (data: Partial<User>) => {
+    try {
+      const response = await fetch('/api/auth/profile', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setUser(result.data.user)
+        return { success: true, message: result.message }
+      } else {
+        return { success: false, message: result.message }
+      }
+    } catch (error) {
+      console.error('Update profile error:', error)
+      return { success: false, message: 'Network error occurred' }
+    }
+  }
+
+  const linkHuggingFace = async (token: string) => {
+    try {
+      const response = await fetch('/api/auth/hf-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ token }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        // Refresh user data to get updated HF info
+        await refreshUser()
+        return { success: true, message: result.message, username: result.data?.username }
+      } else {
+        return { success: false, message: result.message }
+      }
+    } catch (error) {
+      console.error('Link Hugging Face error:', error)
+      return { success: false, message: 'Network error occurred' }
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -146,6 +209,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loginWithGithub,
     logout,
     refreshUser,
+    updateProfile,
+    linkHuggingFace,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -5,7 +5,15 @@ export interface IUser extends Document {
   email: string
   password?: string
   authType: 'email' | 'google' | 'github'
-  huggingFaceToken?: string
+  avatar?: string
+  phone?: string
+  firstLogin: boolean
+  huggingFace?: {
+    linked: boolean
+    token?: string
+    username?: string
+    linkedAt?: Date
+  }
   downloadLogs?: {
     modelId: string
     modelName: string
@@ -46,9 +54,25 @@ const UserSchema = new Schema<IUser>({
     required: true,
     default: 'email'
   },
-  huggingFaceToken: {
+  avatar: {
     type: String,
-    select: false
+    required: false
+  },
+  phone: {
+    type: String,
+    required: false
+  },
+  firstLogin: {
+    type: Boolean,
+    default: true
+  },
+  huggingFace: {
+    linked: { type: Boolean, default: false },
+    token: { type: String, select: false },
+    username: { type: String },
+    linkedAt: { type: Date },
+    fullName: { type: String },
+    avatarUrl: { type: String }
   },
   downloadLogs: [
     {
@@ -70,7 +94,9 @@ const UserSchema = new Schema<IUser>({
   toJSON: {
     transform(_, ret) {
       delete ret.password
-      delete ret.huggingFaceToken
+      if (ret.huggingFace?.token) {
+        delete ret.huggingFace.token
+      }
       return ret
     }
   }

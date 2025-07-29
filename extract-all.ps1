@@ -8,17 +8,10 @@ $outputFile = "extract_files.txt"
 
 # ✅ List your raw paths (copy from Explorer, paste below)
 $rawPaths = @'
-pages/api/auth/oauth/callback.ts
-pages/api/auth/huggingface-token.ts
-pages/api/auth/login.ts
-pages/api/auth/logout.ts
-pages/api/auth/oauth.ts
-pages/api/auth/profile.ts
-pages/api/auth/register.ts
-pages/api/seed.ts
-pages/api/test.ts
-pages/auth/login.tsx
-pages/auth/register.tsx
+components\ProfileCard.tsx
+pages\profile.tsx
+components\HuggingFaceLink.tsx
+components\GlobeBackground.tsx
 '@
 
 # ✅ Optional: List of file types you want to include

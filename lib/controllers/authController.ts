@@ -242,3 +242,61 @@ export async function getUserProfile(req: NextApiRequest, res: NextApiResponse<A
     })
   }
 }
+
+// Update User Profile Controller
+export async function updateUserProfile(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  if (req.method !== 'PATCH') {
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    })
+  }
+
+  try {
+    await connectDB()
+
+    const userId = (req as any).userId
+    const { fullName, phone, preferences } = req.body
+
+    // Build update object with only provided fields
+    const updateData: any = {}
+    
+    if (fullName !== undefined) {
+      updateData.fullName = fullName.trim()
+    }
+    
+    if (phone !== undefined) {
+      updateData.phone = phone.trim() || null
+    }
+    
+    if (preferences !== undefined) {
+      updateData.preferences = preferences
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true, runValidators: true }
+    )
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      data: { user }
+    })
+
+  } catch (error) {
+    console.error('Update profile error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+}
