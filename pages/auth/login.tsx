@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -20,6 +20,15 @@ export default function LoginPage() {
     rememberMe: false,
   })
 
+  // Capture and store redirect parameter
+  useEffect(() => {
+    const { redirect } = router.query
+    if (redirect && typeof redirect === 'string') {
+      // Store in sessionStorage for later use
+      sessionStorage.setItem('authRedirect', redirect)
+    }
+  }, [router.query])
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -29,8 +38,19 @@ export default function LoginPage() {
       const result = await login(formData.email, formData.password)
       
       if (result.success) {
-        // Redirect to dashboard or home page
-        router.push('/')
+        // Check if there's a stored redirect
+        const storedRedirect = sessionStorage.getItem('authRedirect')
+        if (storedRedirect && storedRedirect.startsWith('equatorschatbot://')) {
+          // Clear the stored redirect
+          sessionStorage.removeItem('authRedirect')
+          // Redirect to custom URI scheme with token
+          const token = result.token
+          const redirectUrl = token ? `${storedRedirect}?token=${token}` : storedRedirect
+          window.location.href = redirectUrl
+        } else {
+          // Default redirect to profile page
+          router.push('/profile')
+        }
       } else {
         setError(result.message)
         

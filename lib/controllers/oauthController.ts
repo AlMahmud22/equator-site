@@ -57,7 +57,7 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
     })
   }
 
-  const { provider } = req.query
+  const { provider, redirect } = req.query
   
   // Get base URL and normalize it (remove trailing slashes and /api paths)
   // let baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
@@ -68,6 +68,13 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
   // baseUrl = baseUrl.replace(/\/api$/, '') // Remove /api suffix if present
   
   const redirectUri = `${baseUrl}/api/auth/oauth/callback`
+  
+  // Store redirect parameter in state if provided
+  let state = provider as string
+  if (redirect && typeof redirect === 'string') {
+    // Encode redirect URL in state parameter
+    state = `${provider}:${encodeURIComponent(redirect)}`
+  }
 
   try {
     let authUrl: string
@@ -84,7 +91,7 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent('openid email profile')}&` +
           `response_type=code&` +
-          `state=google`
+          `state=${encodeURIComponent(state)}`
         break
 
       case 'github':
@@ -97,7 +104,7 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
           `client_id=${encodeURIComponent(githubClientId)}&` +
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent('user:email')}&` +
-          `state=github`
+          `state=${encodeURIComponent(state)}`
         break
 
       default:
@@ -141,7 +148,15 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
     return res.redirect('/auth/login?error=oauth_invalid')
   }
 
-  const provider = state as string
+  // Parse state parameter to extract provider and redirect URL
+  let provider = state as string
+  let customRedirect: string | null = null
+  
+  if (state && typeof state === 'string' && state.includes(':')) {
+    const parts = state.split(':')
+    provider = parts[0]
+    customRedirect = parts.length > 1 ? decodeURIComponent(parts[1]) : null
+  }
   
   // Get base URL and normalize it (remove trailing slashes and /api paths)
   // let baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.API_BASE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
@@ -256,8 +271,8 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
       return res.redirect('/auth/login?error=no_email')
     }
 
-    // Check if user already exists
-    let user = await User.findOne({ email: userInfo.email.toLowerCase() })
+    // Check if user already exists (select HF token for JWT)
+    let user = await User.findOne({ email: userInfo.email.toLowerCase() }).select('+huggingFace.token')
     let isNewUser = false
 
     if (user) {
@@ -281,14 +296,24 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
         firstLogin: true // Mark as new user
       })
       await user.save()
+      
+      // Re-fetch with HF token field for consistency
+      user = await User.findById(user._id).select('+huggingFace.token')
     }
 
-    // Generate JWT token
-    const token = generateToken({
+    // Generate JWT token with Hugging Face token if available
+    const tokenPayload: any = {
       userId: user._id.toString(),
       email: user.email,
       authType: user.authType
-    })
+    }
+
+    // Include Hugging Face token in JWT if available
+    if (user.huggingFace?.linked && user.huggingFace.token) {
+      tokenPayload.huggingFaceToken = user.huggingFace.token
+    }
+
+    const token = generateToken(tokenPayload)
 
     // Log the access
     await logUserAccess(user._id.toString(), provider, req)
@@ -305,7 +330,12 @@ export async function handleProviderCallback(req: NextApiRequest, res: NextApiRe
 
     res.setHeader('Set-Cookie', serialize('token', token, cookieOptions))
 
-    // Redirect to profile page with success and first login flag
+    // Handle custom redirect for Equators Chatbot desktop app
+    if (customRedirect && customRedirect.startsWith('equatorschatbot://')) {
+      return res.redirect(`${customRedirect}?token=${token}`)
+    }
+
+    // Default redirect to profile page with success and first login flag
     const redirectUrl = isNewUser ? '/profile?auth=success&firstLogin=true' : '/?auth=success'
     res.redirect(redirectUrl)
 
@@ -351,8 +381,8 @@ export async function oauthLogin(req: NextApiRequest, res: NextApiResponse<ApiRe
       })
     }
 
-    // Check if user already exists
-    let user = await User.findOne({ email: email.toLowerCase() })
+    // Check if user already exists (select HF token for JWT)
+    let user = await User.findOne({ email: email.toLowerCase() }).select('+huggingFace.token')
 
     if (user) {
       // User exists - update auth type if needed
@@ -368,14 +398,24 @@ export async function oauthLogin(req: NextApiRequest, res: NextApiResponse<ApiRe
         authType: provider
       })
       await user.save()
+      
+      // Re-fetch with HF token field for consistency
+      user = await User.findById(user._id).select('+huggingFace.token')
     }
 
-    // Generate JWT token
-    const token = generateToken({
+    // Generate JWT token with Hugging Face token if available
+    const tokenPayload: any = {
       userId: user._id.toString(),
       email: user.email,
       authType: user.authType
-    })
+    }
+
+    // Include Hugging Face token in JWT if available
+    if (user.huggingFace?.linked && user.huggingFace.token) {
+      tokenPayload.huggingFaceToken = user.huggingFace.token
+    }
+
+    const token = generateToken(tokenPayload)
 
     // Log the access
     await logUserAccess(user._id.toString(), provider, req)

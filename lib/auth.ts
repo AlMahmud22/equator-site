@@ -13,6 +13,7 @@ export interface JWTPayload {
   userId: string
   email: string
   authType: string
+  huggingFaceToken?: string
 }
 
 export function generateToken(payload: JWTPayload): string {

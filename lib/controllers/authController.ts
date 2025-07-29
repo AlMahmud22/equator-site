@@ -68,12 +68,19 @@ export async function registerUser(req: NextApiRequest, res: NextApiResponse<Api
 
     const savedUser = await newUser.save()
 
-    // Generate JWT token
-    const token = generateToken({
+    // Generate JWT token with Hugging Face token if available
+    const tokenPayload: any = {
       userId: savedUser._id.toString(),
       email: savedUser.email,
       authType: savedUser.authType
-    })
+    }
+
+    // Include Hugging Face token in JWT if available
+    if (savedUser.huggingFace?.linked && savedUser.huggingFace.token) {
+      tokenPayload.huggingFaceToken = savedUser.huggingFace.token
+    }
+
+    const token = generateToken(tokenPayload)
 
     // Set HTTP-only cookie
     const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
@@ -92,7 +99,8 @@ export async function registerUser(req: NextApiRequest, res: NextApiResponse<Api
       success: true,
       message: 'User registered successfully',
       data: {
-        user: savedUser
+        user: savedUser,
+        token: token // Include the JWT token in the response
       }
     })
 
@@ -143,7 +151,7 @@ export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiRes
     const user = await User.findOne({ 
       email: email.toLowerCase(),
       authType: 'email'
-    }).select('+password')
+    }).select('+password +huggingFace.token')
 
     if (!user) {
       return res.status(401).json({
@@ -163,12 +171,19 @@ export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiRes
       })
     }
 
-    // Generate JWT token
-    const token = generateToken({
+    // Generate JWT token with Hugging Face token if available
+    const tokenPayload: any = {
       userId: user._id.toString(),
       email: user.email,
       authType: user.authType
-    })
+    }
+
+    // Include Hugging Face token in JWT if available
+    if (user.huggingFace?.linked && user.huggingFace.token) {
+      tokenPayload.huggingFaceToken = user.huggingFace.token
+    }
+
+    const token = generateToken(tokenPayload)
 
     // Log the access
     await logUserAccess(user._id.toString(), 'email', req)
@@ -192,7 +207,8 @@ export async function loginUser(req: NextApiRequest, res: NextApiResponse<ApiRes
       success: true,
       message: 'Login successful',
       data: {
-        user: userResponse
+        user: userResponse,
+        token: token // Include the JWT token in the response
       }
     })
 

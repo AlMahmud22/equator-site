@@ -26,8 +26,8 @@ interface User {
 interface AuthContextType {
   user: User | null
   loading: boolean
-  login: (email: string, password: string) => Promise<{ success: boolean; message: string; errors?: any[] }>
-  register: (data: RegisterData) => Promise<{ success: boolean; message: string; errors?: any[] }>
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string; errors?: any[]; token?: string }>
+  register: (data: RegisterData) => Promise<{ success: boolean; message: string; errors?: any[]; token?: string }>
   loginWithGoogle: () => void
   loginWithGithub: () => void
   logout: () => Promise<void>
@@ -69,7 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data.success) {
         setUser(data.data.user)
-        return { success: true, message: data.message }
+        return { 
+          success: true, 
+          message: data.message, 
+          token: data.data.token // Include token in response
+        }
       } else {
         return { success: false, message: data.message, errors: data.errors }
       }
@@ -94,7 +98,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data.success) {
         setUser(data.data.user)
-        return { success: true, message: data.message }
+        return { 
+          success: true, 
+          message: data.message, 
+          token: data.data.token // Include token in response
+        }
       } else {
         return { success: false, message: data.message, errors: data.errors }
       }
@@ -105,11 +113,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const loginWithGoogle = () => {
-    window.location.href = '/api/auth/oauth?provider=google'
+    const storedRedirect = sessionStorage.getItem('authRedirect')
+    const redirectParam = storedRedirect ? `&redirect=${encodeURIComponent(storedRedirect)}` : ''
+    window.location.href = `/api/auth/oauth?provider=google${redirectParam}`
   }
 
   const loginWithGithub = () => {
-    window.location.href = '/api/auth/oauth?provider=github'
+    const storedRedirect = sessionStorage.getItem('authRedirect')
+    const redirectParam = storedRedirect ? `&redirect=${encodeURIComponent(storedRedirect)}` : ''
+    window.location.href = `/api/auth/oauth?provider=github${redirectParam}`
   }
 
   const logout = async () => {
