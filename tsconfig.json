@@ -23,9 +23,11 @@
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./components/*"],
-      "@/utils/*": ["./utils/*"],
-      "@/utils": ["./utils/index"],
-      "@/hooks/*": ["./hooks/*"],
+      "@/shared/*": ["./shared/*"],
+      "@/shared/utils/*": ["./shared/utils/*"],
+      "@/shared/utils": ["./shared/utils/index"],
+      "@/shared/hooks/*": ["./shared/hooks/*"],
+      "@/modules/*": ["./modules/*"],
       "@/config/*": ["./config/*"],
       "@/data/*": ["./data/*"]
     }

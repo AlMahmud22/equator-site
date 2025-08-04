@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Calendar, Clock, ArrowRight, Tag } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useScrollReveal } from '@/hooks/useAnimations'
-import { formatDate } from '@/utils/dateUtils'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
+import { formatDate } from '@/shared/utils/dateUtils'
 import { GetStaticProps } from 'next'
 
 interface NewsArticle {

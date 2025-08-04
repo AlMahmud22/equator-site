@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { CheckCircle, AlertCircle, XCircle, Clock, Zap, Globe } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useScrollReveal } from '@/hooks/useAnimations'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
 const services = [
   {

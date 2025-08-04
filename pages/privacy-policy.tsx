@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { Shield, Eye, Lock, Database } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useScrollReveal } from '@/hooks/useAnimations'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
 export default function PrivacyPolicyPage() {
   const heroRef = useScrollReveal()

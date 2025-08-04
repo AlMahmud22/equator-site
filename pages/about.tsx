@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Users, Target, Zap, Heart } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useScrollReveal } from '@/hooks/useAnimations'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
 const values = [
   {

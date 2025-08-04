@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withCors } from '@/lib/middleware/auth'
-import { handleProviderCallback } from '@/lib/controllers/oauthController'
+import { handleProviderCallback } from '@/modules/auth/services/oauthController'
 
-async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-  await handleProviderCallback(req, res)
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  return handleProviderCallback(req, res)
 }
-
-export default withCors(handler)

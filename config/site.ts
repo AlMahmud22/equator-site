@@ -33,6 +33,17 @@ export const siteConfig = {
       ]
     },
     {
+      name: 'Developer',
+      href: '#',
+      children: [
+        {
+          name: 'Test Chatbot Auth',
+          href: '/test-chatbot-auth',
+          description: 'Test OAuth deep linking with desktop app'
+        },
+      ]
+    },
+    {
       name: 'Resources',
       href: '#',
       children: [

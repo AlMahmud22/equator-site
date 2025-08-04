@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Github, Twitter, Youtube, MessageCircle, Mail, EyeOff } from 'lucide-react'
 import { siteConfig } from '@/config/site'
-import { useScrollReveal } from '@/hooks/useAnimations'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
 const scrollToTop = () => {
   if (typeof window !== 'undefined') {

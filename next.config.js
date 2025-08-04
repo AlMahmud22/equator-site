@@ -29,10 +29,10 @@ const nextConfig = {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
-    API_BASE_URL: process.env.NEXT_PUBLIC_SITE_URL || process.env.API_BASE_URL || (
+    API_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || process.env.API_BASE_URL || (
       process.env.NODE_ENV === 'production' 
       ? 'https://equators.tech' 
-      : 'http://localhost:3000'
+      : process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     ),
     JWT_SECRET: process.env.JWT_SECRET,
     MONGODB_URI: process.env.MONGODB_URI,

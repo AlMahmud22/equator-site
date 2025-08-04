@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { motion, Variants } from 'framer-motion'
 import { ArrowRight, Download, ExternalLink } from 'lucide-react'
 import { products } from '@/config/site'
-import { useScrollReveal } from '@/hooks/useAnimations'
-import { getOSSpecificDownload } from '@/utils'
+import { useScrollReveal } from '@/shared/hooks/useAnimations'
+import { getOSSpecificDownload } from '@/shared/utils'
 import BinaryOverlay from '@/components/BinaryOverlay'
 
 const containerVariants: Variants = {

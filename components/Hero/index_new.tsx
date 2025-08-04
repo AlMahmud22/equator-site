@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Download, Play, Star, Skull, Zap, Shield, Target, Eye } from 'lucide-react'
-import { useScrollReveal, useParallax } from '@/hooks/useAnimations'
+import { useScrollReveal, useParallax } from '@/shared/hooks/useAnimations'
 import BinaryOverlay from '@/components/BinaryOverlay'
 
 const stats = [

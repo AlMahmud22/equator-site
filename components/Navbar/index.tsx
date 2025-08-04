@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, Download, User, LogOut, Settings, ExternalLink } from 'lucide-react'
 import { siteConfig } from '@/config/site'
-import { cn } from '@/utils'
-import { useAuth } from '@/hooks/useAuth'
+import { cn } from '@/shared/utils'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)

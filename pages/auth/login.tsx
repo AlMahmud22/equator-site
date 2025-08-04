@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 export default function LoginPage() {
   const router = useRouter()

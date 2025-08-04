@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { siteConfig } from '@/config/site'
-import { AuthProvider } from '@/hooks/useAuth'
+import { AuthProvider } from '@/shared/hooks/useAuth'
 import '@/styles/globals.css'
 
 // Font configurations

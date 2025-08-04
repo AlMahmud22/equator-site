@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { Download, Star, Shield, Zap, Users, ArrowLeft, ExternalLink } from 'lucide-react'
 import Layout from '@/components/Layout'
 import { products, Product } from '@/config/site'
-import { getOSSpecificDownload, formatFileSize } from '@/utils'
+import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
 
 interface ProductPageProps {
   product: Product

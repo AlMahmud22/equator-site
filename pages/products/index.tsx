@@ -5,8 +5,8 @@ import { motion } from 'framer-motion'
 import { Download, Star, Users, ExternalLink } from 'lucide-react'
 import Layout from '@/components/Layout'
 import { products } from '@/config/site'
-import { getOSSpecificDownload, formatFileSize } from '@/utils'
-import { formatDate } from '@/utils/dateUtils'
+import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
+import { formatDate } from '@/shared/utils/dateUtils'
 
 export default function ProductsPage() {
 

@@ -4,8 +4,8 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next'
-import connectDB from '../../lib/database'
-import User from '../../lib/models/User'
+import connectDB from '@/modules/database/connection'
+import User from '@/modules/database/models/User'
 
 type TestResponse =
   | {

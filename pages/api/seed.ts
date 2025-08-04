@@ -1,9 +1,9 @@
 // ===== FILE: /pages/api/seed.ts =====
 import type { NextApiRequest, NextApiResponse } from 'next'
-import connectDB from '@/lib/database'
-import User from '@/lib/models/User'
-import TrainingLog from '@/lib/models/TrainingLog'
-import AccessLog from '@/lib/models/AccessLog'
+import connectDB from '@/modules/database/connection'
+import User from '@/modules/database/models/User'
+import TrainingLog from '@/modules/database/models/TrainingLog'
+import AccessLog from '@/modules/database/models/AccessLog'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {

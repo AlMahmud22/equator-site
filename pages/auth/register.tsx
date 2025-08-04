@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 const passwordRequirements = [
   { text: 'At least 8 characters', check: (pwd: string) => pwd.length >= 8 },
