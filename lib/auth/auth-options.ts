@@ -1,6 +1,6 @@
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 
 import { getMongoClient } from "@/lib/auth/mongodb";
 import { AUTH_CONFIG } from "./auth-config";
