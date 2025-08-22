@@ -124,7 +124,7 @@ export const projects = [
       and a clean React-based interface that prioritizes user experience and data sovereignty.
     `,
     icon: '🤖',
-    image: '/images/products/chatbot-hero.jpg',
+    image: '/images/latest/equators-chatbot.png',
     screenshots: [
       '/images/products/chatbot-screenshot-1.jpg',
       '/images/products/chatbot-screenshot-2.jpg',
@@ -179,7 +179,7 @@ export const projects = [
       content delivery. Designed for users who prioritize privacy and want to browse the web without surveillance.
     `,
     icon: '🌐',
-    image: '/images/products/browser-hero.jpg',
+    image: '/images/latest/equators browser.png',
     screenshots: [
       '/images/products/browser-screenshot-1.jpg',
       '/images/products/browser-screenshot-2.jpg',
@@ -236,7 +236,7 @@ export const projects = [
       Perfect for maintaining detailed reconnaissance notes and methodology documentation.
     `,
     icon: '🔒',
-    image: '/images/products/hacker-notes-hero.jpg',
+    image: '/images/latest/hacker notes app (PWA).png',
     screenshots: [
       '/images/products/hacker-notes-screenshot-1.jpg',
       '/images/products/hacker-notes-screenshot-2.jpg',
@@ -290,7 +290,7 @@ export const projects = [
       Perfect for quickly processing research papers, articles, and documentation.
     `,
     icon: '📝',
-    image: '/images/products/summarizer-hero.jpg',
+    image: '/images/latest/Ai power text summarizer mini app.png',
     screenshots: [
       '/images/products/summarizer-screenshot-1.jpg',
       '/images/products/summarizer-screenshot-2.jpg',
@@ -347,7 +347,7 @@ export const projects = [
       Perfect for learning blockchain development and understanding DeFi mechanics.
     `,
     icon: '🔄',
-    image: '/images/products/token-swap-hero.jpg',
+    image: '/images/latest/Token Swap Interface (TestNet).png',
     screenshots: [
       '/images/products/token-swap-screenshot-1.jpg',
       '/images/products/token-swap-screenshot-2.jpg',
@@ -400,7 +400,7 @@ export const projects = [
       Perfect for investors and developers who need detailed insights into their Web3 activities.
     `,
     icon: '💰',
-    image: '/images/products/wallet-dashboard-hero.jpg',
+    image: '/images/latest/Ethereum Wallet.png',
     screenshots: [
       '/images/products/wallet-dashboard-screenshot-1.jpg',
       '/images/products/wallet-dashboard-screenshot-2.jpg',
@@ -455,7 +455,7 @@ export const projects = [
       Designed for users who want professional-grade Web3 functionality on mobile devices.
     `,
     icon: '📱',
-    image: '/images/products/mobile-wallet-hero.jpg',
+    image: '/images/latest/Gemini_Generated_Image_kcai0kcai0kcai0k.png',
     screenshots: [
       '/images/products/mobile-wallet-screenshot-1.jpg',
       '/images/products/mobile-wallet-screenshot-2.jpg',
@@ -497,12 +497,133 @@ export const projects = [
 
 ]
 
+// SECURITY TOOLS - Hidden from main showcase but accessible via direct links
+const toolProducts = [
+  {
+    id: 'bugreport-builder',
+    name: 'Bug Bounty Report Generator',
+    category: 'Security Tools',
+    tagline: 'Professional Security Reports',
+    description: 'Automated tool for generating professional bug bounty reports with CVSS scoring, vulnerability classification, and PDF export capabilities.',
+    techStack: ['React', 'jsPDF', 'Node.js', 'Tailwind CSS'],
+    longDescription: `
+      Streamline your bug bounty reporting process with this comprehensive report generator. Features automatic CVSS calculation, 
+      vulnerability templates, and professional PDF formatting for consistent, high-quality submissions.
+      
+      Includes pre-built templates for common vulnerabilities, custom branding options, and export capabilities for multiple formats. 
+      Perfect for security researchers who want to focus on finding bugs, not formatting reports.
+    `,
+    icon: '🛡️',
+    image: '/images/latest/bug bounty report generator.png',
+    screenshots: [
+      '/images/products/bugreport-screenshot-1.jpg',
+      '/images/products/bugreport-screenshot-2.jpg',
+      '/images/products/bugreport-screenshot-3.jpg',
+    ],
+    features: [
+      'CVSS Calculator',
+      'PDF Export',
+      'Vulnerability Templates',
+      'Custom Branding',
+      'Batch Processing',
+      'Professional Formatting',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/bugreport-builder',
+      demo: '/demo/bugreport',
+      download: '/downloads/bugreport-builder/v1.0.0/',
+    },
+    downloads: {
+      windows: '/downloads/bugreport-builder/v1.0.0/bugreport-setup.exe',
+      mac: '/downloads/bugreport-builder/v1.0.0/bugreport.dmg',
+      linux: '/downloads/bugreport-builder/v1.0.0/bugreport.AppImage',
+    },
+    version: '1.0.0',
+    status: 'Production Ready',
+    createdDate: '2024-10-01',
+    lastUpdate: '2024-12-15',
+    size: '85 MB',
+    stats: {
+      downloads: '2.1k',
+      stars: 67,
+      forks: 14,
+    },
+    requirements: {
+      os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
+      ram: '2 GB RAM',
+      storage: '100 MB available space',
+    },
+    isToolProduct: true,
+  },
+  {
+    id: 'simple-web-recon-cli',
+    name: 'Web Vulnerability Scanner',
+    category: 'Security Tools',
+    tagline: 'CLI Security Scanner',
+    description: 'Command-line web vulnerability scanner for identifying common security issues, SSL problems, and configuration weaknesses in web applications.',
+    techStack: ['Python', 'CLI', 'SSL/TLS', 'HTTP'],
+    longDescription: `
+      Lightweight yet powerful command-line scanner designed for quick security assessments of web applications. 
+      Features automated detection of common vulnerabilities, SSL/TLS configuration issues, and misconfigurations.
+      
+      Includes subdomain enumeration, directory brute-forcing, header analysis, and vulnerability scoring. 
+      Perfect for security audits, penetration testing, and continuous security monitoring.
+    `,
+    icon: '🔍',
+    image: '/images/latest/web vulnerability scanner.png',
+    screenshots: [
+      '/images/products/scanner-screenshot-1.jpg',
+      '/images/products/scanner-screenshot-2.jpg',
+      '/images/products/scanner-screenshot-3.jpg',
+    ],
+    features: [
+      'Subdomain Enumeration',
+      'Directory Brute Force',
+      'SSL/TLS Analysis',
+      'Header Inspection',
+      'Vulnerability Scoring',
+      'JSON/XML Export',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/simple-web-recon-cli',
+      demo: '/demo/scanner',
+      download: '/downloads/web-scanner/v2.0.0/',
+    },
+    downloads: {
+      windows: '/downloads/web-scanner/v2.0.0/scanner.exe',
+      mac: '/downloads/web-scanner/v2.0.0/scanner-mac',
+      linux: '/downloads/web-scanner/v2.0.0/scanner-linux',
+    },
+    version: '2.0.0',
+    status: 'Production Ready',
+    createdDate: '2024-09-01',
+    lastUpdate: '2024-12-18',
+    size: '15 MB',
+    stats: {
+      downloads: '3.4k',
+      stars: 92,
+      forks: 21,
+    },
+    requirements: {
+      os: 'Windows 10+, macOS 10.15+, Linux (any)',
+      ram: '1 GB RAM',
+      storage: '50 MB available space',
+      runtime: 'Python 3.8+',
+    },
+    isToolProduct: true,
+  },
+]
+
+// Combine main projects with tool products for individual page access
+export const allProducts = [...projects, ...toolProducts]
+
 // Project categories for filtering
 export const projectCategories = [
-  { id: 'all', name: 'All Projects', count: 5 },
+  { id: 'all', name: 'All Projects', count: 7 },
   { id: 'desktop-apps', name: 'Desktop Apps', count: 2 },
   { id: 'web-apps', name: 'Web Apps', count: 2 },
   { id: 'mobile-apps', name: 'Mobile Apps', count: 1 },
+  { id: 'security-tools', name: 'Security Tools', count: 2 },
 ]
 
 // Tech stack tags for filtering
@@ -517,4 +638,7 @@ export const techStacks = [
 
 export type Project = typeof projects[0]
 export type Product = Project
-export const products = projects
+export const products = allProducts  // Include both main projects and tools for individual pages
+
+// Export main projects separately for showcase (without tools)
+export const mainProjects = projects

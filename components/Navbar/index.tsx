@@ -68,8 +68,12 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <span className="text-white font-bold text-lg lg:text-xl">E</span>
+              <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg overflow-hidden group-hover:scale-110 transition-transform duration-200">
+                <img 
+                  src="/images/latest/Gemini_Generated_Image_zetolbzetolbzeto.png" 
+                  alt="Equators Logo" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-xl lg:text-2xl font-bold text-gradient">
                 Equators

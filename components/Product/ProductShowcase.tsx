@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, Variants } from 'framer-motion'
 import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code } from 'lucide-react'
-import { projects } from '@/config/site'
+import { mainProjects } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 import { getOSSpecificDownload } from '@/shared/utils'
 import BlizzardOverlay from '@/components/BlizzardOverlay'
@@ -57,7 +57,7 @@ export default function ProductShowcase() {
 
           {/* Projects Grid */}
           <div className="grid lg:grid-cols-3 gap-8">
-            {projects.map((project) => {
+            {mainProjects.map((project) => {
               const download = getOSSpecificDownload(project.id)
               
               return (

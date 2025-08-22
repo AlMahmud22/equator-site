@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Download, Star, Users, ExternalLink, Github, Calendar, Code } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { projects, projectCategories } from '@/config/site'
+import { products, projectCategories } from '@/config/site'
 import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
 import { formatDate } from '@/shared/utils/dateUtils'
 
@@ -67,7 +67,7 @@ export default function ProjectsPage() {
       <section className="section-padding bg-secondary-900">
         <div className="container-custom">
           <div className="grid lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => {
+            {products.map((project, index) => {
               const download = getOSSpecificDownload(project.id)
               
               return (
