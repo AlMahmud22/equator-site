@@ -15,6 +15,7 @@ export const siteConfig = {
       name: 'Projects',
       href: '/products',
       children: [
+        // Desktop Apps
         {
           name: 'AI Chatbot',
           href: '/products/privacy-chatbot',
@@ -26,14 +27,48 @@ export const siteConfig = {
           description: 'Decentralized web browsing with maximum privacy'
         },
         {
+          name: 'Hacker Notes App',
+          href: '/products/hacker-notes-app',
+          description: 'Cybersecurity note-taking for pentesters'
+        },
+        {
+          name: 'AI Text Summarizer',
+          href: '/products/summarizer-app',
+          description: 'Intelligent document processing tool'
+        },
+        // Web Apps
+        {
           name: 'Token Swap Interface',
           href: '/products/token-swap-interface',
           description: 'DeFi token exchange on testnet'
         },
         {
-          name: 'Web3 Wallet Dashboard',
+          name: 'Ethereum Wallet Dashboard',
           href: '/products/eth-wallet-dashboard',
-          description: 'Comprehensive Ethereum wallet interface'
+          description: 'Comprehensive Web3 portfolio tracker'
+        },
+        // Mobile Apps
+        {
+          name: 'Mobile Web3 Wallet',
+          href: '/products/mobile-web3-wallet',
+          description: 'Native mobile crypto wallet + NFT explorer'
+        },
+        // Security Tools
+        {
+          name: 'Bug Bounty Report Generator',
+          href: '/products/bugreport-builder',
+          description: 'Professional security report generator'
+        },
+        {
+          name: 'Web Vulnerability Scanner',
+          href: '/products/simple-web-recon-cli',
+          description: 'CLI security scanner for web applications'
+        },
+        // WordPress Themes
+        {
+          name: 'WooCommerce Product Template',
+          href: '/products/woocommerce-product-template',
+          description: 'Modern e-commerce product pages'
         }
       ]
     },
@@ -57,10 +92,6 @@ export const siteConfig = {
           description: 'Browse and download AI models'
         },
       ]
-    },
-    {
-      name: 'Downloads',
-      href: '/products',
     },
     {
       name: 'Contact',
@@ -644,70 +675,17 @@ export const projects = [
       plugins: 'WooCommerce 6.0+',
     },
   },
-  {
-    id: 'woocommerce-archive-template',
-    name: 'Product Archive & Category Template',
-    category: 'WordPress Themes',
-    tagline: 'E-commerce Category Pages',
-    description: 'Dynamic product archive and category page template with advanced filtering, sorting, and pagination. Supports grid/list views, AJAX loading, and custom taxonomies.',
-    techStack: ['PHP', 'WordPress', 'WooCommerce', 'AJAX', 'CSS Grid'],
-    longDescription: `
-      Comprehensive WooCommerce archive template designed to enhance product discovery and improve user experience on category and shop pages. 
-      Features advanced filtering systems, multiple layout options, and optimized performance.
-      
-      Includes AJAX-powered filtering, infinite scroll pagination, grid/list view toggles, and search integration. 
-      Perfect for stores with large product catalogs that need efficient browsing capabilities.
-    `,
-    icon: '📂',
-    image: '/images/products/woocommerce-archive-hero.jpg',
-    screenshots: [
-      '/images/products/woocommerce-archive-screenshot-1.jpg',
-      '/images/products/woocommerce-archive-screenshot-2.jpg',
-      '/images/products/woocommerce-archive-screenshot-3.jpg',
-    ],
-    features: [
-      'Advanced Filtering',
-      'AJAX Pagination',
-      'Multiple Layouts',
-      'Search Integration',
-      'Custom Taxonomies',
-      'Performance Optimized',
-    ],
-    links: {
-      github: 'https://github.com/AlMahmud22/woocommerce-archive-template',
-      demo: '/demo/woocommerce-archive',
-      download: 'https://wordpress.org/plugins/equators-archive-template/',
-    },
-    downloads: {
-      wordpress: 'WordPress Plugin Directory',
-      github: 'GitHub Releases',
-    },
-    version: '1.3.0',
-    status: 'Available on WordPress.org',
-    createdDate: '2024-01-15',
-    lastUpdate: '2024-11-25',
-    size: '8 MB',
-    stats: {
-      downloads: '6.2k+',
-      stars: 45,
-      forks: 9,
-    },
-    requirements: {
-      os: 'WordPress 5.8+',
-      php: 'PHP 7.4+',
-      plugins: 'WooCommerce 6.0+',
-    },
-  },
+
 ]
 
 // Project categories for filtering
 export const projectCategories = [
-  { id: 'all', name: 'All Projects', count: 9 },
+  { id: 'all', name: 'All Projects', count: 8 },
   { id: 'desktop-apps', name: 'Desktop Apps', count: 2 },
   { id: 'web-apps', name: 'Web Apps', count: 2 },
   { id: 'mobile-apps', name: 'Mobile Apps', count: 1 },
   { id: 'security-tools', name: 'Security Tools', count: 2 },
-  { id: 'wordpress-themes', name: 'WordPress Themes', count: 2 },
+  { id: 'wordpress-themes', name: 'WordPress Themes', count: 1 },
 ]
 
 // Tech stack tags for filtering
