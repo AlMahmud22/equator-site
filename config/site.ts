@@ -63,12 +63,6 @@ export const siteConfig = {
           name: 'Web Vulnerability Scanner',
           href: '/products/simple-web-recon-cli',
           description: 'CLI security scanner for web applications'
-        },
-        // WordPress Themes
-        {
-          name: 'WooCommerce Product Template',
-          href: '/products/woocommerce-product-template',
-          description: 'Modern e-commerce product pages'
         }
       ]
     },
@@ -620,72 +614,15 @@ export const projects = [
     },
   },
 
-  // WORDPRESS DEVELOPMENT SECTION
-  {
-    id: 'woocommerce-product-template',
-    name: 'WooCommerce Product Page Template',
-    category: 'WordPress Themes',
-    tagline: 'E-commerce Product Pages',
-    description: 'Modern, conversion-optimized single product page template for WooCommerce. Features advanced product galleries, dynamic pricing, customer reviews, and mobile-responsive design.',
-    techStack: ['PHP', 'WordPress', 'WooCommerce', 'SCSS', 'JavaScript'],
-    longDescription: `
-      Professional WooCommerce template designed to maximize conversion rates through optimized user experience and modern design patterns. 
-      Features advanced product galleries, dynamic pricing displays, and integrated review systems.
-      
-      Includes mobile-responsive design, fast loading times, SEO optimization, and accessibility compliance. 
-      Perfect for e-commerce stores looking to improve product page performance and sales conversions.
-    `,
-    icon: '🛍️',
-    image: '/images/products/woocommerce-product-hero.jpg',
-    screenshots: [
-      '/images/products/woocommerce-product-screenshot-1.jpg',
-      '/images/products/woocommerce-product-screenshot-2.jpg',
-      '/images/products/woocommerce-product-screenshot-3.jpg',
-    ],
-    features: [
-      'Advanced Gallery',
-      'Variant Selector',
-      'Review System',
-      'Related Products',
-      'Mobile Responsive',
-      'SEO Optimized',
-    ],
-    links: {
-      github: 'https://github.com/AlMahmud22/woocommerce-product-template',
-      demo: '/demo/woocommerce-product',
-      download: 'https://wordpress.org/plugins/equators-product-template/',
-    },
-    downloads: {
-      wordpress: 'WordPress Plugin Directory',
-      github: 'GitHub Releases',
-    },
-    version: '1.4.0',
-    status: 'Available on WordPress.org',
-    createdDate: '2024-02-01',
-    lastUpdate: '2024-11-30',
-    size: '12 MB',
-    stats: {
-      downloads: '8.5k+',
-      stars: 67,
-      forks: 15,
-    },
-    requirements: {
-      os: 'WordPress 5.8+',
-      php: 'PHP 7.4+',
-      plugins: 'WooCommerce 6.0+',
-    },
-  },
-
 ]
 
 // Project categories for filtering
 export const projectCategories = [
-  { id: 'all', name: 'All Projects', count: 8 },
+  { id: 'all', name: 'All Projects', count: 7 },
   { id: 'desktop-apps', name: 'Desktop Apps', count: 2 },
   { id: 'web-apps', name: 'Web Apps', count: 2 },
   { id: 'mobile-apps', name: 'Mobile Apps', count: 1 },
   { id: 'security-tools', name: 'Security Tools', count: 2 },
-  { id: 'wordpress-themes', name: 'WordPress Themes', count: 1 },
 ]
 
 // Tech stack tags for filtering
