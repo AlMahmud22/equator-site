@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Github, Twitter, Youtube, MessageCircle, Mail, EyeOff } from 'lucide-react'
+import { Github, Twitter, Mail, EyeOff } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
@@ -12,39 +12,27 @@ const scrollToTop = () => {
 
 const footerLinks = [
   {
-    title: 'Products',
+    title: 'Projects',
     links: [
-      { name: 'Equators Chatbot', href: '/products/chatbot' },
+      { name: 'Privacy Chatbot', href: '/products/chatbot' },
       { name: 'AI Playground', href: '/products/ai-playground' },
-      { name: 'Equators Browser', href: '/products/browser' },
-      { name: 'All Downloads', href: '/products' },
+      { name: 'Privacy Browser', href: '/products/browser' },
+      { name: 'View All', href: '/products' },
     ],
   },
   {
-    title: 'Company',
+    title: 'Tools',
     links: [
-      { name: 'About Us', href: '/about' },
-      { name: 'News & Updates', href: '/news' },
-      { name: 'Careers', href: '/careers' },
+      { name: 'Models Hub', href: '/models' },
+      { name: 'Status', href: '/status' },
+    ],
+  },
+  {
+    title: 'Connect',
+    links: [
       { name: 'Contact', href: '/contact' },
-    ],
-  },
-  {
-    title: 'Support',
-    links: [
-      { name: 'Help Center', href: '/help-center' },
-      { name: 'Documentation', href: '/documentation' },
-      { name: 'API Reference', href: '/api-reference' },
-      { name: 'Status Page', href: '/status' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { name: 'Privacy Policy', href: '/privacy-policy' },
-      { name: 'Terms of Service', href: '/terms-of-service' },
-      { name: 'Cookie Policy', href: '/cookie-policy' },
-      { name: 'DMCA', href: '/dmca' },
+      { name: 'GitHub', href: siteConfig.social.github },
+      { name: 'Twitter', href: siteConfig.social.twitter },
     ],
   },
 ]
@@ -63,16 +51,10 @@ const socialLinks = [
     color: 'hover:text-blue-400',
   },
   {
-    name: 'Discord',
-    href: siteConfig.social.discord,
-    icon: MessageCircle,
-    color: 'hover:text-indigo-400',
-  },
-  {
-    name: 'YouTube',
-    href: siteConfig.social.youtube,
-    icon: Youtube,
-    color: 'hover:text-red-400',
+    name: 'Email',
+    href: `mailto:${siteConfig.contact.email}`,
+    icon: Mail,
+    color: 'hover:text-green-400',
   },
 ]
 
@@ -102,24 +84,20 @@ export default function Footer() {
               </Link>
               
               <p className="text-secondary-300 mb-6 leading-relaxed">
-                Equators is a decentralized suite of AI tools—browser, chatbot, playground—designed 
-                for maximum user control and privacy. Experience true digital sovereignty with 
-                our open-architecture, privacy-first applications.
+                Building privacy-first AI tools and open-source projects. 
+                Passionate about digital sovereignty, decentralized technology, 
+                and creating software that puts users first.
               </p>
               
-              {/* Newsletter Signup */}
+              {/* Newsletter Signup - Simplified */}
               <div className="space-y-3">
-                <h4 className="text-white font-semibold">Stay Updated</h4>
-                <div className="flex">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 bg-secondary-800 border border-secondary-700 rounded-l-lg text-white placeholder-secondary-400 focus:outline-none focus:border-primary-500 transition-colors duration-200"
-                  />
-                  <button className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-r-lg transition-colors duration-200">
-                    Subscribe
-                  </button>
-                </div>
+                <h4 className="text-white font-semibold">Let&apos;s Connect</h4>
+                <p className="text-secondary-400 text-sm">
+                  Have questions about my projects? Want to collaborate? 
+                  <Link href="/contact" className="text-primary-400 hover:text-primary-300 ml-1">
+                    Get in touch →
+                  </Link>
+                </p>
               </div>
             </div>
 
@@ -148,9 +126,9 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Copyright */}
               <div className="flex items-center text-secondary-400 text-sm">
-                <span>© 2025 Equators. Made with</span>
-                <EyeOff className="w-4 h-4 mx-1 text-blue-500 fill-current animate-pulse" />
-                <span>by Axios.</span>
+                <span>© 2025 Equators.</span>
+                <EyeOff className="w-4 h-4 mx-2 text-green-500 fill-current animate-pulse" />
+                <span>Privacy-first. Open-source. User-owned.</span>
               </div>
 
               {/* Social Links */}
@@ -174,13 +152,13 @@ export default function Footer() {
                 })}
               </div>
 
-              {/* Additional Links */}
+              {/* Quick Links */}
               <div className="flex items-center space-x-6 text-sm">
                 <Link
-                  href="/sitemap"
+                  href="/products"
                   className="text-secondary-400 hover:text-white transition-colors duration-200"
                 >
-                  Sitemap
+                  Projects
                 </Link>
                 <Link
                   href="/contact"

@@ -2,21 +2,24 @@ import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { FileText, Users, Shield, AlertTriangle } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { useScrollReveal } from '@/shared/hooks/useAnimations'
+
+const useScrollReveal = () => {
+  return { ref: null, variants: {} }
+}
 
 export default function TermsOfServicePage() {
-  const heroRef = useScrollReveal()
+  const { ref: heroRef } = useScrollReveal()
 
   const sections = [
     {
       id: 'acceptance',
       title: 'Acceptance of Terms',
-      content: `By accessing and using Equators services, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.`
+      content: `By accessing and using these services, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use these applications.`
     },
     {
       id: 'services',
       title: 'Description of Services',
-      content: `Equators provides AI-powered software applications including chatbots, AI playground tools, and browser extensions. Our services are designed to enhance productivity and provide intelligent assistance.`
+      content: `I provide AI-powered software applications including chatbots, AI playground tools, and browser extensions. These services are designed to enhance productivity and provide intelligent assistance.`
     },
     {
       id: 'accounts',
@@ -26,48 +29,48 @@ export default function TermsOfServicePage() {
     {
       id: 'conduct',
       title: 'Acceptable Use',
-      content: `You agree not to use our services for any unlawful purpose or in any way that could damage, disable, or impair our services. This includes but is not limited to attempting to gain unauthorized access to our systems.`
+      content: `You agree not to use these services for any unlawful purpose or in any way that could damage, disable, or impair the applications. This includes but is not limited to attempting to gain unauthorized access to the systems.`
     },
     {
       id: 'intellectual-property',
       title: 'Intellectual Property',
-      content: `Our services and all related content are protected by intellectual property laws. You may not copy, modify, distribute, or create derivative works without our explicit permission.`
+      content: `These services and all related content are protected by intellectual property laws. You may not copy, modify, distribute, or create derivative works without explicit permission.`
     },
     {
       id: 'privacy',
       title: 'Privacy',
-      content: `Your privacy is important to us. Please review our Privacy Policy, which also governs your use of our services, to understand our practices.`
+      content: `Your privacy is important. Please review the Privacy Policy, which also governs your use of these services, to understand the data practices.`
     },
     {
       id: 'termination',
       title: 'Termination',
-      content: `We may terminate or suspend your access to our services at any time, with or without cause, and with or without notice. You may also terminate your account at any time.`
+      content: `I may terminate or suspend your access to these services at any time, with or without cause, and with or without notice. You may also terminate your account at any time.`
     },
     {
       id: 'disclaimers',
       title: 'Disclaimers',
-      content: `Our services are provided "as is" without warranties of any kind. We do not guarantee that our services will be uninterrupted, secure, or error-free.`
+      content: `These services are provided "as is" without warranties of any kind. I do not guarantee that the services will be uninterrupted, secure, or error-free.`
     },
     {
       id: 'limitation',
       title: 'Limitation of Liability',
-      content: `To the maximum extent permitted by law, Equators shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.`
+      content: `To the maximum extent permitted by law, I shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of these services.`
     },
     {
       id: 'changes',
       title: 'Changes to Terms',
-      content: `We reserve the right to modify these terms at any time. We will notify users of any material changes by posting the updated terms on our website.`
+      content: `I reserve the right to modify these terms at any time. Users will be notified of any material changes by posting the updated terms on this website.`
     }
   ]
 
   return (
     <Layout
-      title="Terms of Service - Equators"
-      description="Read Equators' Terms of Service to understand the rules and regulations for using our AI-powered services and applications."
+      title="Terms of Service - Personal AI Tools"
+      description="Read the Terms of Service to understand the rules and regulations for using these AI-powered tools and applications."
     >
       <Head>
-        <meta property="og:title" content="Terms of Service - Equators" />
-        <meta property="og:description" content="Read Equators' Terms of Service to understand the rules and regulations for using our AI-powered services and applications." />
+        <meta property="og:title" content="Terms of Service - Personal AI Tools" />
+        <meta property="og:description" content="Read the Terms of Service to understand the rules and regulations for using these AI-powered tools and applications." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -85,7 +88,7 @@ export default function TermsOfServicePage() {
               Terms of <span className="text-gradient">Service</span>
             </h1>
             <p className="text-lg sm:text-xl text-secondary-300 mb-8 leading-relaxed">
-              Please read these terms carefully before using our services. They govern your use of Equators applications and services.
+              Please read these terms carefully before using these services. They govern your use of my applications and services.
             </p>
             <div className="text-sm text-secondary-400">
               Last updated: December 20, 2024
@@ -108,7 +111,7 @@ export default function TermsOfServicePage() {
               Key <span className="text-gradient">Points</span>
             </h2>
             <p className="text-lg text-secondary-300 max-w-3xl mx-auto">
-              Here are the essential points you should know about using our services.
+              Here are the essential points you should know about using these services.
             </p>
           </motion.div>
 
@@ -117,22 +120,22 @@ export default function TermsOfServicePage() {
               {
                 icon: <FileText className="w-8 h-8" />,
                 title: 'Agreement',
-                description: 'By using our services, you agree to abide by these terms and conditions.',
+                description: 'By using these services, you agree to abide by these terms and conditions.',
               },
               {
                 icon: <Users className="w-8 h-8" />,
                 title: 'User Responsibility',
-                description: 'You are responsible for your account security and lawful use of our services.',
+                description: 'You are responsible for your account security and lawful use of these services.',
               },
               {
                 icon: <Shield className="w-8 h-8" />,
                 title: 'Service Protection',
-                description: 'We protect our intellectual property and maintain service integrity.',
+                description: 'I protect intellectual property and maintain service integrity.',
               },
               {
                 icon: <AlertTriangle className="w-8 h-8" />,
                 title: 'Limitations',
-                description: 'Our liability is limited, and services are provided "as is".',
+                description: 'Liability is limited, and services are provided "as is".',
               },
             ].map((point, index) => (
               <motion.div
@@ -187,8 +190,8 @@ export default function TermsOfServicePage() {
                           <li>Violating any applicable laws or regulations</li>
                           <li>Infringing on intellectual property rights</li>
                           <li>Distributing malware or harmful content</li>
-                          <li>Attempting to reverse engineer our software</li>
-                          <li>Using our services for illegal or unethical purposes</li>
+                          <li>Attempting to reverse engineer the software</li>
+                          <li>Using these services for illegal or unethical purposes</li>
                         </ul>
                       </div>
                     )}
@@ -199,7 +202,7 @@ export default function TermsOfServicePage() {
                         <ul className="list-disc pl-6 space-y-1">
                           <li>Provide accurate and complete information</li>
                           <li>Maintain the security of your login credentials</li>
-                          <li>Notify us immediately of any unauthorized use</li>
+                          <li>Notify me immediately of any unauthorized use</li>
                           <li>Use only one account unless authorized otherwise</li>
                         </ul>
                       </div>
@@ -207,7 +210,7 @@ export default function TermsOfServicePage() {
 
                     {section.id === 'intellectual-property' && (
                       <div className="mt-4">
-                        <p className="font-semibold text-white mb-2">Our intellectual property includes:</p>
+                        <p className="font-semibold text-white mb-2">Intellectual property includes:</p>
                         <ul className="list-disc pl-6 space-y-1">
                           <li>Software applications and source code</li>
                           <li>Trademarks, logos, and brand materials</li>
@@ -241,7 +244,7 @@ export default function TermsOfServicePage() {
               >
                 <h2 className="text-2xl font-bold text-white mb-4">Contact Information</h2>
                 <div className="text-secondary-300 space-y-4">
-                  <p>If you have any questions about these Terms of Service, please contact us:</p>
+                  <p>If you have any questions about these Terms of Service, please contact me:</p>
                   <div className="bg-secondary-800 p-6 rounded-lg">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>

@@ -143,10 +143,10 @@ export default function Navbar() {
                       <img 
                         src={user.avatar} 
                         alt={user.fullName}
-                        className="w-8 h-8 rounded-full border-2 border-blue-500/30"
+                        className="w-8 h-8 rounded-full border-2 border-green-500/30"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-400 flex items-center justify-center text-white font-semibold">
                         {user.fullName.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -165,7 +165,7 @@ export default function Navbar() {
                           <p className="font-semibold text-white">{user.fullName}</p>
                           <p className="text-sm text-secondary-300">{user.email}</p>
                           {user.huggingFace?.linked && (
-                            <div className="flex items-center mt-2 text-sm text-blue-400">
+                            <div className="flex items-center mt-2 text-sm text-green-400">
                               <ExternalLink className="w-3 h-3 mr-1" />
                               HF: @{user.huggingFace.username}
                             </div>
@@ -301,10 +301,10 @@ export default function Navbar() {
                           <img 
                             src={user.avatar} 
                             alt={user.fullName}
-                            className="w-10 h-10 rounded-full border-2 border-blue-500/30"
+                            className="w-10 h-10 rounded-full border-2 border-green-500/30"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-400 flex items-center justify-center text-white font-semibold">
                             {user.fullName.charAt(0).toUpperCase()}
                           </div>
                         )}

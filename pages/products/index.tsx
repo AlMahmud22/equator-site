@@ -2,22 +2,22 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Download, Star, Users, ExternalLink } from 'lucide-react'
+import { Download, Star, Users, ExternalLink, Github, Calendar, Code } from 'lucide-react'
 import Layout from '@/components/Layout'
-import { products } from '@/config/site'
+import { projects, projectCategories } from '@/config/site'
 import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
 import { formatDate } from '@/shared/utils/dateUtils'
 
-export default function ProductsPage() {
+export default function ProjectsPage() {
 
   return (
     <Layout
-      title="Products - Desktop Applications by Equators"
-      description="Download our powerful desktop applications: Equators Chatbot, AI Playground, and Browser. Available for Windows, macOS, and Linux."
+      title="Projects - Personal Portfolio"
+      description="Explore my collection of open-source privacy tools and applications. Built with passion for digital freedom and user privacy."
     >
       <Head>
-        <meta property="og:title" content="Products - Desktop Applications by Equators" />
-        <meta property="og:description" content="Download our powerful desktop applications: Equators Chatbot, AI Playground, and Browser. Available for Windows, macOS, and Linux." />
+        <meta property="og:title" content="Projects - Personal Portfolio" />
+        <meta property="og:description" content="Explore my collection of open-source privacy tools and applications. Built with passion for digital freedom and user privacy." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -31,19 +31,19 @@ export default function ProductsPage() {
             className="text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Our <span className="text-gradient">Products</span>
+              My <span className="text-gradient">Projects</span>
             </h1>
             <p className="text-lg sm:text-xl text-secondary-300 mb-12 leading-relaxed">
-              Discover our suite of powerful desktop applications designed to enhance 
-              your productivity, creativity, and digital experience.
+              A collection of privacy-focused tools and applications I&apos;ve built to promote 
+              digital freedom and user sovereignty. All open-source and built with passion.
             </p>
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-2xl mx-auto">
               {[
-                { number: '3', label: 'Applications' },
-                { number: '500K+', label: 'Downloads' },
-                { number: '50+', label: 'Countries' },
-                { number: '4.8★', label: 'Rating' },
+                { number: '5', label: 'Projects' },
+                { number: '12k+', label: 'Downloads' },
+                { number: '40+', label: 'Contributors' },
+                { number: '298', label: 'GitHub Stars' },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -63,28 +63,28 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Products Grid */}
+      {/* Projects Grid */}
       <section className="section-padding bg-secondary-900">
         <div className="container-custom">
           <div className="grid lg:grid-cols-3 gap-8">
-            {products.map((product, index) => {
-              const download = getOSSpecificDownload(product.id)
+            {projects.map((project, index) => {
+              const download = getOSSpecificDownload(project.id)
               
               return (
                 <motion.div
-                  key={product.id}
+                  key={project.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="card-hover group h-full flex flex-col"
                 >
-                  {/* Product Image */}
+                  {/* Project Image */}
                   <div className="relative h-64 mb-6 rounded-lg overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20 z-10" />
                     <Image
-                      src={product.image}
-                      alt={product.name}
+                      src={project.image}
+                      alt={project.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -95,27 +95,28 @@ export default function ProductsPage() {
                       whileHover={{ y: -5, scale: 1.1 }}
                       className="absolute top-4 left-4 w-12 h-12 bg-white/10 backdrop-blur-md rounded-lg flex items-center justify-center text-2xl z-20"
                     >
-                      {product.icon}
+                      {project.icon}
                     </motion.div>
                     
                     {/* Version Badge */}
                     <div className="absolute top-4 right-4 px-2 py-1 bg-primary-500/20 backdrop-blur-md border border-primary-500/30 rounded-full text-xs text-primary-300 z-20">
-                      v{product.version}
+                      v{project.version}
+                    </div>
+
+                    {/* Category Badge */}
+                    <div className="absolute bottom-4 left-4 px-3 py-1 bg-accent-500/20 backdrop-blur-md border border-accent-500/30 rounded-full text-xs text-accent-300 z-20">
+                      {project.category}
                     </div>
 
                     {/* Stats Overlay */}
-                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white/80 z-20">
+                    <div className="absolute bottom-4 right-4 flex items-center space-x-3 text-xs text-white/80 z-20">
                       <div className="flex items-center">
                         <Star className="w-3 h-3 mr-1 fill-current text-yellow-400" />
-                        4.8
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="w-3 h-3 mr-1" />
-                        10K+
+                        {project.stats.stars}
                       </div>
                       <div className="flex items-center">
                         <Download className="w-3 h-3 mr-1" />
-                        {formatFileSize(parseInt(product.size.replace(' MB', '')) * 1024 * 1024)}
+                        {project.stats.downloads}
                       </div>
                     </div>
                   </div>
@@ -124,26 +125,26 @@ export default function ProductsPage() {
                   <div className="flex-1 flex flex-col">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gradient transition-colors duration-300">
-                        {product.name}
+                        {project.name}
                       </h3>
                       <p className="text-sm text-primary-400 font-medium mb-3">
-                        {product.tagline}
+                        {project.tagline}
                       </p>
                       <p className="text-secondary-300 leading-relaxed mb-6">
-                        {product.description}
+                        {project.description}
                       </p>
 
                       {/* Features Preview */}
                       <div className="space-y-2 mb-6">
-                        {product.features.slice(0, 3).map((feature, idx) => (
+                        {project.features.slice(0, 3).map((feature, idx) => (
                           <div key={idx} className="flex items-center text-sm text-secondary-400">
                             <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-3" />
                             {feature}
                           </div>
                         ))}
-                        {product.features.length > 3 && (
+                        {project.features.length > 3 && (
                           <div className="text-sm text-secondary-500 ml-4">
-                            +{product.features.length - 3} more features
+                            +{project.features.length - 3} more features
                           </div>
                         )}
                       </div>
@@ -153,9 +154,9 @@ export default function ProductsPage() {
                     <div className="mb-6 p-4 bg-secondary-800/50 rounded-lg">
                       <h4 className="text-sm font-semibold text-white mb-2">System Requirements</h4>
                       <div className="text-xs text-secondary-400 space-y-1">
-                        <div><strong>OS:</strong> {product.requirements.os}</div>
-                        <div><strong>RAM:</strong> {product.requirements.ram}</div>
-                        <div><strong>Storage:</strong> {product.requirements.storage}</div>
+                        <div><strong>OS:</strong> {project.requirements.os}</div>
+                        <div><strong>RAM:</strong> {project.requirements.ram}</div>
+                        <div><strong>Storage:</strong> {project.requirements.storage}</div>
                       </div>
                     </div>
 
@@ -163,12 +164,12 @@ export default function ProductsPage() {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-sm text-secondary-400 mb-2">
                         <span>Available for:</span>
-                        <span>Released: {formatDate.toLocaleDateString(product.releaseDate)}</span>
+                        <span>Created: {new Date(project.createdDate).toLocaleDateString()}</span>
                       </div>
                       
                       <div className="grid grid-cols-3 gap-2 mb-4">
                         <a
-                          href={product.downloads.windows}
+                          href={project.downloads.windows}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -176,7 +177,7 @@ export default function ProductsPage() {
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">Windows</span>
                         </a>
                         <a
-                          href={product.downloads.mac}
+                          href={project.downloads.mac}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -184,7 +185,7 @@ export default function ProductsPage() {
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">macOS</span>
                         </a>
                         <a
-                          href={product.downloads.linux}
+                          href={project.downloads.linux}
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
@@ -205,7 +206,7 @@ export default function ProductsPage() {
                         </a>
                         
                         <Link
-                          href={`/products/${product.id}`}
+                          href={`/products/${project.id}`}
                           className="btn-secondary w-full group/btn"
                         >
                           Learn More
@@ -232,19 +233,20 @@ export default function ProductsPage() {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Ready to Get <span className="text-gradient">Started</span>?
+              Explore More <span className="text-gradient">Projects</span>
             </h2>
             <p className="text-lg text-secondary-300 mb-8">
-              Join thousands of users who have already discovered the power of Equators applications. 
-              Download for free and experience the difference.
+              Interested in collaborating or learning more about these projects? 
+              Get in touch to discuss contributions or customizations.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/auth/register" className="btn-primary px-8 py-4">
-                Create Free Account
+              <Link href="https://github.com/AlMahmud22" target="_blank" rel="noopener noreferrer" className="btn-primary px-8 py-4 flex items-center">
+                <Github className="w-5 h-5 mr-2" />
+                View on GitHub
               </Link>
-              <Link href="/about" className="btn-ghost px-8 py-4">
-                Learn More About Us
+              <Link href="/contact" className="btn-ghost px-8 py-4">
+                Get in Touch
               </Link>
             </div>
           </motion.div>

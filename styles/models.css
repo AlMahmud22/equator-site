@@ -1,6 +1,20 @@
-/* AI Models Page Styles */
+/* AI Models Page Styles.model-card:hover {
+  transform: scale(1.02);
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 255, 65, 0.1),
+    0 0 10px rgba(0, 255, 65, 0.08);
+}
 
-/* Card consistency and layout */
+.model-card:focus-within {
+  outline: none;
+  border-color: rgba(0, 255, 65, 0.6);
+  box-shadow: 
+    0 0 0 2px rgba(0, 255, 65, 0.2),
+    0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}nsistency and layout */
 .models-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -25,7 +39,7 @@
 .model-card:hover {
   transform: translateY(-4px) scale(1.02);
   border-color: rgba(30, 144, 255, 0.5);
-  box-shadow: 
+  box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.3),
     0 10px 10px -5px rgba(0, 0, 0, 0.2),
     0 0 0 1px rgba(30, 144, 255, 0.1),
@@ -35,7 +49,7 @@
 .model-card:focus-within {
   outline: none;
   border-color: rgba(30, 144, 255, 0.6);
-  box-shadow: 
+  box-shadow:
     0 0 0 2px rgba(30, 144, 255, 0.2),
     0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
@@ -122,15 +136,15 @@
 }
 
 .model-tag-type.image-generation {
-  background: rgba(14, 165, 233, 0.2);
-  color: rgba(147, 197, 253, 1);
-  border-color: rgba(14, 165, 233, 0.3);
+  background: rgba(57, 255, 20, 0.2);
+  color: rgba(134, 239, 172, 1);
+  border-color: rgba(57, 255, 20, 0.3);
 }
 
 .model-tag-type.embedding {
-  background: rgba(59, 130, 246, 0.2);
-  color: rgba(147, 197, 253, 1);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(0, 255, 65, 0.2);
+  color: rgba(134, 239, 172, 1);
+  border-color: rgba(0, 255, 65, 0.3);
 }
 
 .model-tag-type.classification {
@@ -194,14 +208,14 @@
 }
 
 .download-btn.primary {
-  background: rgba(59, 130, 246, 1);
+  background: rgba(0, 255, 65, 1);
   color: white;
 }
 
 .download-btn.primary:hover {
-  background: rgba(37, 99, 235, 1);
+  background: rgba(0, 204, 51, 1);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.2);
 }
 
 .download-btn.success {
@@ -228,7 +242,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, rgba(59, 130, 246, 1), rgba(147, 197, 253, 1));
+  background: linear-gradient(90deg, rgba(0, 255, 65, 1), rgba(134, 239, 172, 1));
   border-radius: 9999px;
   transition: width 0.3s ease-out;
   position: relative;
@@ -241,18 +255,17 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* List layout styles */
@@ -267,8 +280,8 @@
 
 .model-card-list:hover {
   transform: scale(1.01);
-  border-color: rgba(30, 144, 255, 0.5);
-  box-shadow: 
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.3),
     0 4px 6px -2px rgba(0, 0, 0, 0.2),
     0 0 20px rgba(30, 144, 255, 0.1);
@@ -308,8 +321,8 @@
 
 .search-input:focus {
   outline: none;
-  border-color: rgba(30, 144, 255, 1);
-  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.1);
+  border-color: rgba(0, 255, 65, 1);
+  box-shadow: 0 0 0 2px rgba(0, 255, 65, 0.1);
 }
 
 .search-input::placeholder {
@@ -338,9 +351,9 @@
 }
 
 .filter-btn.active {
-  background: rgba(59, 130, 246, 0.2);
-  color: rgba(147, 197, 253, 1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(0, 255, 65, 0.2);
+  color: rgba(134, 239, 172, 1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
 }
 
 .filter-count {
@@ -377,7 +390,7 @@
 }
 
 .layout-btn.active {
-  background: rgba(59, 130, 246, 1);
+  background: rgba(0, 255, 65, 1);
   color: white;
 }
 
@@ -388,19 +401,19 @@
     gap: 1rem;
     padding: 1rem 0;
   }
-  
+
   .model-card {
     height: 280px;
   }
-  
+
   .model-card-header {
     padding: 1rem;
   }
-  
+
   .model-card-footer {
     padding: 0.75rem 1rem;
   }
-  
+
   .model-description {
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -411,21 +424,21 @@
   .model-card {
     height: 260px;
   }
-  
+
   .model-title {
     font-size: 1rem;
   }
-  
+
   .model-description {
     -webkit-line-clamp: 2;
     line-clamp: 2;
     font-size: 0.8125rem;
   }
-  
+
   .model-tags {
     min-height: 1.5rem;
   }
-  
+
   .model-tag {
     font-size: 0.6875rem;
     padding: 0.125rem 0.375rem;
@@ -487,12 +500,12 @@
   .model-card {
     border-width: 2px;
   }
-  
+
   .model-card:hover {
     border-width: 3px;
   }
-  
+
   .download-btn.primary {
-    border: 2px solid rgba(59, 130, 246, 1);
+    border: 2px solid rgba(0, 255, 65, 1);
   }
 }

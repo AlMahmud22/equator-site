@@ -75,7 +75,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
 
   return (
     <motion.div
-      className="bg-secondary-900/30 backdrop-blur-md rounded-2xl border border-blue-500/20 overflow-hidden"
+      className="bg-secondary-900/30 backdrop-blur-md rounded-2xl border border-green-500/20 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)'
       }}
@@ -102,7 +102,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
         <div className="relative z-10 text-center">
           {/* Avatar */}
           <div className="relative inline-block mb-6">
-            <div className="w-24 h-24 rounded-full border-4 border-blue-500/30 overflow-hidden bg-gradient-to-br from-blue-500 to-cyan-400">
+            <div className="w-24 h-24 rounded-full border-4 border-green-500/30 overflow-hidden bg-gradient-to-br from-green-500 to-green-400">
               {user.avatar ? (
                 <img
                   src={user.avatar}
@@ -116,7 +116,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               )}
             </div>
             {/* Glowing ring effect */}
-            <div className="absolute inset-0 rounded-full border-2 border-blue-400/50 animate-pulse"></div>
+            <div className="absolute inset-0 rounded-full border-2 border-green-400/50 animate-pulse"></div>
           </div>
 
           {/* Edit Button */}
@@ -124,7 +124,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-all duration-200"
+                className="p-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-400 hover:text-green-300 transition-all duration-200"
               >
                 <Edit3 className="w-4 h-4" />
               </button>
@@ -162,7 +162,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               type="text"
               value={formData.fullName}
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              className="w-full px-4 py-3 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-green-500 focus:outline-none"
             />
           ) : (
             <p className="text-white font-medium text-lg">{user.fullName}</p>
@@ -177,7 +177,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
           </label>
           <div className="flex items-center space-x-2">
             <p className="text-white">{user.email}</p>
-            <span className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full">
+            <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
               {user.authType}
             </span>
           </div>
@@ -195,7 +195,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               placeholder="Enter your phone number"
-              className="w-full px-4 py-3 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-green-500 focus:outline-none"
             />
           ) : (
             <p className="text-white">{user.phone || 'Not provided'}</p>
@@ -228,11 +228,11 @@ export default function ProfileCard({ user }: ProfileCardProps) {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 pt-6 border-t border-secondary-700/30">
           <div className="text-center">
-            <p className="text-2xl font-bold text-blue-400">1</p>
+            <p className="text-2xl font-bold text-green-400">1</p>
             <p className="text-sm text-secondary-300">Active Sessions</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-cyan-400">0</p>
+            <p className="text-2xl font-bold text-green-400">0</p>
             <p className="text-sm text-secondary-300">Downloads</p>
           </div>
         </div>

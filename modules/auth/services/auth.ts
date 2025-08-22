@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { NextApiRequest } from 'next'
 import { parse as parseCookies } from 'cookie'
+import { signJwt } from '@/lib/auth/jwt-types'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'
@@ -17,11 +18,11 @@ export interface JWTPayload {
 }
 
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return signJwt(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
     issuer: 'equators-tech',
     audience: 'equators-users'
-  } as jwt.SignOptions)
+  })
 }
 
 export function verifyToken(token: string): JWTPayload {
@@ -29,8 +30,8 @@ export function verifyToken(token: string): JWTPayload {
     const decoded = jwt.verify(token, JWT_SECRET, {
       issuer: 'equators-tech',
       audience: 'equators-users'
-    }) as JWTPayload
-    return decoded
+    })
+    return decoded as JWTPayload
   } catch (error) {
     throw new Error('Invalid or expired token')
   }

@@ -99,8 +99,8 @@ const formatNumber = (num: number): string => {
 
 const modelTypeColors = {
   'text-generation': 'bg-green-500/20 text-green-300 border-green-500/30',
-  'image-generation': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  'embedding': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+  'image-generation': 'bg-green-500/20 text-green-300 border-green-500/30',
+  'embedding': 'bg-green-500/20 text-green-300 border-green-500/30',
   'classification': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
 }
 
@@ -113,7 +113,7 @@ function ModelCard({ model, layout, onDownload, isDownloading }: ModelCardProps)
       whileHover={{ scale: 1.02, y: -2 }}
       transition={{ duration: 0.2 }}
       className={cn(
-        'bg-gradient-to-br from-slate-900/80 to-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300',
+        'bg-gradient-to-br from-slate-900/80 to-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden hover:border-green-500/50 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300',
         isListLayout 
           ? 'flex flex-row min-h-[120px]' 
           : 'flex flex-col h-[320px] w-full max-w-[300px]'
@@ -205,11 +205,11 @@ function ModelCard({ model, layout, onDownload, isDownloading }: ModelCardProps)
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Downloading...</span>
-                <span className="text-blue-400">{model.downloadProgress}%</span>
+                <span className="text-green-400">{model.downloadProgress}%</span>
               </div>
               <div className="w-full bg-slate-700 rounded-full h-2">
                 <div
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  className="bg-green-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${model.downloadProgress}%` }}
                 />
               </div>
@@ -222,7 +222,7 @@ function ModelCard({ model, layout, onDownload, isDownloading }: ModelCardProps)
                 'w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium transition-all duration-200',
                 model.isLocal
                   ? 'bg-green-500/20 text-green-300 border border-green-500/30 hover:bg-green-500/30'
-                  : 'bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600 text-white disabled:opacity-50 disabled:cursor-not-allowed'
               )}
             >
               {isDownloading ? (
@@ -314,7 +314,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
             className="mb-8"
           >
             <h1 className="text-4xl font-bold mb-2">
-              AI Model <span className="text-blue-400">Hub</span>
+              AI Model <span className="text-green-400">Hub</span>
             </h1>
             <p className="text-slate-300 text-lg">
               Discover and download cutting-edge AI models for your projects
@@ -331,7 +331,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
                 placeholder="Search models..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition-colors"
               />
             </div>
 
@@ -342,7 +342,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
                 className={cn(
                   'p-2 rounded-md transition-colors',
                   layoutMode === 'grid'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-green-500 text-white'
                     : 'text-slate-400 hover:text-white hover:bg-slate-700'
                 )}
               >
@@ -353,7 +353,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
                 className={cn(
                   'p-2 rounded-md transition-colors',
                   layoutMode === 'list'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-green-500 text-white'
                     : 'text-slate-400 hover:text-white hover:bg-slate-700'
                 )}
               >
@@ -381,7 +381,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
                     className={cn(
                       'w-full flex items-center justify-between p-3 rounded-lg transition-colors text-left',
                       selectedFilter === option.value
-                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                        ? 'bg-green-500/20 text-green-300 border border-green-500/30'
                         : 'hover:bg-slate-800/50 text-slate-300'
                     )}
                   >

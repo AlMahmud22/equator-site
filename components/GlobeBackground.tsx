@@ -62,7 +62,7 @@ export default function GlobeBackground() {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // Draw wireframe globe
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)'
+      ctx.strokeStyle = 'rgba(0, 255, 65, 0.3)'
       ctx.lineWidth = 1
 
       // Longitude lines
@@ -128,14 +128,14 @@ export default function GlobeBackground() {
         const screenY = centerY + particle.y
         const alpha = Math.max(0, particle.life / particle.maxLife) * 0.6
 
-        // Draw particle with blue cyberpunk glow
+        // Draw particle with green cyberpunk glow
         const size = particle.size * (1 + Math.sin(time * 3 + index * 0.1) * 0.2)
         
         // Outer glow
         const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, size * 3)
-        gradient.addColorStop(0, `rgba(59, 130, 246, ${alpha * 0.8})`)
-        gradient.addColorStop(0.5, `rgba(139, 92, 246, ${alpha * 0.4})`)
-        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)')
+        gradient.addColorStop(0, `rgba(0, 255, 65, ${alpha * 0.8})`)
+        gradient.addColorStop(0.5, `rgba(57, 255, 20, ${alpha * 0.4})`)
+        gradient.addColorStop(1, 'rgba(0, 255, 65, 0)')
         
         ctx.fillStyle = gradient
         ctx.beginPath()
@@ -151,9 +151,9 @@ export default function GlobeBackground() {
 
       // Draw central glow
       const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.5)
-      glowGradient.addColorStop(0, 'rgba(59, 130, 246, 0.1)')
-      glowGradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.05)')
-      glowGradient.addColorStop(1, 'rgba(59, 130, 246, 0)')
+      glowGradient.addColorStop(0, 'rgba(0, 255, 65, 0.1)')
+      glowGradient.addColorStop(0.5, 'rgba(57, 255, 20, 0.05)')
+      glowGradient.addColorStop(1, 'rgba(0, 255, 65, 0)')
       
       ctx.fillStyle = glowGradient
       ctx.beginPath()
@@ -162,7 +162,7 @@ export default function GlobeBackground() {
 
       // Add scanning lines effect
       const scanLineY = centerY + Math.sin(time * 2) * radius
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.5)'
+      ctx.strokeStyle = 'rgba(0, 255, 65, 0.5)'
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.moveTo(centerX - radius, scanLineY)
@@ -171,7 +171,7 @@ export default function GlobeBackground() {
 
       // Add pulsing ring
       const ringRadius = radius + Math.sin(time * 1.5) * 20
-      ctx.strokeStyle = `rgba(59, 130, 246, ${0.3 + Math.sin(time * 2) * 0.2})`
+      ctx.strokeStyle = `rgba(0, 255, 65, ${0.3 + Math.sin(time * 2) * 0.2})`
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.arc(centerX, centerY, ringRadius, 0, Math.PI * 2)

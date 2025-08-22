@@ -6,7 +6,7 @@ import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
 const services = [
   {
-    name: 'Equators Chatbot',
+    name: 'Privacy Chatbot',
     status: 'operational',
     uptime: '99.9%',
     responseTime: '45ms',
@@ -20,7 +20,7 @@ const services = [
     description: 'Interactive AI experimentation platform',
   },
   {
-    name: 'Equators Browser',
+    name: 'Privacy Browser',
     status: 'operational',
     uptime: '99.9%',
     responseTime: '30ms',
@@ -114,12 +114,12 @@ export default function StatusPage() {
 
   return (
     <Layout
-      title="Status - Equators System Health"
-      description="Real-time status and uptime information for all Equators services and applications."
+      title="Status - System Health"
+      description="Real-time status and uptime information for all services and applications."
     >
       <Head>
-        <meta property="og:title" content="Status - Equators System Health" />
-        <meta property="og:description" content="Real-time status and uptime information for all Equators services and applications." />
+        <meta property="og:title" content="Status - System Health" />
+        <meta property="og:description" content="Real-time status and uptime information for all services and applications." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -137,7 +137,7 @@ export default function StatusPage() {
               System <span className="text-gradient">Status</span>
             </h1>
             <p className="text-lg sm:text-xl text-secondary-300 mb-12 leading-relaxed">
-              Real-time status and performance metrics for all Equators services. 
+              Real-time status and performance metrics for all services. 
               Stay informed about system health and planned maintenance.
             </p>
             

@@ -79,7 +79,7 @@ export function detectOS(): 'windows' | 'mac' | 'linux' | 'unknown' {
 /**
  * Get the appropriate download file based on OS
  */
-export function getOSSpecificDownload(productId: string): {
+export function getOSSpecificDownload(projectId: string): {
   filename: string
   label: string
   icon: string
@@ -87,43 +87,43 @@ export function getOSSpecificDownload(productId: string): {
 } {
   const os = detectOS()
   
-  // Import products to get version info
-  const { products } = require('@/config/site')
-  const product = products.find((p: any) => p.id === productId)
+  // Import projects to get version info
+  const { projects } = require('@/config/site')
+  const project = projects.find((p: any) => p.id === projectId)
   
-  if (!product) {
+  if (!project) {
     return {
-      filename: `${productId}-setup.exe`,
+      filename: `${projectId}-setup.exe`,
       label: 'Download',
       icon: '💻',
-      url: `/downloads/${productId}-setup.exe`
+      url: `/downloads/${projectId}-setup.exe`
     }
   }
   
   const downloads = {
     windows: {
-      filename: `${productId}-setup.exe`,
+      filename: `${projectId}-setup.exe`,
       label: 'Download for Windows',
       icon: '🪟',
-      url: product.downloads.windows
+      url: project.downloads.windows
     },
     mac: {
-      filename: `${productId}.dmg`,
+      filename: `${projectId}.dmg`,
       label: 'Download for macOS',
       icon: '🍎',
-      url: product.downloads.mac
+      url: project.downloads.mac
     },
     linux: {
-      filename: `${productId}.AppImage`,
+      filename: `${projectId}.AppImage`,
       label: 'Download for Linux',
       icon: '🐧',
-      url: product.downloads.linux
+      url: project.downloads.linux
     },
     unknown: {
-      filename: `${productId}-setup.exe`,
+      filename: `${projectId}-setup.exe`,
       label: 'Download',
       icon: '💻',
-      url: product.downloads.windows
+      url: project.downloads.windows
     }
   }
   

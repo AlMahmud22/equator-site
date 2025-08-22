@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Equators',
-  title: 'Equators - Privacy-Focused AI Desktop Suite',
-  description: 'Secure, decentralized AI applications: Privacy-first Chatbot, open-architecture AI Playground, and freedom-focused Browser. Built for digital sovereignty.',
+  title: 'Equators - Digital Workshop | Privacy-First Tools & Projects',
+  description: 'Welcome to my digital workshop! I build privacy-first applications: Secure Chatbot, AI Playground, and Privacy Browser. Open-source tools that put users first.',
   url: 'https://equators.tech',
   ogImage: '/images/og-image.jpg',
   
@@ -12,18 +12,18 @@ export const siteConfig = {
       href: '/',
     },
     {
-      name: 'Products',
+      name: 'Projects',
       href: '/products',
       children: [
         {
           name: 'Chatbot',
           href: '/products/chatbot',
-          description: 'Your on-device AI companion, built for data security'
+          description: 'Privacy-first AI companion with local processing'
         },
         {
           name: 'AI Playground',
           href: '/products/ai-playground',
-          description: 'Explore open-architecture ML, safe and private'
+          description: 'Secure ML experimentation platform'
         },
         {
           name: 'Browser',
@@ -33,82 +33,44 @@ export const siteConfig = {
       ]
     },
     {
-      name: 'Developer',
+      name: 'Tools',
       href: '#',
       children: [
         {
-          name: 'Test Chatbot Auth',
+          name: 'Models Hub',
+          href: '/models',
+          description: 'Browse and download AI models'
+        },
+        {
+          name: 'Test Auth',
           href: '/test-chatbot-auth',
-          description: 'Test OAuth deep linking with desktop app'
+          description: 'Test OAuth integration with desktop apps'
         },
       ]
     },
     {
-      name: 'Resources',
-      href: '#',
-      children: [
-        {
-          name: 'Documentation',
-          href: '/documentation',
-          description: 'Developer guides and tutorials'
-        },
-        {
-          name: 'API Reference',
-          href: '/api-reference',
-          description: 'Complete API documentation'
-        },
-        {
-          name: 'Help Center',
-          href: '/help-center',
-          description: 'Knowledge base and FAQs'
-        },
-        {
-          name: 'Status',
-          href: '/status',
-          description: 'System status and uptime'
-        }
-      ]
+      name: 'Downloads',
+      href: '/products',
     },
     {
-      name: 'Company',
-      href: '#',
-      children: [
-        {
-          name: 'About Us',
-          href: '/about',
-          description: 'Learn about our mission and team'
-        },
-        {
-          name: 'News',
-          href: '/news',
-          description: 'Latest updates and announcements'
-        },
-        {
-          name: 'Careers',
-          href: '/careers',
-          description: 'Join our growing team'
-        },
-        {
-          name: 'Contact',
-          href: '/contact',
-          description: 'Get in touch with us'
-        }
-      ]
+      name: 'Contact',
+      href: '/contact',
     },
   ],
 
   // Social links
   social: {
-    twitter: 'https://twitter.com/equators',
-    github: 'https://github.com/equators',
+    twitter: 'https://twitter.com/yourhandle',
+    github: 'https://github.com/yourusername',
     discord: 'https://discord.gg/equators',
     youtube: 'https://youtube.com/@equators',
+    linkedin: 'https://linkedin.com/in/yourprofile',
   },
 
   // Contact information
   contact: {
     email: 'hello@equators.tech',
-    support: 'support@equators.tech',
+    personal: 'your.name@email.com',
   },
 
   // Feature flags
@@ -120,19 +82,20 @@ export const siteConfig = {
   },
 }
 
-export const products = [
+export const projects = [
   {
-    id: 'chatbot',
-    name: 'Equators Chatbot',
-    tagline: 'Privacy-First AI Companion',
-    description: 'Your on-device AI companion that processes conversations locally, ensuring complete data sovereignty and privacy.',
+    id: 'privacy-chatbot',
+    name: 'Privacy Chatbot',
+    category: 'Desktop Apps',
+    tagline: 'Local AI Assistant',
+    description: 'A privacy-first AI chatbot that runs entirely on your device with zero data transmission.',
+    techStack: ['Electron', 'Python', 'Ollama', 'React'],
     longDescription: `
-      Experience true AI freedom with Equators Chatbot. Our privacy-first AI assistant runs entirely on your device, 
-      with zero data transmission to external servers. Built on open-architecture principles, it provides intelligent 
-      responses while maintaining complete user control over your conversations and data.
+      Built this privacy-focused AI assistant to address the growing concerns about data privacy in AI tools. 
+      It processes all conversations locally using open-source models, ensuring your data never leaves your device.
       
-      Features include local processing, encrypted storage, context awareness, multi-language support, and 
-      customizable privacy settings that put you in complete control.
+      Key innovations: Local model inference, encrypted conversation storage, zero-dependency networking, 
+      and a clean React-based interface that prioritizes user experience and data sovereignty.
     `,
     icon: '🤖',
     image: '/images/products/chatbot-hero.jpg',
@@ -142,21 +105,32 @@ export const products = [
       '/images/products/chatbot-screenshot-3.jpg',
     ],
     features: [
-      'Local Processing',
-      'Zero Data Transmission',
+      'Runs Completely Offline',
+      'Multiple AI Models',
       'Encrypted Storage',
-      'Open Architecture',
-      'Privacy Controls',
-      'Offline Operations',
+      'Open Source',
+      'Cross-Platform',
+      'Custom Themes',
     ],
-    downloads: {
-      windows: '/downloads/equators-chatbot/v1.0.1/equators-chatbot-setup.exe',
-      mac: '/downloads/equators-chatbot/v1.0.1/equators-chatbot.dmg',
-      linux: '/downloads/equators-chatbot/v1.0.1/equators-chatbot.AppImage',
+    links: {
+      github: 'https://github.com/AlMahmud22/privacy-chatbot',
+      demo: '/demo/chatbot',
+      download: '/downloads/equators-chatbot/v2.1.0/',
     },
-    version: '1.0.1',
-    releaseDate: '2024-12-15',
+    downloads: {
+      windows: '/downloads/equators-chatbot/v2.1.0/privacy-chatbot-setup.exe',
+      mac: '/downloads/equators-chatbot/v2.1.0/privacy-chatbot.dmg',
+      linux: '/downloads/equators-chatbot/v2.1.0/privacy-chatbot.AppImage',
+    },
+    version: '2.1.0',
+    createdDate: '2024-08-15',
+    lastUpdate: '2024-12-20',
     size: '145 MB',
+    stats: {
+      downloads: '2.3k',
+      stars: 42,
+      forks: 8,
+    },
     requirements: {
       os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
       ram: '4 GB RAM',
@@ -165,16 +139,17 @@ export const products = [
   },
   {
     id: 'ai-playground',
-    name: 'Equators AI Playground',
-    tagline: 'Open-Architecture AI Lab',
-    description: 'Explore open-architecture ML models safely and privately on your own hardware with complete data control.',
+    name: 'AI Model Playground',
+    category: 'Desktop Apps',
+    tagline: 'Local AI Experimentation',
+    description: 'Experiment with open-source AI models locally without sending data to external services.',
+    techStack: ['Python', 'PyQt6', 'HuggingFace', 'ONNX', 'OpenCV'],
     longDescription: `
-      Unleash your AI creativity with Equators AI Playground. This secure, decentralized platform lets you experiment 
-      with cutting-edge AI models while maintaining complete control over your data and computational resources. 
-      Built on open-source principles with transparent algorithms.
+      Created this tool to democratize AI experimentation. It allows researchers and developers to test various 
+      AI models locally without privacy concerns or API costs. Built with a focus on ease of use and performance.
       
-      Perfect for researchers, developers, and AI enthusiasts who demand privacy, security, and freedom to explore 
-      without vendor lock-in or data harvesting concerns.
+      Features local model management, performance benchmarking, custom fine-tuning capabilities, and export 
+      functionality for production use. Perfect for AI enthusiasts who value privacy and want hands-on experience.
     `,
     icon: '🧪',
     image: '/images/products/ai-playground-hero.jpg',
@@ -184,21 +159,32 @@ export const products = [
       '/images/products/ai-playground-screenshot-3.jpg',
     ],
     features: [
-      'Open-Source Models',
-      'Local Processing',
-      'Data Sovereignty',
-      'Transparent Algorithms',
-      'Privacy-First Design',
-      'Decentralized Computing',
+      'Local Model Testing',
+      'Performance Benchmarks',
+      'Custom Fine-tuning',
+      'No API Dependencies',
+      'Export Capabilities',
+      'GPU Acceleration',
     ],
-    downloads: {
-      windows: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground-setup.exe',
-      mac: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground.dmg',
-      linux: '/downloads/equators-ai-playground/v1.0.1/equators-ai-playground.AppImage',
+    links: {
+      github: 'https://github.com/AlMahmud22/ai-playground',
+      demo: '/demo/ai-playground',
+      download: '/downloads/equators-ai-playground/v1.8.2/',
     },
-    version: '1.0.1',
-    releaseDate: '2024-12-10',
+    downloads: {
+      windows: '/downloads/equators-ai-playground/v1.8.2/ai-playground-setup.exe',
+      mac: '/downloads/equators-ai-playground/v1.8.2/ai-playground.dmg',
+      linux: '/downloads/equators-ai-playground/v1.8.2/ai-playground.AppImage',
+    },
+    version: '1.8.2',
+    createdDate: '2024-07-10',
+    lastUpdate: '2024-12-18',
     size: '280 MB',
+    stats: {
+      downloads: '1.8k',
+      stars: 67,
+      forks: 15,
+    },
     requirements: {
       os: 'Windows 10+, macOS 11+, Ubuntu 20.04+',
       ram: '8 GB RAM',
@@ -207,17 +193,18 @@ export const products = [
     },
   },
   {
-    id: 'browser',
-    name: 'Equators Browser',
-    tagline: 'Decentralized Web Freedom',
-    description: 'A decentralized, privacy-first web browser with built-in security features and complete user sovereignty.',
+    id: 'privacy-browser',
+    name: 'Privacy Browser',
+    category: 'Desktop Apps',
+    tagline: 'Decentralized Web Browser',
+    description: 'A web browser built on decentralized principles with advanced privacy protection and tracking prevention.',
+    techStack: ['Chromium', 'C++', 'JavaScript', 'WebRTC', 'Tor'],
     longDescription: `
-      Reclaim your digital freedom with Equators Browser. Built on decentralized principles, this privacy-first browser 
-      eliminates tracking, blocks surveillance, and gives you complete control over your online experience. 
-      Features encrypted connections, distributed networking, and AI-powered security.
+      Developed this browser to provide true digital freedom through decentralized web browsing. Built on Chromium 
+      but heavily modified to remove tracking, add Tor integration, and implement decentralized networking protocols.
       
-      Experience the web as it should be: free, private, and under your complete control. No data harvesting, 
-      no corporate surveillance, no restrictions on your digital sovereignty.
+      Features automatic ad blocking, tracker prevention, built-in VPN, decentralized DNS resolution, and peer-to-peer 
+      content delivery. Designed for users who prioritize privacy and want to browse the web without surveillance.
     `,
     icon: '🌐',
     image: '/images/products/browser-hero.jpg',
@@ -227,27 +214,175 @@ export const products = [
       '/images/products/browser-screenshot-3.jpg',
     ],
     features: [
-      'Decentralized Architecture',
-      'Zero Tracking',
-      'Encrypted Connections',
-      'AI-Powered Security',
-      'Distributed Networking',
-      'Complete User Control',
+      'Built-in Tor Support',
+      'Automatic Ad Blocking',
+      'Decentralized DNS',
+      'P2P Content Delivery',
+      'No User Tracking',
+      'Advanced Encryption',
     ],
-    downloads: {
-      windows: '/downloads/equators-browser/v1.0.1/equators-browser-setup.exe',
-      mac: '/downloads/equators-browser/v1.0.1/equators-browser.dmg',
-      linux: '/downloads/equators-browser/v1.0.1/equators-browser.AppImage',
+    links: {
+      github: 'https://github.com/AlMahmud22/privacy-browser',
+      demo: '/demo/browser',
+      download: '/downloads/equators-browser/v3.2.1/',
     },
-    version: '1.0.1',
-    releaseDate: '2024-12-20',
-    size: '95 MB',
+    downloads: {
+      windows: '/downloads/equators-browser/v3.2.1/privacy-browser-setup.exe',
+      mac: '/downloads/equators-browser/v3.2.1/privacy-browser.dmg',
+      linux: '/downloads/equators-browser/v3.2.1/privacy-browser.AppImage',
+    },
+    version: '3.2.1',
+    createdDate: '2024-05-20',
+    lastUpdate: '2024-12-22',
+    size: '320 MB',
+    stats: {
+      downloads: '5.7k',
+      stars: 128,
+      forks: 34,
+    },
     requirements: {
-      os: 'Windows 10+, macOS 10.15+, Ubuntu 18.04+',
+      os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
+      ram: '6 GB RAM',
+      storage: '400 MB available space',
+    },
+  },
+  {
+    id: 'file-encrypt',
+    name: 'SecureVault',
+    category: 'Scripts/Tools',
+    tagline: 'File Encryption Utility',
+    description: 'A command-line tool for military-grade file encryption with steganography capabilities.',
+    techStack: ['Go', 'AES-256', 'CLI', 'Cryptography'],
+    longDescription: `
+      Built this encryption tool to provide bulletproof file security with advanced features like steganography 
+      and secure deletion. Uses military-grade AES-256 encryption with custom key derivation functions.
+      
+      Perfect for developers, journalists, and privacy enthusiasts who need secure file storage. Features include 
+      batch encryption, hidden volume creation, secure key generation, and cross-platform compatibility.
+    `,
+    icon: '🔒',
+    image: '/images/products/encrypt-hero.jpg',
+    screenshots: [
+      '/images/products/encrypt-screenshot-1.jpg',
+      '/images/products/encrypt-screenshot-2.jpg',
+    ],
+    features: [
+      'AES-256 Encryption',
+      'Steganography Support',
+      'Batch Operations',
+      'Secure Key Generation',
+      'Hidden Volumes',
+      'Cross-Platform CLI',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/secure-vault',
+      demo: null,
+      download: 'https://github.com/AlMahmud22/secure-vault/releases',
+    },
+    downloads: {
+      windows: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-windows.exe',
+      mac: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-macos',
+      linux: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-linux',
+    },
+    version: '2.1.3',
+    createdDate: '2024-09-12',
+    lastUpdate: '2024-12-19',
+    size: '12 MB',
+    stats: {
+      downloads: '892',
+      stars: 23,
+      forks: 5,
+    },
+    requirements: {
+      os: 'Any OS with Go runtime',
+      ram: '1 GB RAM',
+      storage: '50 MB available space',
+    },
+  },
+  {
+    id: 'network-scanner',
+    name: 'NetScope',
+    category: 'Scripts/Tools',
+    tagline: 'Network Discovery Tool',
+    description: 'A fast, lightweight network scanner for security auditing and network discovery.',
+    techStack: ['Python', 'Nmap', 'Threading', 'JSON'],
+    longDescription: `
+      Created this network scanner to help security professionals and network administrators discover devices 
+      and services on their networks. Features multithreaded scanning, port detection, and service enumeration.
+      
+      Built with performance in mind, it can scan large networks quickly while providing detailed information 
+      about discovered hosts. Includes vulnerability checking and export capabilities for further analysis.
+    `,
+    icon: '🔍',
+    image: '/images/products/scanner-hero.jpg',
+    screenshots: [
+      '/images/products/scanner-screenshot-1.jpg',
+      '/images/products/scanner-screenshot-2.jpg',
+    ],
+    features: [
+      'Multithreaded Scanning',
+      'Port Detection',
+      'Service Enumeration',
+      'Vulnerability Checks',
+      'Export Reports',
+      'Fast Performance',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/netscope',
+      demo: null,
+      download: 'https://github.com/AlMahmud22/netscope/releases',
+    },
+    downloads: {
+      windows: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-windows.exe',
+      mac: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-macos',
+      linux: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-linux',
+    },
+    version: '1.4.2',
+    createdDate: '2024-10-05',
+    lastUpdate: '2024-12-21',
+    size: '8 MB',
+    stats: {
+      downloads: '1.2k',
+      stars: 31,
+      forks: 7,
+    },
+    requirements: {
+      os: 'Windows 10+, macOS 11+, Linux',
       ram: '2 GB RAM',
-      storage: '150 MB available space',
+      storage: '100 MB available space',
     },
   },
 ]
 
-export type Product = typeof products[0]
+// Project categories for filtering
+export const projectCategories = [
+  {
+    id: 'all',
+    name: 'All Projects',
+    count: 5,
+  },
+  {
+    id: 'desktop-apps',
+    name: 'Desktop Apps',
+    count: 3,
+  },
+  {
+    id: 'scripts-tools',
+    name: 'Scripts/Tools',
+    count: 2,
+  },
+  {
+    id: 'web-tools',
+    name: 'Web Tools',
+    count: 0,
+  },
+  {
+    id: 'mobile-apps',
+    name: 'Mobile Apps',
+    count: 0,
+  },
+]
+
+export type Project = typeof projects[0]
+export type Product = Project
+export const products = projects

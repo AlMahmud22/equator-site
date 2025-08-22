@@ -9,12 +9,12 @@ export default function ContactPage() {
 
   return (
     <Layout
-      title="Contact Us - Equators"
-      description="Get in touch with the Equators team. We&apos;re here to help with any questions about our desktop applications."
+      title="Contact - Equators"
+      description="Get in touch about Equators projects. Questions, feedback, or collaboration opportunities welcome."
     >
       <Head>
-        <meta property="og:title" content="Contact Us - Equators" />
-        <meta property="og:description" content="Get in touch with the Equators team. We&apos;re here to help with any questions about our desktop applications." />
+        <meta property="og:title" content="Contact - Equators" />
+        <meta property="og:description" content="Get in touch about Equators projects. Questions, feedback, or collaboration opportunities welcome." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -29,11 +29,11 @@ export default function ContactPage() {
             className="text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Get in <span className="text-gradient">Touch</span>
+              Let&apos;s <span className="text-gradient">Connect</span>
             </h1>
             <p className="text-lg sm:text-xl text-secondary-300 mb-12 leading-relaxed">
-              Have questions about our products? Need technical support? Want to partner with us? 
-              We&apos;d love to hear from you and help you get the most out of Equators.
+              Have questions about my projects? Interested in collaboration? Want to hire me? 
+              I&apos;d love to hear from you and discuss how we can work together.
             </p>
           </motion.div>
         </div>
@@ -46,31 +46,31 @@ export default function ContactPage() {
             {[
               {
                 icon: <Mail className="w-8 h-8" />,
-                title: 'Email Support',
-                description: 'Get help with technical issues',
-                contact: 'support@equators.tech',
+                title: 'Email Me',
+                description: 'Questions, feedback, or just to say hello',
+                contact: 'hello@equators.tech',
                 action: 'Send Email'
               },
               {
                 icon: <Phone className="w-8 h-8" />,
-                title: 'Business Inquiries',
-                description: 'Partnership and business questions',
-                contact: 'hello@equators.tech',
-                action: 'Get in Touch'
+                title: 'Collaborate',
+                description: 'Interested in working together?',
+                contact: 'Open to opportunities',
+                action: 'Let&apos;s Talk'
               },
               {
                 icon: <MapPin className="w-8 h-8" />,
-                title: 'Headquarters',
-                description: '',
+                title: 'Location',
+                description: 'Currently based in',
                 contact: 'Malaysia',
-                action: 'View Map'
+                action: 'Remote Work'
               },
               {
                 icon: <Clock className="w-8 h-8" />,
                 title: 'Response Time',
-                description: 'We typically respond within',
-                contact: '24 hours',
-                action: 'Learn More'
+                description: 'I usually respond within',
+                contact: '24-48 hours',
+                action: 'Quick Reply'
               }
             ].map((item, index) => (
               <motion.div
@@ -101,7 +101,7 @@ export default function ContactPage() {
             className="max-w-2xl mx-auto"
           >
             <div className="card">
-              <h2 className="text-2xl font-bold text-white mb-6 text-center">Send us a Message</h2>
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">Send me a Message</h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -137,15 +137,15 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-secondary-300 mb-2">
-                    Subject
+                    What&apos;s this about?
                   </label>
                   <select className="w-full px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-colors duration-200">
                     <option value="">Select a topic</option>
-                    <option value="support">Technical Support</option>
-                    <option value="sales">Sales Inquiry</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="feedback">Product Feedback</option>
-                    <option value="other">Other</option>
+                    <option value="projects">Questions about my projects</option>
+                    <option value="collaboration">Collaboration opportunity</option>
+                    <option value="hiring">Hiring/Job opportunity</option>
+                    <option value="feedback">Feedback or suggestions</option>
+                    <option value="other">Just saying hello</option>
                   </select>
                 </div>
                 <div>
@@ -155,7 +155,7 @@ export default function ContactPage() {
                   <textarea
                     rows={6}
                     className="w-full px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white placeholder-secondary-400 focus:outline-none focus:border-primary-500 transition-colors duration-200 resize-none"
-                    placeholder="Tell us how we can help you..."
+                    placeholder="Tell me about your project, idea, or just say hi..."
                   />
                 </div>
                 <button type="submit" className="btn-primary w-full">

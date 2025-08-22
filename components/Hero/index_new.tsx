@@ -83,7 +83,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-sm font-medium mb-16 mt-16"
+            className="inline-flex items-center px-4 py-2 rounded-full bg-green-400/10 border border-green-400/30 text-green-400 text-sm font-medium mb-16 mt-16"
           >
             <Star className="w-4 h-4 mr-2 fill-current" />
             Privacy-focused AI trusted by 100K+ users
@@ -110,7 +110,7 @@ export default function Hero() {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Experience true sovereignty with our decentralized suite: privacy-first Chatbot, 
+            Experience true sovereignty with this decentralized suite: privacy-first Chatbot, 
             secure AI Playground, freedom-focused Browser and a lot more. Built for users who value data 
             control, open architecture, and digital independence.
           </motion.p>
@@ -169,12 +169,12 @@ export default function Hero() {
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-6 h-10 border-2 border-cyan-400 rounded-full flex justify-center mb-3"
+              className="w-6 h-10 border-2 border-green-400 rounded-full flex justify-center mb-3"
             >
               <motion.div
                 animate={{ y: [0, 12, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-1 h-3 bg-cyan-400 rounded-full mt-2"
+                className="w-1 h-3 bg-green-400 rounded-full mt-2"
               />
             </motion.div>
             <p className="text-xs text-gray-500 text-center whitespace-nowrap">Scroll to explore</p>

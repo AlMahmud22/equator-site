@@ -161,7 +161,7 @@ export default function HuggingFaceLink({ user }: HuggingFaceLinkProps) {
                   <p className="text-lg font-bold text-white">Unlocked</p>
                 </div>
                 <div className="bg-secondary-800/30 rounded-lg p-4 text-center">
-                  <ExternalLink className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                  <ExternalLink className="w-8 h-8 text-green-400 mx-auto mb-2" />
                   <p className="text-sm text-secondary-300">Direct Access</p>
                   <p className="text-lg font-bold text-white">Enabled</p>
                 </div>
@@ -205,7 +205,7 @@ export default function HuggingFaceLink({ user }: HuggingFaceLinkProps) {
                   <p className="text-xs text-secondary-400">Access to gated and premium models</p>
                 </div>
                 <div className="bg-secondary-800/30 rounded-lg p-4">
-                  <ExternalLink className="w-6 h-6 text-blue-400 mb-2" />
+                  <ExternalLink className="w-6 h-6 text-green-400 mb-2" />
                   <p className="text-sm font-medium text-white">Direct Integration</p>
                   <p className="text-xs text-secondary-400">Seamless model downloads and updates</p>
                 </div>
@@ -225,13 +225,13 @@ export default function HuggingFaceLink({ user }: HuggingFaceLinkProps) {
               </motion.button>
 
               {/* Disclaimer */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-blue-300">
+                  <AlertCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-green-300">
                     <p className="font-medium mb-1">Privacy & Security</p>
-                    <p className="text-blue-200/80">
-                      Your Hugging Face token is encrypted and stored securely. We only use it to authenticate 
+                    <p className="text-green-200/80">
+                      Your Hugging Face token is encrypted and stored securely. It is only used to authenticate 
                       API requests on your behalf. You can disconnect at any time.
                     </p>
                   </div>
@@ -280,7 +280,7 @@ export default function HuggingFaceLink({ user }: HuggingFaceLinkProps) {
                       value={token}
                       onChange={(e) => setToken(e.target.value)}
                       placeholder="hf_..."
-                      className="w-full px-4 py-3 pr-12 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-blue-500 focus:outline-none"
+                      className="w-full px-4 py-3 pr-12 bg-secondary-800/50 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-green-500 focus:outline-none"
                       required
                     />
                     <button
@@ -297,7 +297,7 @@ export default function HuggingFaceLink({ user }: HuggingFaceLinkProps) {
                       href="https://huggingface.co/settings/tokens"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-300"
+                      className="text-green-400 hover:text-green-300"
                     >
                       Hugging Face Settings
                     </a>

@@ -73,11 +73,11 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Why Choose <span className="text-gradient">Equators</span>?
+              What Makes My Projects <span className="text-gradient">Special</span>?
             </h2>
             <p className="text-lg sm:text-xl text-secondary-300 max-w-3xl mx-auto">
-              Experience the perfect blend of innovation, security, and user-centric design 
-              in every application we create.
+              Each tool I build focuses on privacy, simplicity, and giving users control over their 
+              digital experience. Here&apos;s what drives my development philosophy.
             </p>
           </motion.div>
 
@@ -86,7 +86,7 @@ export default function HomePage() {
               {
                 icon: '🔒',
                 title: 'Privacy First',
-                description: 'Your data stays yours. We prioritize privacy and security in every line of code.',
+                description: 'Your data stays yours. I prioritize privacy and security in every line of code.',
               },
               {
                 icon: '⚡',
@@ -110,8 +110,8 @@ export default function HomePage() {
               },
               {
                 icon: '💬',
-                title: 'Community Driven',
-                description: 'Built with feedback from our amazing community of users and developers.',
+                title: 'Open Source',
+                description: 'Built with transparency and community feedback. Code available on GitHub.',
               },
             ].map((feature, index) => (
               <motion.div
@@ -142,18 +142,19 @@ export default function HomePage() {
             className="text-center"
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Trusted by <span className="text-gradient">Thousands</span>
+              Join the <span className="text-gradient">Growing Community</span>
             </h2>
             <p className="text-lg sm:text-xl text-secondary-300 mb-12 max-w-3xl mx-auto">
-              Join our growing community of users who have made Equators their go-to desktop software suite.
+              These are some stats from my projects. Each download represents someone who values 
+              privacy-first software and digital independence.
             </p>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
               {[
-                { number: '100K+', label: 'Active Users' },
-                { number: '500K+', label: 'Downloads' },
-                { number: '50+', label: 'Countries' },
-                { number: '4.8★', label: 'Average Rating' },
+                { number: '5+', label: 'Active Projects' },
+                { number: '12K+', label: 'Total Downloads' },
+                { number: '298', label: 'GitHub Stars' },
+                { number: '100%', label: 'Open Source' },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -179,7 +180,7 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <Link href="/products" className="btn-accent text-lg px-8 py-4">
-                Start Your Journey
+                Explore My Projects
               </Link>
             </motion.div>
           </motion.div>

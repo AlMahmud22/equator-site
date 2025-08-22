@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, Variants } from 'framer-motion'
-import { ArrowRight, Download, ExternalLink } from 'lucide-react'
-import { products } from '@/config/site'
+import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code } from 'lucide-react'
+import { projects } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 import { getOSSpecificDownload } from '@/shared/utils'
 import BinaryOverlay from '@/components/BinaryOverlay'
@@ -30,7 +30,7 @@ const itemVariants: Variants = {
 }
 
 export default function ProductShowcase() {
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null)
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const sectionRef = useScrollReveal()
 
   return (
@@ -47,34 +47,34 @@ export default function ProductShowcase() {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 heading-3d">
-              Our <span className="text-gradient">Product Suite</span>
+              <span className="text-gradient">Personal Projects</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
-              Discover powerful desktop applications designed to enhance your productivity, 
-              creativity, and digital experience.
+              A collection of privacy-focused tools and applications I&apos;ve built to promote digital freedom 
+              and user sovereignty.
             </p>
           </motion.div>
 
-          {/* Products Grid */}
+          {/* Projects Grid */}
           <div className="grid lg:grid-cols-3 gap-8">
-            {products.map((product) => {
-              const download = getOSSpecificDownload(product.id)
+            {projects.map((project) => {
+              const download = getOSSpecificDownload(project.id)
               
               return (
                 <motion.div
-                  key={product.id}
+                  key={project.id}
                   variants={itemVariants}
                   className="group"
-                  onMouseEnter={() => setHoveredProduct(product.id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
+                  onMouseEnter={() => setHoveredProject(project.id)}
+                  onMouseLeave={() => setHoveredProject(null)}
                 >
                   <div className="card-hover h-full relative overflow-hidden">
-                    {/* Product Image */}
+                    {/* Project Image */}
                     <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20 z-10" />
                       <Image
-                        src={product.image}
-                        alt={product.name}
+                        src={project.image}
+                        alt={project.name}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -84,64 +84,111 @@ export default function ProductShowcase() {
                       <motion.div
                         className="absolute top-4 left-4 w-12 h-12 bg-white/10 backdrop-blur-md rounded-lg flex items-center justify-center text-2xl z-20"
                         animate={{
-                          y: hoveredProduct === product.id ? -5 : 0,
-                          scale: hoveredProduct === product.id ? 1.1 : 1,
+                          y: hoveredProject === project.id ? -5 : 0,
+                          scale: hoveredProject === project.id ? 1.1 : 1,
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        {product.icon}
+                        {project.icon}
                       </motion.div>
                       
                       {/* Version Badge */}
                       <div className="absolute top-4 right-4 px-2 py-1 bg-primary-500/20 backdrop-blur-md border border-primary-500/30 rounded-full text-xs text-primary-300 z-20">
-                        v{product.version}
+                        v{project.version}
+                      </div>
+
+                      {/* Category Badge */}
+                      <div className="absolute bottom-4 left-4 px-3 py-1 bg-accent-500/20 backdrop-blur-md border border-accent-500/30 rounded-full text-xs text-accent-300 z-20">
+                        {project.category}
                       </div>
                     </div>
 
-                    {/* Product Info */}
+                    {/* Project Info */}
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gradient transition-colors duration-300">
-                          {product.name}
+                          {project.name}
                         </h3>
                         <p className="text-sm text-primary-400 font-medium mb-3">
-                          {product.tagline}
+                          {project.tagline}
                         </p>
-                        <p className="text-secondary-300 leading-relaxed">
-                          {product.description}
+                        <p className="text-secondary-300 leading-relaxed text-sm">
+                          {project.description}
                         </p>
                       </div>
 
-                      {/* Features List */}
+                      {/* Tech Stack */}
                       <div className="space-y-2">
-                        {product.features.slice(0, 3).map((feature, idx) => (
-                          <div key={idx} className="flex items-center text-sm text-secondary-400">
-                            <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-3" />
-                            {feature}
-                          </div>
-                        ))}
-                        {product.features.length > 3 && (
-                          <div className="text-sm text-secondary-500">
-                            +{product.features.length - 3} more features
-                          </div>
-                        )}
+                        <div className="flex items-center text-xs text-secondary-400 mb-2">
+                          <Code className="w-3 h-3 mr-2" />
+                          Tech Stack
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {project.techStack.slice(0, 3).map((tech, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-1 bg-secondary-800/50 border border-secondary-700 rounded text-xs text-secondary-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                          {project.techStack.length > 3 && (
+                            <span className="px-2 py-1 bg-secondary-800/50 border border-secondary-700 rounded text-xs text-secondary-400">
+                              +{project.techStack.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Project Stats */}
+                      <div className="flex items-center justify-between text-xs text-secondary-400 pt-2 border-t border-secondary-800">
+                        <div className="flex items-center space-x-4">
+                          <span className="flex items-center">
+                            <Download className="w-3 h-3 mr-1" />
+                            {project.stats.downloads}
+                          </span>
+                          <span className="flex items-center">
+                            <Star className="w-3 h-3 mr-1" />
+                            {project.stats.stars}
+                          </span>
+                        </div>
+                        <span className="flex items-center">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          {new Date(project.lastUpdate).toLocaleDateString()}
+                        </span>
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
-                        <Link
-                          href={`/products/${product.id}`}
-                          className="btn-primary group/btn text-center flex items-center justify-center"
-                        >
-                          <Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
-                          {download.label}
-                        </Link>
+                      <div className="flex flex-col gap-2 pt-4">
+                        <div className="flex gap-2">
+                          {project.links.github && (
+                            <Link
+                              href={project.links.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-ghost group/btn flex-1 text-center flex items-center justify-center text-sm py-2"
+                            >
+                              <Github className="w-4 h-4 mr-2" />
+                              Source
+                            </Link>
+                          )}
+                          
+                          <Link
+                            href={project.links.download}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-primary group/btn flex-1 text-center flex items-center justify-center text-sm py-2"
+                          >
+                            <Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
+                            Download
+                          </Link>
+                        </div>
                         
                         <Link
-                          href={`/products/${product.id}`}
-                          className="btn-ghost group/btn text-center flex items-center justify-center"
+                          href={`/products/${project.id}`}
+                          className="btn-ghost group/btn text-center flex items-center justify-center text-sm py-2"
                         >
-                          Learn More
+                          View Details
                           <ExternalLink className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-200" />
                         </Link>
                       </div>
@@ -166,13 +213,13 @@ export default function ProductShowcase() {
             <div className="inline-flex items-center justify-center p-8 rounded-2xl bg-gradient-to-r from-primary-500/10 to-accent-500/10 border border-primary-500/20">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-white mb-4">
-                  Ready to get started?
+                  Explore More Projects
                 </h3>
                 <p className="text-secondary-300 mb-6 max-w-md">
-                  Download all our applications for free and experience the future of desktop software.
+                  Check out my full portfolio of open-source privacy tools and applications.
                 </p>
                 <Link href="/products" className="btn-accent group">
-                  View All Products
+                  View All Projects
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
               </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
+import { useAuth as useLibAuth } from '@/lib/auth/hooks'
 
 interface User {
   _id: string
@@ -65,6 +66,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ email, password }),
       })
 
+      // Check if response is HTML (404/500 error page)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Login API returned non-JSON response:', response.status, response.statusText)
+        return { success: false, message: `Server error: ${response.status} ${response.statusText}` }
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Login API error:', response.status, errorText)
+        return { success: false, message: `Server error: ${response.status}` }
+      }
+
       const data = await response.json()
 
       if (data.success) {
@@ -93,6 +107,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: 'include',
         body: JSON.stringify(registerData),
       })
+
+      // Check if response is HTML (404/500 error page)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Register API returned non-JSON response:', response.status, response.statusText)
+        return { success: false, message: `Server error: ${response.status} ${response.statusText}` }
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Register API error:', response.status, errorText)
+        return { success: false, message: `Server error: ${response.status}` }
+      }
 
       const data = await response.json()
 
@@ -145,6 +172,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: 'include',
       })
 
+      // Check if response is HTML (404/500 error page)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Profile API returned non-JSON response:', response.status, response.statusText)
+        setUser(null)
+        return
+      }
+
+      if (!response.ok) {
+        console.error('Profile API error:', response.status, response.statusText)
+        setUser(null)
+        return
+      }
+
       const data = await response.json()
 
       if (data.success) {
@@ -172,6 +213,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(data),
       })
 
+      // Check if response is HTML (404/500 error page)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Update profile API returned non-JSON response:', response.status, response.statusText)
+        return { success: false, message: `Server error: ${response.status} ${response.statusText}` }
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Update profile API error:', response.status, errorText)
+        return { success: false, message: `Server error: ${response.status}` }
+      }
+
       const result = await response.json()
 
       if (result.success) {
@@ -196,6 +250,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: 'include',
         body: JSON.stringify({ token }),
       })
+
+      // Check if response is HTML (404/500 error page)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('HF Link API returned non-JSON response:', response.status, response.statusText)
+        return { success: false, message: `Server error: ${response.status} ${response.statusText}` }
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('HF Link API error:', response.status, errorText)
+        return { success: false, message: `Server error: ${response.status}` }
+      }
 
       const result = await response.json()
 
