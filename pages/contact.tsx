@@ -48,15 +48,17 @@ export default function ContactPage() {
                 icon: <Mail className="w-8 h-8" />,
                 title: 'Email Me',
                 description: 'Questions, feedback, or just to say hello',
-                contact: 'hello@equators.tech',
-                action: 'Send Email'
+                contact: 'al.mahmud@equators.tech',
+                action: 'Send Email',
+                href: 'mailto:al.mahmud@equators.tech'
               },
               {
                 icon: <Phone className="w-8 h-8" />,
-                title: 'Collaborate',
-                description: 'Interested in working together?',
-                contact: 'Open to opportunities',
-                action: 'Let&apos;s Talk'
+                title: 'WhatsApp',
+                description: 'Quick messages and collaboration',
+                contact: '+60 11-6132 0832',
+                action: 'Message Now',
+                href: 'https://wa.me/601161320832'
               },
               {
                 icon: <MapPin className="w-8 h-8" />,
@@ -68,8 +70,8 @@ export default function ContactPage() {
               {
                 icon: <Clock className="w-8 h-8" />,
                 title: 'Response Time',
-                description: 'I usually respond within',
-                contact: '24-48 hours',
+                description: 'I typically reply within',
+                contact: '12-24 hours',
                 action: 'Quick Reply'
               }
             ].map((item, index) => (
@@ -87,7 +89,18 @@ export default function ContactPage() {
                 <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
                 <p className="text-secondary-300 mb-4">{item.description}</p>
                 <p className="text-primary-400 font-medium mb-4">{item.contact}</p>
-                <button className="btn-ghost text-sm">{item.action}</button>
+                {item.href ? (
+                  <a 
+                    href={item.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn-ghost text-sm inline-block"
+                  >
+                    {item.action}
+                  </a>
+                ) : (
+                  <button className="btn-ghost text-sm">{item.action}</button>
+                )}
               </motion.div>
             ))}
           </div>

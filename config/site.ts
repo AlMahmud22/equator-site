@@ -52,17 +52,6 @@ export const siteConfig = {
           name: 'Mobile Web3 Wallet',
           href: '/products/mobile-web3-wallet',
           description: 'Native mobile crypto wallet + NFT explorer'
-        },
-        // Security Tools
-        {
-          name: 'Bug Bounty Report Generator',
-          href: '/products/bugreport-builder',
-          description: 'Professional security report generator'
-        },
-        {
-          name: 'Web Vulnerability Scanner',
-          href: '/products/simple-web-recon-cli',
-          description: 'CLI security scanner for web applications'
         }
       ]
     },
@@ -104,8 +93,9 @@ export const siteConfig = {
 
   // Contact information
   contact: {
-    email: 'hello@equators.tech',
-    personal: 'your.name@email.com',
+    email: 'al.mahmud@equators.tech',
+    personal: 'al.mahmud@equators.tech',
+    phone: '+601161320832',
   },
 
   // Feature flags
@@ -164,9 +154,9 @@ export const projects = [
     lastUpdate: '2024-12-20',
     size: '145 MB',
     stats: {
-      downloads: '2.3k',
-      stars: 42,
-      forks: 8,
+      downloads: '4.2k',
+      stars: 89,
+      forks: 23,
     },
     requirements: {
       os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
@@ -219,9 +209,9 @@ export const projects = [
     lastUpdate: '2024-12-22',
     size: '320 MB',
     stats: {
-      downloads: '5.7k',
-      stars: 128,
-      forks: 23,
+      downloads: '3.1k',
+      stars: 67,
+      forks: 18,
     },
     requirements: {
       os: 'Windows 10+, macOS 11+, Ubuntu 20.04+',
@@ -275,9 +265,9 @@ export const projects = [
     lastUpdate: '2024-12-20',
     size: '5 MB',
     stats: {
-      downloads: '150+',
-      stars: 15,
-      forks: 3,
+      downloads: '1.2k',
+      stars: 45,
+      forks: 12,
     },
     requirements: {
       os: 'Web (PWA), works on all devices',
@@ -330,9 +320,9 @@ export const projects = [
     lastUpdate: '2024-12-18',
     size: '180 MB',
     stats: {
-      downloads: '800+',
-      stars: 35,
-      forks: 7,
+      downloads: '2.8k',
+      stars: 73,
+      forks: 15,
     },
     requirements: {
       os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
@@ -385,9 +375,9 @@ export const projects = [
     lastUpdate: '2024-12-15',
     size: '8 MB',
     stats: {
-      downloads: '1.2k+',
-      stars: 58,
-      forks: 12,
+      downloads: '3.7k',
+      stars: 91,
+      forks: 24,
     },
     requirements: {
       os: 'Web Application',
@@ -438,9 +428,9 @@ export const projects = [
     lastUpdate: '2024-12-22',
     size: '12 MB',
     stats: {
-      downloads: '2.5k+',
-      stars: 89,
-      forks: 18,
+      downloads: '4.8k',
+      stars: 124,
+      forks: 31,
     },
     requirements: {
       os: 'Web Application',
@@ -494,9 +484,9 @@ export const projects = [
     lastUpdate: '2024-12-10',
     size: '45 MB',
     stats: {
-      downloads: '500+ (Beta)',
-      stars: 25,
-      forks: 5,
+      downloads: '1.5k',
+      stars: 56,
+      forks: 11,
     },
     requirements: {
       os: 'iOS 13+, Android 8.0+',
@@ -505,124 +495,14 @@ export const projects = [
     },
   },
 
-  // SECURITY TOOLS SECTION
-  {
-    id: 'bugreport-builder',
-    name: 'Bug Bounty Report Generator',
-    category: 'Security Tools',
-    tagline: 'Professional Security Reports',
-    description: 'Streamlined tool for security researchers to generate professional bug bounty reports. Input vulnerability details, severity ratings, proof-of-concept, and remediation steps to create standardized reports.',
-    techStack: ['React', 'Tailwind CSS', 'jsPDF', 'Markdown'],
-    longDescription: `
-      Built specifically for bug bounty hunters and penetration testers who need to generate professional, standardized reports quickly. 
-      Features comprehensive templates for various vulnerability types and automated formatting.
-      
-      Includes severity calculators, screenshot embedding, proof-of-concept sections, and multiple export formats. 
-      Streamlines the reporting process and ensures consistent, high-quality documentation.
-    `,
-    icon: '🐛',
-    image: '/images/products/bugreport-hero.jpg',
-    screenshots: [
-      '/images/products/bugreport-screenshot-1.jpg',
-      '/images/products/bugreport-screenshot-2.jpg',
-      '/images/products/bugreport-screenshot-3.jpg',
-    ],
-    features: [
-      'Template Library',
-      'Severity Calculator',
-      'Screenshot Embedding',
-      'Export Formats',
-      'Standardized Layout',
-      'Quick Generation',
-    ],
-    links: {
-      github: 'https://github.com/AlMahmud22/bugreport-builder',
-      demo: 'https://reports.equators.tech',
-      download: 'https://reports.equators.tech',
-    },
-    downloads: {
-      web: 'https://reports.equators.tech',
-    },
-    version: '2.1.0',
-    status: 'Production Ready',
-    createdDate: '2024-04-15',
-    lastUpdate: '2024-12-05',
-    size: '6 MB',
-    stats: {
-      downloads: '1.8k+',
-      stars: 76,
-      forks: 14,
-    },
-    requirements: {
-      os: 'Web Application',
-      browser: 'Modern Browser',
-      storage: 'LocalStorage Enabled',
-    },
-  },
-  {
-    id: 'simple-web-recon-cli',
-    name: 'Web Vulnerability Scanner',
-    category: 'Security Tools',
-    tagline: 'CLI Security Scanner',
-    description: 'Command-line security scanner for web applications. Automatically tests for common misconfigurations including security headers, CORS policies, SSL/TLS settings, and exposed sensitive files.',
-    techStack: ['Node.js', 'Axios', 'CLI', 'Security Headers API'],
-    longDescription: `
-      Professional-grade command-line tool designed for security researchers and DevOps teams to quickly assess web application security posture. 
-      Features automated scanning for common vulnerabilities and misconfigurations.
-      
-      Includes customizable rule sets, JSON/CLI output formats, CI/CD integration capabilities, and comprehensive reporting. 
-      Perfect for automated security testing in development pipelines.
-    `,
-    icon: '🔍',
-    image: '/images/products/web-scanner-hero.jpg',
-    screenshots: [
-      '/images/products/web-scanner-screenshot-1.jpg',
-      '/images/products/web-scanner-screenshot-2.jpg',
-      '/images/products/web-scanner-screenshot-3.jpg',
-    ],
-    features: [
-      'Automated Scanning',
-      'JSON/CLI Output',
-      'Custom Rule Sets',
-      'CI/CD Integration',
-      'Security Headers Check',
-      'SSL/TLS Analysis',
-    ],
-    links: {
-      github: 'https://github.com/AlMahmud22/simple-web-recon-cli',
-      demo: '/demo/web-scanner',
-      download: 'npm install -g web-vuln-scanner',
-    },
-    downloads: {
-      npm: 'npm install -g web-vuln-scanner',
-      source: 'git clone https://github.com/AlMahmud22/simple-web-recon-cli',
-    },
-    version: '3.0.2',
-    status: 'Production Ready',
-    createdDate: '2024-03-10',
-    lastUpdate: '2024-12-01',
-    size: '15 MB',
-    stats: {
-      downloads: '3.2k+',
-      stars: 145,
-      forks: 28,
-    },
-    requirements: {
-      os: 'Cross-platform CLI',
-      runtime: 'Node.js 16+',
-      network: 'Internet connection for scanning',
-    },
-  },
-
 ]
 
 // Project categories for filtering
 export const projectCategories = [
-  { id: 'all', name: 'All Projects', count: 7 },
+  { id: 'all', name: 'All Projects', count: 5 },
   { id: 'desktop-apps', name: 'Desktop Apps', count: 2 },
   { id: 'web-apps', name: 'Web Apps', count: 2 },
   { id: 'mobile-apps', name: 'Mobile Apps', count: 1 },
-  { id: 'security-tools', name: 'Security Tools', count: 2 },
 ]
 
 // Tech stack tags for filtering

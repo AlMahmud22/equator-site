@@ -8,7 +8,7 @@ import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code } from
 import { projects } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 import { getOSSpecificDownload } from '@/shared/utils'
-import BinaryOverlay from '@/components/BinaryOverlay'
+import BlizzardOverlay from '@/components/BlizzardOverlay'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -35,7 +35,7 @@ export default function ProductShowcase() {
 
   return (
     <section className="section-padding bg-pitch-black relative">
-      <BinaryOverlay />
+      <BlizzardOverlay />
       <div className="container-custom relative z-10">
         <motion.div
           ref={sectionRef}
