@@ -260,8 +260,23 @@ export default function ProductPage({ product }: ProductPageProps) {
                   <div><strong>OS:</strong> {product.requirements.os}</div>
                   <div><strong>RAM:</strong> {product.requirements.ram}</div>
                   <div><strong>Storage:</strong> {product.requirements.storage}</div>
-                  {product.requirements.gpu && (
-                    <div><strong>GPU:</strong> {product.requirements.gpu}</div>
+                  {(product.requirements as any).gpu && (
+                    <div><strong>GPU:</strong> {(product.requirements as any).gpu}</div>
+                  )}
+                  {(product.requirements as any).browser && (
+                    <div><strong>Browser:</strong> {(product.requirements as any).browser}</div>
+                  )}
+                  {(product.requirements as any).network && (
+                    <div><strong>Network:</strong> {(product.requirements as any).network}</div>
+                  )}
+                  {(product.requirements as any).runtime && (
+                    <div><strong>Runtime:</strong> {(product.requirements as any).runtime}</div>
+                  )}
+                  {(product.requirements as any).php && (
+                    <div><strong>PHP:</strong> {(product.requirements as any).php}</div>
+                  )}
+                  {(product.requirements as any).plugins && (
+                    <div><strong>Plugins:</strong> {(product.requirements as any).plugins}</div>
                   )}
                 </div>
               </motion.div>

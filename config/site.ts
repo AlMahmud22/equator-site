@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Equators',
-  title: 'Equators - Digital Workshop | Privacy-First Tools & Projects',
-  description: 'Welcome to my digital workshop! I build privacy-first applications: Secure Chatbot, AI Playground, and Privacy Browser. Open-source tools that put users first.',
+  title: 'Equators - Full-Stack Developer | Web3, Security & WordPress Specialist',
+  description: 'Professional software developer specializing in Web3 applications, cybersecurity tools, mobile development, and WordPress solutions. Explore my comprehensive project portfolio.',
   url: 'https://equators.tech',
   ogImage: '/images/og-image.jpg',
   
@@ -16,19 +16,24 @@ export const siteConfig = {
       href: '/products',
       children: [
         {
-          name: 'Chatbot',
-          href: '/products/chatbot',
+          name: 'AI Chatbot',
+          href: '/products/privacy-chatbot',
           description: 'Privacy-first AI companion with local processing'
         },
         {
-          name: 'AI Playground',
-          href: '/products/ai-playground',
-          description: 'Secure ML experimentation platform'
+          name: 'Privacy Browser',
+          href: '/products/privacy-browser',
+          description: 'Decentralized web browsing with maximum privacy'
         },
         {
-          name: 'Browser',
-          href: '/products/browser',
-          description: 'Decentralized web browsing with maximum privacy'
+          name: 'Token Swap Interface',
+          href: '/products/token-swap-interface',
+          description: 'DeFi token exchange on testnet'
+        },
+        {
+          name: 'Web3 Wallet Dashboard',
+          href: '/products/eth-wallet-dashboard',
+          description: 'Comprehensive Ethereum wallet interface'
         }
       ]
     },
@@ -37,14 +42,19 @@ export const siteConfig = {
       href: '#',
       children: [
         {
+          name: 'Bug Bounty Reporter',
+          href: '/products/bugreport-builder',
+          description: 'Professional security report generator'
+        },
+        {
+          name: 'Web Vulnerability Scanner',
+          href: '/products/simple-web-recon-cli',
+          description: 'CLI security scanner for web apps'
+        },
+        {
           name: 'Models Hub',
           href: '/models',
           description: 'Browse and download AI models'
-        },
-        {
-          name: 'Test Auth',
-          href: '/test-chatbot-auth',
-          description: 'Test OAuth integration with desktop apps'
         },
       ]
     },
@@ -83,9 +93,10 @@ export const siteConfig = {
 }
 
 export const projects = [
+  // EXISTING PROJECTS - KEEP AS IS
   {
     id: 'privacy-chatbot',
-    name: 'Privacy Chatbot',
+    name: 'AI Chatbot',
     category: 'Desktop Apps',
     tagline: 'Local AI Assistant',
     description: 'A privacy-first AI chatbot that runs entirely on your device with zero data transmission.',
@@ -123,6 +134,7 @@ export const projects = [
       linux: '/downloads/equators-chatbot/v2.1.0/privacy-chatbot.AppImage',
     },
     version: '2.1.0',
+    status: 'Production Ready',
     createdDate: '2024-08-15',
     lastUpdate: '2024-12-20',
     size: '145 MB',
@@ -135,61 +147,6 @@ export const projects = [
       os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
       ram: '4 GB RAM',
       storage: '200 MB available space',
-    },
-  },
-  {
-    id: 'ai-playground',
-    name: 'AI Model Playground',
-    category: 'Desktop Apps',
-    tagline: 'Local AI Experimentation',
-    description: 'Experiment with open-source AI models locally without sending data to external services.',
-    techStack: ['Python', 'PyQt6', 'HuggingFace', 'ONNX', 'OpenCV'],
-    longDescription: `
-      Created this tool to democratize AI experimentation. It allows researchers and developers to test various 
-      AI models locally without privacy concerns or API costs. Built with a focus on ease of use and performance.
-      
-      Features local model management, performance benchmarking, custom fine-tuning capabilities, and export 
-      functionality for production use. Perfect for AI enthusiasts who value privacy and want hands-on experience.
-    `,
-    icon: '🧪',
-    image: '/images/products/ai-playground-hero.jpg',
-    screenshots: [
-      '/images/products/ai-playground-screenshot-1.jpg',
-      '/images/products/ai-playground-screenshot-2.jpg',
-      '/images/products/ai-playground-screenshot-3.jpg',
-    ],
-    features: [
-      'Local Model Testing',
-      'Performance Benchmarks',
-      'Custom Fine-tuning',
-      'No API Dependencies',
-      'Export Capabilities',
-      'GPU Acceleration',
-    ],
-    links: {
-      github: 'https://github.com/AlMahmud22/ai-playground',
-      demo: '/demo/ai-playground',
-      download: '/downloads/equators-ai-playground/v1.8.2/',
-    },
-    downloads: {
-      windows: '/downloads/equators-ai-playground/v1.8.2/ai-playground-setup.exe',
-      mac: '/downloads/equators-ai-playground/v1.8.2/ai-playground.dmg',
-      linux: '/downloads/equators-ai-playground/v1.8.2/ai-playground.AppImage',
-    },
-    version: '1.8.2',
-    createdDate: '2024-07-10',
-    lastUpdate: '2024-12-18',
-    size: '280 MB',
-    stats: {
-      downloads: '1.8k',
-      stars: 67,
-      forks: 15,
-    },
-    requirements: {
-      os: 'Windows 10+, macOS 11+, Ubuntu 20.04+',
-      ram: '8 GB RAM',
-      storage: '500 MB available space',
-      gpu: 'Recommended: CUDA-compatible GPU',
     },
   },
   {
@@ -232,155 +189,535 @@ export const projects = [
       linux: '/downloads/equators-browser/v3.2.1/privacy-browser.AppImage',
     },
     version: '3.2.1',
+    status: 'Production Ready',
     createdDate: '2024-05-20',
     lastUpdate: '2024-12-22',
     size: '320 MB',
     stats: {
       downloads: '5.7k',
       stars: 128,
-      forks: 34,
+      forks: 23,
     },
     requirements: {
-      os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
-      ram: '6 GB RAM',
+      os: 'Windows 10+, macOS 11+, Ubuntu 20.04+',
+      ram: '4 GB RAM',
       storage: '400 MB available space',
     },
   },
+
+  // NEW DESKTOP / CLI APPS
   {
-    id: 'file-encrypt',
-    name: 'SecureVault',
-    category: 'Scripts/Tools',
-    tagline: 'File Encryption Utility',
-    description: 'A command-line tool for military-grade file encryption with steganography capabilities.',
-    techStack: ['Go', 'AES-256', 'CLI', 'Cryptography'],
+    id: 'hacker-notes-app',
+    name: 'Hacker Notes App (PWA)',
+    category: 'Desktop Apps',
+    tagline: 'Cybersecurity Note-Taking',
+    description: 'A cybersecurity-focused note-taking app for penetration testers and bug bounty hunters. Add, delete, search, and organize reconnaissance notes, vulnerability findings, and methodology steps.',
+    techStack: ['React', 'LocalStorage', 'PWA', 'Tailwind CSS'],
     longDescription: `
-      Built this encryption tool to provide bulletproof file security with advanced features like steganography 
-      and secure deletion. Uses military-grade AES-256 encryption with custom key derivation functions.
+      Developed specifically for cybersecurity professionals who need organized, searchable note-taking during penetration tests and bug bounty hunts. 
+      Works completely offline as a Progressive Web App with no data transmission.
       
-      Perfect for developers, journalists, and privacy enthusiasts who need secure file storage. Features include 
-      batch encryption, hidden volume creation, secure key generation, and cross-platform compatibility.
+      Features categorized note organization, advanced search capabilities, export options for reporting, and templates for common vulnerability types. 
+      Perfect for maintaining detailed reconnaissance notes and methodology documentation.
     `,
     icon: '🔒',
-    image: '/images/products/encrypt-hero.jpg',
+    image: '/images/products/hacker-notes-hero.jpg',
     screenshots: [
-      '/images/products/encrypt-screenshot-1.jpg',
-      '/images/products/encrypt-screenshot-2.jpg',
+      '/images/products/hacker-notes-screenshot-1.jpg',
+      '/images/products/hacker-notes-screenshot-2.jpg',
+      '/images/products/hacker-notes-screenshot-3.jpg',
     ],
     features: [
-      'AES-256 Encryption',
-      'Steganography Support',
-      'Batch Operations',
-      'Secure Key Generation',
-      'Hidden Volumes',
-      'Cross-Platform CLI',
+      'Offline Functionality',
+      'Advanced Search',
+      'Categorized Notes',
+      'Export Options',
+      'Vulnerability Templates',
+      'Cross-Platform PWA',
     ],
     links: {
-      github: 'https://github.com/AlMahmud22/secure-vault',
-      demo: null,
-      download: 'https://github.com/AlMahmud22/secure-vault/releases',
+      github: 'https://github.com/AlMahmud22/hacker-notes-app',
+      demo: 'https://notes.equators.tech',
+      download: 'https://notes.equators.tech',
     },
     downloads: {
-      windows: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-windows.exe',
-      mac: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-macos',
-      linux: 'https://github.com/AlMahmud22/secure-vault/releases/download/v2.1.3/securevault-linux',
+      web: 'https://notes.equators.tech',
+      pwa: 'Install via browser',
     },
-    version: '2.1.3',
-    createdDate: '2024-09-12',
-    lastUpdate: '2024-12-19',
-    size: '12 MB',
+    version: '1.0.0',
+    status: 'In Development',
+    createdDate: '2024-11-01',
+    lastUpdate: '2024-12-20',
+    size: '5 MB',
     stats: {
-      downloads: '892',
-      stars: 23,
-      forks: 5,
+      downloads: '150+',
+      stars: 15,
+      forks: 3,
     },
     requirements: {
-      os: 'Any OS with Go runtime',
+      os: 'Web (PWA), works on all devices',
       ram: '1 GB RAM',
-      storage: '50 MB available space',
+      storage: '10 MB available space',
     },
   },
   {
-    id: 'network-scanner',
-    name: 'NetScope',
-    category: 'Scripts/Tools',
-    tagline: 'Network Discovery Tool',
-    description: 'A fast, lightweight network scanner for security auditing and network discovery.',
-    techStack: ['Python', 'Nmap', 'Threading', 'JSON'],
+    id: 'summarizer-app',
+    name: 'AI-Powered Text Summarizer',
+    category: 'Desktop Apps',
+    tagline: 'Intelligent Document Processing',
+    description: 'Intelligent text summarization tool that transforms lengthy articles, documents, or research papers into concise bullet-point summaries using advanced AI models.',
+    techStack: ['React', 'LLM API', 'Node.js', 'Tailwind CSS'],
     longDescription: `
-      Created this network scanner to help security professionals and network administrators discover devices 
-      and services on their networks. Features multithreaded scanning, port detection, and service enumeration.
+      Built to solve the information overload problem faced by researchers, students, and professionals. Uses advanced AI models to analyze and 
+      summarize lengthy content while preserving key insights and maintaining context.
       
-      Built with performance in mind, it can scan large networks quickly while providing detailed information 
-      about discovered hosts. Includes vulnerability checking and export capabilities for further analysis.
+      Features multi-format input support, customizable summary lengths, batch processing capabilities, and export options for various formats. 
+      Perfect for quickly processing research papers, articles, and documentation.
     `,
-    icon: '🔍',
-    image: '/images/products/scanner-hero.jpg',
+    icon: '📝',
+    image: '/images/products/summarizer-hero.jpg',
     screenshots: [
-      '/images/products/scanner-screenshot-1.jpg',
-      '/images/products/scanner-screenshot-2.jpg',
+      '/images/products/summarizer-screenshot-1.jpg',
+      '/images/products/summarizer-screenshot-2.jpg',
+      '/images/products/summarizer-screenshot-3.jpg',
     ],
     features: [
-      'Multithreaded Scanning',
-      'Port Detection',
-      'Service Enumeration',
-      'Vulnerability Checks',
-      'Export Reports',
-      'Fast Performance',
+      'Multi-format Input',
+      'Customizable Length',
+      'Export Options',
+      'Batch Processing',
+      'AI-Powered Analysis',
+      'Context Preservation',
     ],
     links: {
-      github: 'https://github.com/AlMahmud22/netscope',
-      demo: null,
-      download: 'https://github.com/AlMahmud22/netscope/releases',
+      github: 'https://github.com/AlMahmud22/summarizer-app',
+      demo: '/demo/summarizer',
+      download: '/downloads/summarizer-app/v1.2.0/',
     },
     downloads: {
-      windows: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-windows.exe',
-      mac: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-macos',
-      linux: 'https://github.com/AlMahmud22/netscope/releases/download/v1.4.2/netscope-linux',
+      windows: '/downloads/summarizer-app/v1.2.0/summarizer-setup.exe',
+      mac: '/downloads/summarizer-app/v1.2.0/summarizer.dmg',
+      linux: '/downloads/summarizer-app/v1.2.0/summarizer.AppImage',
     },
-    version: '1.4.2',
-    createdDate: '2024-10-05',
-    lastUpdate: '2024-12-21',
-    size: '8 MB',
+    version: '1.2.0',
+    status: 'Beta Testing',
+    createdDate: '2024-09-15',
+    lastUpdate: '2024-12-18',
+    size: '180 MB',
     stats: {
-      downloads: '1.2k',
-      stars: 31,
+      downloads: '800+',
+      stars: 35,
       forks: 7,
     },
     requirements: {
-      os: 'Windows 10+, macOS 11+, Linux',
-      ram: '2 GB RAM',
+      os: 'Windows 10+, macOS 11+, Ubuntu 18.04+',
+      ram: '4 GB RAM',
+      storage: '250 MB available space',
+    },
+  },
+
+  // WEB APPS / WEB3 SECTION
+  {
+    id: 'token-swap-interface',
+    name: 'Token Swap Interface (Testnet)',
+    category: 'Web Apps',
+    tagline: 'DeFi Token Exchange',
+    description: 'Decentralized token exchange interface similar to Uniswap. Swap ERC20 tokens on testnet with real-time price feeds, liquidity pools, and slippage protection.',
+    techStack: ['React', 'Ethers.js', 'Solidity', 'Web3.js'],
+    longDescription: `
+      Educational DeFi platform built to demonstrate decentralized exchange functionality on Ethereum testnet. Features real-time price feeds, 
+      automated market maker logic, and comprehensive transaction handling.
+      
+      Includes MetaMask integration, multiple testnet support, transaction history tracking, and slippage protection. 
+      Perfect for learning blockchain development and understanding DeFi mechanics.
+    `,
+    icon: '🔄',
+    image: '/images/products/token-swap-hero.jpg',
+    screenshots: [
+      '/images/products/token-swap-screenshot-1.jpg',
+      '/images/products/token-swap-screenshot-2.jpg',
+      '/images/products/token-swap-screenshot-3.jpg',
+    ],
+    features: [
+      'MetaMask Integration',
+      'Real-time Pricing',
+      'Transaction History',
+      'Multiple Testnets',
+      'Slippage Protection',
+      'Liquidity Pools',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/token-swap-interface',
+      demo: 'https://swap.equators.tech',
+      download: 'https://swap.equators.tech',
+    },
+    downloads: {
+      web: 'https://swap.equators.tech',
+    },
+    version: '2.0.0',
+    status: 'Live on Testnet',
+    createdDate: '2024-06-01',
+    lastUpdate: '2024-12-15',
+    size: '8 MB',
+    stats: {
+      downloads: '1.2k+',
+      stars: 58,
+      forks: 12,
+    },
+    requirements: {
+      os: 'Web Application',
+      browser: 'MetaMask Extension Required',
+      network: 'Ethereum Testnet Access',
+    },
+  },
+  {
+    id: 'eth-wallet-dashboard',
+    name: 'Ethereum Wallet Dashboard',
+    category: 'Web Apps',
+    tagline: 'Web3 Portfolio Tracker',
+    description: 'Comprehensive Web3 wallet interface for viewing Ethereum holdings, transaction history, NFT collections, and DeFi positions. Supports multiple wallets and ENS name resolution.',
+    techStack: ['React', 'Ethers.js', 'Web3.js', 'Tailwind CSS'],
+    longDescription: `
+      Professional-grade wallet dashboard built for serious Web3 users who need comprehensive portfolio tracking across multiple wallets and protocols. 
+      Features real-time balance updates, DeFi position tracking, and NFT collection management.
+      
+      Includes ENS name resolution, multi-wallet support, transaction analysis, and DeFi protocol integration. 
+      Perfect for investors and developers who need detailed insights into their Web3 activities.
+    `,
+    icon: '💰',
+    image: '/images/products/wallet-dashboard-hero.jpg',
+    screenshots: [
+      '/images/products/wallet-dashboard-screenshot-1.jpg',
+      '/images/products/wallet-dashboard-screenshot-2.jpg',
+      '/images/products/wallet-dashboard-screenshot-3.jpg',
+    ],
+    features: [
+      'Multi-wallet Support',
+      'NFT Gallery',
+      'Transaction Tracking',
+      'ENS Integration',
+      'DeFi Portfolio View',
+      'Real-time Updates',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/eth-wallet-dashboard',
+      demo: 'https://wallet.equators.tech',
+      download: 'https://wallet.equators.tech',
+    },
+    downloads: {
+      web: 'https://wallet.equators.tech',
+    },
+    version: '1.5.0',
+    status: 'Production Ready',
+    createdDate: '2024-07-20',
+    lastUpdate: '2024-12-22',
+    size: '12 MB',
+    stats: {
+      downloads: '2.5k+',
+      stars: 89,
+      forks: 18,
+    },
+    requirements: {
+      os: 'Web Application',
+      browser: 'Modern Browser with Web3 Support',
+      network: 'Ethereum Mainnet/Testnet Access',
+    },
+  },
+
+  // MOBILE APPS SECTION
+  {
+    id: 'mobile-web3-wallet',
+    name: 'Mobile Web3 Wallet + NFT Explorer',
+    category: 'Mobile Apps',
+    tagline: 'Native Mobile Crypto Wallet',
+    description: 'Native mobile application for managing cryptocurrency wallets and exploring NFT collections. Connect via MetaMask or WalletConnect to view balances, send transactions, and browse NFT metadata.',
+    techStack: ['React Native', 'Ethers.js', 'IPFS', 'WalletConnect'],
+    longDescription: `
+      Full-featured mobile wallet application built with React Native for seamless iOS and Android compatibility. 
+      Features WalletConnect integration, NFT metadata viewing, and comprehensive transaction management.
+      
+      Includes biometric security, push notifications for transactions, offline NFT viewing, and multi-chain support. 
+      Designed for users who want professional-grade Web3 functionality on mobile devices.
+    `,
+    icon: '📱',
+    image: '/images/products/mobile-wallet-hero.jpg',
+    screenshots: [
+      '/images/products/mobile-wallet-screenshot-1.jpg',
+      '/images/products/mobile-wallet-screenshot-2.jpg',
+      '/images/products/mobile-wallet-screenshot-3.jpg',
+    ],
+    features: [
+      'WalletConnect Integration',
+      'NFT Metadata Viewing',
+      'Transaction Signing',
+      'Biometric Security',
+      'Multi-chain Support',
+      'Push Notifications',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/mobile-web3-wallet',
+      demo: '/demo/mobile-wallet',
+      download: '/downloads/mobile-wallet/',
+    },
+    downloads: {
+      ios: 'App Store (Coming Soon)',
+      android: 'Google Play (Coming Soon)',
+    },
+    version: '1.0.0',
+    status: 'App Store Review',
+    createdDate: '2024-08-01',
+    lastUpdate: '2024-12-10',
+    size: '45 MB',
+    stats: {
+      downloads: '500+ (Beta)',
+      stars: 25,
+      forks: 5,
+    },
+    requirements: {
+      os: 'iOS 13+, Android 8.0+',
+      ram: '3 GB RAM',
       storage: '100 MB available space',
+    },
+  },
+
+  // SECURITY TOOLS SECTION
+  {
+    id: 'bugreport-builder',
+    name: 'Bug Bounty Report Generator',
+    category: 'Security Tools',
+    tagline: 'Professional Security Reports',
+    description: 'Streamlined tool for security researchers to generate professional bug bounty reports. Input vulnerability details, severity ratings, proof-of-concept, and remediation steps to create standardized reports.',
+    techStack: ['React', 'Tailwind CSS', 'jsPDF', 'Markdown'],
+    longDescription: `
+      Built specifically for bug bounty hunters and penetration testers who need to generate professional, standardized reports quickly. 
+      Features comprehensive templates for various vulnerability types and automated formatting.
+      
+      Includes severity calculators, screenshot embedding, proof-of-concept sections, and multiple export formats. 
+      Streamlines the reporting process and ensures consistent, high-quality documentation.
+    `,
+    icon: '🐛',
+    image: '/images/products/bugreport-hero.jpg',
+    screenshots: [
+      '/images/products/bugreport-screenshot-1.jpg',
+      '/images/products/bugreport-screenshot-2.jpg',
+      '/images/products/bugreport-screenshot-3.jpg',
+    ],
+    features: [
+      'Template Library',
+      'Severity Calculator',
+      'Screenshot Embedding',
+      'Export Formats',
+      'Standardized Layout',
+      'Quick Generation',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/bugreport-builder',
+      demo: 'https://reports.equators.tech',
+      download: 'https://reports.equators.tech',
+    },
+    downloads: {
+      web: 'https://reports.equators.tech',
+    },
+    version: '2.1.0',
+    status: 'Production Ready',
+    createdDate: '2024-04-15',
+    lastUpdate: '2024-12-05',
+    size: '6 MB',
+    stats: {
+      downloads: '1.8k+',
+      stars: 76,
+      forks: 14,
+    },
+    requirements: {
+      os: 'Web Application',
+      browser: 'Modern Browser',
+      storage: 'LocalStorage Enabled',
+    },
+  },
+  {
+    id: 'simple-web-recon-cli',
+    name: 'Web Vulnerability Scanner',
+    category: 'Security Tools',
+    tagline: 'CLI Security Scanner',
+    description: 'Command-line security scanner for web applications. Automatically tests for common misconfigurations including security headers, CORS policies, SSL/TLS settings, and exposed sensitive files.',
+    techStack: ['Node.js', 'Axios', 'CLI', 'Security Headers API'],
+    longDescription: `
+      Professional-grade command-line tool designed for security researchers and DevOps teams to quickly assess web application security posture. 
+      Features automated scanning for common vulnerabilities and misconfigurations.
+      
+      Includes customizable rule sets, JSON/CLI output formats, CI/CD integration capabilities, and comprehensive reporting. 
+      Perfect for automated security testing in development pipelines.
+    `,
+    icon: '🔍',
+    image: '/images/products/web-scanner-hero.jpg',
+    screenshots: [
+      '/images/products/web-scanner-screenshot-1.jpg',
+      '/images/products/web-scanner-screenshot-2.jpg',
+      '/images/products/web-scanner-screenshot-3.jpg',
+    ],
+    features: [
+      'Automated Scanning',
+      'JSON/CLI Output',
+      'Custom Rule Sets',
+      'CI/CD Integration',
+      'Security Headers Check',
+      'SSL/TLS Analysis',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/simple-web-recon-cli',
+      demo: '/demo/web-scanner',
+      download: 'npm install -g web-vuln-scanner',
+    },
+    downloads: {
+      npm: 'npm install -g web-vuln-scanner',
+      source: 'git clone https://github.com/AlMahmud22/simple-web-recon-cli',
+    },
+    version: '3.0.2',
+    status: 'Production Ready',
+    createdDate: '2024-03-10',
+    lastUpdate: '2024-12-01',
+    size: '15 MB',
+    stats: {
+      downloads: '3.2k+',
+      stars: 145,
+      forks: 28,
+    },
+    requirements: {
+      os: 'Cross-platform CLI',
+      runtime: 'Node.js 16+',
+      network: 'Internet connection for scanning',
+    },
+  },
+
+  // WORDPRESS DEVELOPMENT SECTION
+  {
+    id: 'woocommerce-product-template',
+    name: 'WooCommerce Product Page Template',
+    category: 'WordPress Themes',
+    tagline: 'E-commerce Product Pages',
+    description: 'Modern, conversion-optimized single product page template for WooCommerce. Features advanced product galleries, dynamic pricing, customer reviews, and mobile-responsive design.',
+    techStack: ['PHP', 'WordPress', 'WooCommerce', 'SCSS', 'JavaScript'],
+    longDescription: `
+      Professional WooCommerce template designed to maximize conversion rates through optimized user experience and modern design patterns. 
+      Features advanced product galleries, dynamic pricing displays, and integrated review systems.
+      
+      Includes mobile-responsive design, fast loading times, SEO optimization, and accessibility compliance. 
+      Perfect for e-commerce stores looking to improve product page performance and sales conversions.
+    `,
+    icon: '🛍️',
+    image: '/images/products/woocommerce-product-hero.jpg',
+    screenshots: [
+      '/images/products/woocommerce-product-screenshot-1.jpg',
+      '/images/products/woocommerce-product-screenshot-2.jpg',
+      '/images/products/woocommerce-product-screenshot-3.jpg',
+    ],
+    features: [
+      'Advanced Gallery',
+      'Variant Selector',
+      'Review System',
+      'Related Products',
+      'Mobile Responsive',
+      'SEO Optimized',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/woocommerce-product-template',
+      demo: '/demo/woocommerce-product',
+      download: 'https://wordpress.org/plugins/equators-product-template/',
+    },
+    downloads: {
+      wordpress: 'WordPress Plugin Directory',
+      github: 'GitHub Releases',
+    },
+    version: '1.4.0',
+    status: 'Available on WordPress.org',
+    createdDate: '2024-02-01',
+    lastUpdate: '2024-11-30',
+    size: '12 MB',
+    stats: {
+      downloads: '8.5k+',
+      stars: 67,
+      forks: 15,
+    },
+    requirements: {
+      os: 'WordPress 5.8+',
+      php: 'PHP 7.4+',
+      plugins: 'WooCommerce 6.0+',
+    },
+  },
+  {
+    id: 'woocommerce-archive-template',
+    name: 'Product Archive & Category Template',
+    category: 'WordPress Themes',
+    tagline: 'E-commerce Category Pages',
+    description: 'Dynamic product archive and category page template with advanced filtering, sorting, and pagination. Supports grid/list views, AJAX loading, and custom taxonomies.',
+    techStack: ['PHP', 'WordPress', 'WooCommerce', 'AJAX', 'CSS Grid'],
+    longDescription: `
+      Comprehensive WooCommerce archive template designed to enhance product discovery and improve user experience on category and shop pages. 
+      Features advanced filtering systems, multiple layout options, and optimized performance.
+      
+      Includes AJAX-powered filtering, infinite scroll pagination, grid/list view toggles, and search integration. 
+      Perfect for stores with large product catalogs that need efficient browsing capabilities.
+    `,
+    icon: '📂',
+    image: '/images/products/woocommerce-archive-hero.jpg',
+    screenshots: [
+      '/images/products/woocommerce-archive-screenshot-1.jpg',
+      '/images/products/woocommerce-archive-screenshot-2.jpg',
+      '/images/products/woocommerce-archive-screenshot-3.jpg',
+    ],
+    features: [
+      'Advanced Filtering',
+      'AJAX Pagination',
+      'Multiple Layouts',
+      'Search Integration',
+      'Custom Taxonomies',
+      'Performance Optimized',
+    ],
+    links: {
+      github: 'https://github.com/AlMahmud22/woocommerce-archive-template',
+      demo: '/demo/woocommerce-archive',
+      download: 'https://wordpress.org/plugins/equators-archive-template/',
+    },
+    downloads: {
+      wordpress: 'WordPress Plugin Directory',
+      github: 'GitHub Releases',
+    },
+    version: '1.3.0',
+    status: 'Available on WordPress.org',
+    createdDate: '2024-01-15',
+    lastUpdate: '2024-11-25',
+    size: '8 MB',
+    stats: {
+      downloads: '6.2k+',
+      stars: 45,
+      forks: 9,
+    },
+    requirements: {
+      os: 'WordPress 5.8+',
+      php: 'PHP 7.4+',
+      plugins: 'WooCommerce 6.0+',
     },
   },
 ]
 
 // Project categories for filtering
 export const projectCategories = [
-  {
-    id: 'all',
-    name: 'All Projects',
-    count: 5,
-  },
-  {
-    id: 'desktop-apps',
-    name: 'Desktop Apps',
-    count: 3,
-  },
-  {
-    id: 'scripts-tools',
-    name: 'Scripts/Tools',
-    count: 2,
-  },
-  {
-    id: 'web-tools',
-    name: 'Web Tools',
-    count: 0,
-  },
-  {
-    id: 'mobile-apps',
-    name: 'Mobile Apps',
-    count: 0,
-  },
+  { id: 'all', name: 'All Projects', count: 9 },
+  { id: 'desktop-apps', name: 'Desktop Apps', count: 2 },
+  { id: 'web-apps', name: 'Web Apps', count: 2 },
+  { id: 'mobile-apps', name: 'Mobile Apps', count: 1 },
+  { id: 'security-tools', name: 'Security Tools', count: 2 },
+  { id: 'wordpress-themes', name: 'WordPress Themes', count: 2 },
+]
+
+// Tech stack tags for filtering
+export const techStacks = [
+  'React', 'Node.js', 'TypeScript', 'Next.js', 'Tailwind CSS',
+  'Electron', 'Python', 'React Native', 'Solidity', 'Web3.js',
+  'Ethers.js', 'MongoDB', 'PHP', 'WordPress', 'WooCommerce',
+  'SCSS', 'JavaScript', 'Ollama', 'LLM API', 'PWA',
+  'Chromium', 'C++', 'Tor', 'IPFS', 'WalletConnect',
+  'jsPDF', 'Markdown', 'Axios', 'CLI', 'CSS Grid', 'AJAX'
 ]
 
 export type Project = typeof projects[0]
