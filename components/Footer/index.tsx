@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Github, Twitter, Mail, EyeOff } from 'lucide-react'
+import { Github, Twitter, Mail, EyeOff, Youtube, MessageCircle, Linkedin } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 
@@ -32,7 +32,8 @@ const footerLinks = [
     links: [
       { name: 'Contact', href: '/contact' },
       { name: 'GitHub', href: siteConfig.social.github },
-      { name: 'Twitter', href: siteConfig.social.twitter },
+      { name: 'X (Twitter)', href: siteConfig.social.X },
+      { name: 'LinkedIn', href: siteConfig.social.linkedin },
     ],
   },
 ]
@@ -45,10 +46,28 @@ const socialLinks = [
     color: 'hover:text-gray-400',
   },
   {
-    name: 'Twitter',
-    href: siteConfig.social.twitter,
+    name: 'X (Twitter)',
+    href: siteConfig.social.X,
     icon: Twitter,
     color: 'hover:text-blue-400',
+  },
+  {
+    name: 'YouTube',
+    href: siteConfig.social.youtube,
+    icon: Youtube,
+    color: 'hover:text-red-400',
+  },
+  {
+    name: 'LinkedIn',
+    href: siteConfig.social.linkedin,
+    icon: Linkedin,
+    color: 'hover:text-blue-600',
+  },
+  {
+    name: 'Discord',
+    href: siteConfig.social.discord,
+    icon: MessageCircle,
+    color: 'hover:text-purple-400',
   },
   {
     name: 'Email',

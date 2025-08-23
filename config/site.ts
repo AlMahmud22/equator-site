@@ -80,7 +80,7 @@ export const siteConfig = {
   social: {
     X: 'https://x.com/SAMahmud11',
     github: 'https://github.com/AlMahmud22',
-    discord: 'https://discord.gg/equators',
+    discord: 'https://discord.gg/bgaEx4BN',
     youtube: 'https://youtube.com/@equators',
     linkedin: 'https://www.linkedin.com/in/sadik-al-mahmud-058638326/',
   },

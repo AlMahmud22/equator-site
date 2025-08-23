@@ -27,12 +27,12 @@ export default function Document() {
               "logo": "https://equators.tech/images/logo.svg",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "email": "hello@equators.tech",
+                "email": "al.mahmud@equators.tech",
                 "contactType": "customer service"
               },
               "sameAs": [
-                "https://twitter.com/equators",
-                "https://github.com/equators"
+                "https://x.com/SAMahmud11",
+                "https://github.com/AlMahmud22"
               ]
             })
           }}

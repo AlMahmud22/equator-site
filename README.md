@@ -24,17 +24,20 @@ Equators is a decentralized, privacy-first desktop software suite featuring secu
 ## 📦 Installation
 
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/your-username/equators-site.git
+   git clone https://github.com/AlMahmud22/equators-site.git
    cd equators-site
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -87,6 +90,7 @@ The site is optimized for deployment on:
 - Any static hosting provider
 
 Build for production:
+
 ```bash
 npm run build
 npm start
