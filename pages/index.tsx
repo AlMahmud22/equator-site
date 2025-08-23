@@ -142,18 +142,18 @@ export default function HomePage() {
             className="text-center"
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Join the <span className="text-gradient">Growing Community</span>
+              Ready to <span className="text-gradient">Get Started?</span>
             </h2>
             <p className="text-lg sm:text-xl text-secondary-300 mb-12 max-w-3xl mx-auto">
-              These are some stats from my projects. Each download represents someone who values 
-              privacy-first software and digital independence.
+              Explore my comprehensive collection of privacy-focused applications and development tools. 
+              Each project is crafted with attention to detail and user experience.
             </p>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
               {[
-                { number: '5+', label: 'Active Projects' },
-                { number: '12K+', label: 'Total Downloads' },
-                { number: '298', label: 'GitHub Stars' },
+                { number: '7', label: 'Projects' },
+                { number: '1K+', label: 'Downloads' },
+                { number: '15', label: 'GitHub Stars' },
                 { number: '100%', label: 'Open Source' },
               ].map((stat, index) => (
                 <motion.div

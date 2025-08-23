@@ -5,9 +5,9 @@ import { useScrollReveal, useParallax } from '@/shared/hooks/useAnimations'
 import BinaryOverlay from '@/components/BinaryOverlay'
 
 const stats = [
-  { label: 'Projects', value: '5+' },
-  { label: 'Downloads', value: '12K+' },
-  { label: 'GitHub Stars', value: '298' },
+  { label: 'Projects', value: '7' },
+  { label: 'Downloads', value: '1K+' },
+  { label: 'GitHub Stars', value: '15' },
   { label: 'Open Source', value: '100%' },
 ]
 

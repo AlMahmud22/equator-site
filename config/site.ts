@@ -52,13 +52,8 @@ export const siteConfig = {
           name: 'Mobile Web3 Wallet',
           href: '/products/mobile-web3-wallet',
           description: 'Native mobile crypto wallet + NFT explorer'
-        }
-      ]
-    },
-    {
-      name: 'Tools',
-      href: '#',
-      children: [
+        },
+        // Security Tools
         {
           name: 'Bug Bounty Reporter',
           href: '/products/bugreport-builder',
@@ -69,12 +64,11 @@ export const siteConfig = {
           href: '/products/simple-web-recon-cli',
           description: 'CLI security scanner for web apps'
         },
-        {
-          name: 'Models Hub',
-          href: '/models',
-          description: 'Browse and download AI models'
-        },
       ]
+    },
+    {
+      name: 'Models',
+      href: '/models',
     },
     {
       name: 'Contact',
@@ -84,11 +78,11 @@ export const siteConfig = {
 
   // Social links
   social: {
-    twitter: 'https://twitter.com/yourhandle',
-    github: 'https://github.com/yourusername',
+    X: 'https://x.com/SAMahmud11',
+    github: 'https://github.com/AlMahmud22',
     discord: 'https://discord.gg/equators',
     youtube: 'https://youtube.com/@equators',
-    linkedin: 'https://linkedin.com/in/yourprofile',
+    linkedin: 'https://www.linkedin.com/in/sadik-al-mahmud-058638326/',
   },
 
   // Contact information

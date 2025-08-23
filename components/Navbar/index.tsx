@@ -90,10 +90,13 @@ export default function Navbar() {
                       onMouseEnter={() => setOpenDropdown(item.name)}
                       onMouseLeave={() => setOpenDropdown(null)}
                     >
-                      <button className="nav-link flex items-center space-x-1">
+                      <Link 
+                        href={item.href}
+                        className="nav-link flex items-center space-x-1"
+                      >
                         <span>{item.name}</span>
                         <ChevronDown className="w-4 h-4" />
-                      </button>
+                      </Link>
                       
                       <AnimatePresence>
                         {openDropdown === item.name && (

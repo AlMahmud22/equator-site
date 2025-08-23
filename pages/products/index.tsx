@@ -40,10 +40,10 @@ export default function ProjectsPage() {
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-2xl mx-auto">
               {[
-                { number: '5', label: 'Projects' },
-                { number: '12k+', label: 'Downloads' },
+                { number: '7', label: 'Projects' },
+                { number: '1k+', label: 'Downloads' },
                 { number: '40+', label: 'Contributors' },
-                { number: '298', label: 'GitHub Stars' },
+                { number: '15', label: 'GitHub Stars' },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
