@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Download, Star, Shield, Zap, Users, ArrowLeft, ExternalLink } from 'lucide-react'
 import Layout from '@/components/Layout'
+import OSIcon from '@/components/OSIcon'
 import { products, Product } from '@/config/site'
 import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
 
@@ -296,7 +297,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                     download
                   >
                     <div className="flex items-center">
-                      <span className="text-2xl mr-3">🪟</span>
+                      <OSIcon os="windows" size={32} className="mr-3" />
                       <span className="text-white">Windows</span>
                     </div>
                     <ExternalLink className="w-4 h-4 text-secondary-400" />
@@ -307,7 +308,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                     download
                   >
                     <div className="flex items-center">
-                      <span className="text-2xl mr-3">🍎</span>
+                      <OSIcon os="macos" size={32} className="mr-3" />
                       <span className="text-white">macOS</span>
                     </div>
                     <ExternalLink className="w-4 h-4 text-secondary-400" />
@@ -318,7 +319,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                     download
                   >
                     <div className="flex items-center">
-                      <span className="text-2xl mr-3">🐧</span>
+                      <OSIcon os="linux" size={32} className="mr-3" />
                       <span className="text-white">Linux</span>
                     </div>
                     <ExternalLink className="w-4 h-4 text-secondary-400" />

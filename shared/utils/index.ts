@@ -104,25 +104,25 @@ export function getOSSpecificDownload(projectId: string): {
     windows: {
       filename: `${projectId}-setup.exe`,
       label: 'Download for Windows',
-      icon: '🪟',
+      icon: '/images/os/windows.svg',
       url: project.downloads.windows
     },
     mac: {
       filename: `${projectId}.dmg`,
       label: 'Download for macOS',
-      icon: '🍎',
+      icon: '/images/os/macos.svg',
       url: project.downloads.mac
     },
     linux: {
       filename: `${projectId}.AppImage`,
       label: 'Download for Linux',
-      icon: '🐧',
+      icon: '/images/os/linux.svg',
       url: project.downloads.linux
     },
     unknown: {
       filename: `${projectId}-setup.exe`,
       label: 'Download',
-      icon: '💻',
+      icon: '/images/os/windows.svg',
       url: project.downloads.windows
     }
   }

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Download, Star, Users, ExternalLink, Github, Calendar, Code } from 'lucide-react'
 import Layout from '@/components/Layout'
+import OSIcon from '@/components/OSIcon'
 import { products, projectCategories } from '@/config/site'
 import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
 import { formatDate } from '@/shared/utils/dateUtils'
@@ -173,7 +174,7 @@ export default function ProjectsPage() {
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
-                          <span className="text-lg mb-1">🪟</span>
+                          <OSIcon os="windows" size={20} className="mb-1" />
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">Windows</span>
                         </a>
                         <a
@@ -181,7 +182,7 @@ export default function ProjectsPage() {
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
-                          <span className="text-lg mb-1">🍎</span>
+                          <OSIcon os="macos" size={20} className="mb-1" />
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">macOS</span>
                         </a>
                         <a
@@ -189,7 +190,7 @@ export default function ProjectsPage() {
                           className="flex flex-col items-center p-3 bg-secondary-800 rounded-lg hover:bg-secondary-700 transition-colors duration-200 group/os"
                           download
                         >
-                          <span className="text-lg mb-1">🐧</span>
+                          <OSIcon os="linux" size={20} className="mb-1" />
                           <span className="text-xs text-secondary-300 group-hover/os:text-white">Linux</span>
                         </a>
                       </div>
