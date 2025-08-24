@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { SessionProvider } from 'next-auth/react'
 import { siteConfig } from '@/config/site'
 import { AuthProvider } from '@/shared/hooks/useAuth'
 import '@/styles/globals.css'
@@ -83,9 +84,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       
       <div className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>
-        <AuthProvider>
-          <Component {...pageProps} />
-        </AuthProvider>
+        <SessionProvider session={pageProps.session}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </SessionProvider>
       </div>
     </>
   )
