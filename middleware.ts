@@ -161,6 +161,11 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ip = getClientIp(request)
   
+  // Handle auth errors properly - allow access to error page without token
+  if (pathname.startsWith('/auth/error')) {
+    return NextResponse.next()
+  }
+  
   // Handle preflight OPTIONS requests for CORS
   if (request.method === 'OPTIONS' && externalApiRoutes.some(pattern => pattern.test(pathname))) {
     const response = new NextResponse(null, { status: 200 });
@@ -321,6 +326,7 @@ export const config = {
     '/auth/login',
     '/auth/register',
     '/auth/consent',
+    '/auth/error',
     
     // API routes for rate limiting and CORS
     '/api/auth/:path*',

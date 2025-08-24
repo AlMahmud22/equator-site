@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  
+  // Essential for production deployment
+  trailingSlash: false,
+  
+  // Image optimization with auth provider domains
   images: {
     remotePatterns: [
       {
@@ -15,12 +20,45 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'github.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
     unoptimized: false,
   },
-  eslint: {
-    dirs: ['pages', 'utils', 'components', 'hooks'],
+
+  // Essential for NextAuth.js with reverse proxy
+  async headers() {
+    return [
+      {
+        source: '/api/auth/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+        ],
+      },
+    ]
   },
+
+  // Handle rewrites if needed
+  async rewrites() {
+    return [
+      {
+        source: '/auth/error',
+        destination: '/auth/error',
+      },
+    ]
+  },
+
+  eslint: {
+    dirs: ['pages', 'utils', 'components', 'hooks', 'lib', 'modules'],
+    ignoreDuringBuilds: false,
+  },
+  
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },

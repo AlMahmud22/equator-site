@@ -155,17 +155,30 @@ try {
 }
 
 const authOptions: NextAuthOptions = {
+  // Essential for production deployment
+  secret: process.env.NEXTAUTH_SECRET,
+  
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
       allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          scope: 'read:user user:email',
+        },
+      },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+      },
     }),
   ],
   session: {
@@ -176,7 +189,17 @@ const authOptions: NextAuthOptions = {
   jwt: {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/error',
+  },
+  
+  // Enhanced for production reliability
+  debug: process.env.NODE_ENV === 'development',
+  
+  // Use database strategy for production reliability
+  useSecureCookies: process.env.NODE_ENV === 'production',
   cookies: {
     sessionToken: {
       name: 'next-auth.session-token',
@@ -419,11 +442,64 @@ const authOptions: NextAuthOptions = {
       return baseUrl
     },
   },
-  pages: {
-    signIn: '/auth/login',
-    error: '/auth/error',
+  
+  // Enhanced events for logging
+  events: {
+    async signIn({ user, account, isNewUser }) {
+      const provider = account?.provider || 'unknown'
+      console.log(`✅ User signed in: ${user.email} via ${provider}${isNewUser ? ' (new user)' : ''}`)
+      
+      // Log successful sign-in
+      try {
+        const req = (this as any).req || {}
+        const ipAddress = getClientIp(req)
+        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        
+        await logActivity(
+          user.id || null,
+          'sign_in_success',
+          provider,
+          ipAddress,
+          userAgent,
+          true,
+          { 
+            email: user.email,
+            isNewUser,
+            timestamp: new Date().toISOString()
+          }
+        )
+      } catch (error) {
+        console.error('Failed to log sign-in event:', error)
+      }
+    },
+    
+    async signOut({ token }) {
+      console.log(`👋 User signed out: ${token?.email || 'unknown'}`)
+      
+      // Log sign-out
+      try {
+        const req = (this as any).req || {}
+        const ipAddress = getClientIp(req)
+        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        
+        await logActivity(
+          token?.id as string || null,
+          'sign_out',
+          'system',
+          ipAddress,
+          userAgent,
+          true,
+          { 
+            email: token?.email as string,
+            timestamp: new Date().toISOString()
+          }
+        )
+      } catch (error) {
+        console.error('Failed to log sign-out event:', error)
+      }
+    },
   },
-  debug: process.env.NODE_ENV === 'development',
+  
   logger: {
     error(code, metadata) {
       console.error('NextAuth Error:', code, metadata)
