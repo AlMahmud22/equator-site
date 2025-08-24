@@ -18,15 +18,19 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error('Missing Google OAuth credentials')
 }
 
-// MongoDB connection with proper error handling
+// MongoDB connection with proper error handling and SSL options
 let client: MongoClient
 let clientPromise: Promise<MongoClient>
 
 try {
   client = new MongoClient(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-    connectTimeoutMS: 10000,
-    socketTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 30000, // Increased timeout
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 30000,
+    // Simple SSL configuration - only use one option
+    ssl: true,
+    retryWrites: true,
+    retryReads: true,
   })
   clientPromise = client.connect()
 } catch (error) {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession, signOut } from 'next-auth/react'
-import { useAuth } from '@/shared/hooks/useAuth'
 import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { Calendar, Download, ExternalLink, LogOut, User, Shield, Activity } from 'lucide-react'
@@ -9,21 +8,18 @@ import Layout from '@/components/Layout'
 
 export default function ProfilePage() {
   const { data: session, status: sessionStatus } = useSession()
-  const { user: customUser, loading: customLoading, logout: customLogout } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
 
-  // Determine which authentication system is being used
-  const isNextAuthUser = session?.user && sessionStatus === 'authenticated'
-  const isCustomAuthUser = customUser && !customLoading
-  const isAuthenticated = isNextAuthUser || isCustomAuthUser
+  // Simplified authentication - focus on NextAuth only
+  const isAuthenticated = session?.user && sessionStatus === 'authenticated'
 
-  // Combined loading state
+  // Loading state management
   useEffect(() => {
-    if (sessionStatus !== 'loading' && !customLoading) {
+    if (sessionStatus !== 'loading') {
       setIsLoading(false)
     }
-  }, [sessionStatus, customLoading])
+  }, [sessionStatus])
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -32,15 +28,10 @@ export default function ProfilePage() {
     }
   }, [isLoading, isAuthenticated, router])
 
-  // Handle logout for both authentication systems
+  // Handle logout
   const handleLogout = async () => {
     try {
-      if (isNextAuthUser) {
-        await signOut({ redirect: false })
-      }
-      if (isCustomAuthUser) {
-        await customLogout()
-      }
+      await signOut({ redirect: false })
       router.push('/')
     } catch (error) {
       console.error('Logout error:', error)
@@ -74,14 +65,12 @@ export default function ProfilePage() {
     )
   }
 
-  // Get user data from the appropriate source
-  const userData = isNextAuthUser ? session.user : customUser
-  const userEmail = userData?.email || ''
-  const userName = (userData as any)?.name || (userData as any)?.fullName || 'User'
-  const userImage = (userData as any)?.image || (userData as any)?.avatar || ''
-  const authType = isNextAuthUser 
-    ? (session as any)?.provider || 'oauth'
-    : (customUser as any)?.authType || 'custom'
+  // Get user data from NextAuth session
+  const user = session.user
+  const userEmail = user?.email || ''
+  const userName = user?.name || 'User'
+  const userImage = user?.image || ''
+  const authProvider = (session as any)?.provider || 'oauth'
 
   return (
     <Layout
@@ -123,7 +112,7 @@ export default function ProfilePage() {
                     <div className="flex items-center mt-1">
                       <Shield className="w-4 h-4 mr-1 text-green-400" />
                       <p className="text-sm text-green-400 capitalize">
-                        {authType === 'github' ? 'GitHub' : authType === 'google' ? 'Google' : 'Email'} Account
+                        {authProvider === 'github' ? 'GitHub' : authProvider === 'google' ? 'Google' : 'OAuth'} Account
                       </p>
                     </div>
                   </div>
@@ -158,20 +147,8 @@ export default function ProfilePage() {
                     </div>
                     <div>
                       <label className="text-sm text-secondary-400">Account Type</label>
-                      <p className="text-white capitalize">{authType} Authentication</p>
+                      <p className="text-white capitalize">{authProvider} Authentication</p>
                     </div>
-                    {(customUser as any)?.createdAt && (
-                      <div>
-                        <label className="text-sm text-secondary-400">Member Since</label>
-                        <p className="text-white">
-                          {new Date((customUser as any).createdAt).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </div>
 
