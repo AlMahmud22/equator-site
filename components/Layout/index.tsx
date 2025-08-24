@@ -1,8 +1,10 @@
 import { ReactNode, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { AuthLoadingSpinner } from '@/components/auth/AuthStatus'
 
 interface LayoutProps {
   children: ReactNode
@@ -22,6 +24,7 @@ export default function Layout({
   showFooter = true,
 }: LayoutProps) {
   const router = useRouter()
+  const { status: sessionStatus } = useSession()
 
   // Initialize scroll animations
   useEffect(() => {
@@ -51,6 +54,31 @@ export default function Layout({
       return () => observer.disconnect()
     }
   }, [router.pathname])
+
+  // Show loading state during initial session check
+  if (sessionStatus === 'loading') {
+    return (
+      <>
+        <Head>
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="canonical" href={`https://equators.tech${router.asPath}`} />
+          <link rel="preload" href="/images/logo.svg" as="image" />
+        </Head>
+        
+        <div className={`min-h-screen flex flex-col bg-pitch-black text-gray-100 ${className}`}>
+          {showNavbar && <Navbar />}
+          
+          <main className="flex-1 flex items-center justify-center">
+            <AuthLoadingSpinner size="large" />
+          </main>
+          
+          {showFooter && <Footer />}
+        </div>
+      </>
+    )
+  }
 
   return (
     <>

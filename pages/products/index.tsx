@@ -2,12 +2,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Download, Star, Users, ExternalLink, Github, Calendar, Code } from 'lucide-react'
+import { Download, Star, ExternalLink, Github } from 'lucide-react'
 import Layout from '@/components/Layout'
 import OSIcon from '@/components/OSIcon'
-import { products, projectCategories } from '@/config/site'
-import { getOSSpecificDownload, formatFileSize } from '@/shared/utils'
-import { formatDate } from '@/shared/utils/dateUtils'
+import { products } from '@/config/site'
+import { getOSSpecificDownload } from '@/shared/utils'
 
 export default function ProjectsPage() {
 

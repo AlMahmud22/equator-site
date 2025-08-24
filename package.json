@@ -17,7 +17,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "analyze": "cross-env ANALYZE=true next build",
-    "export": "next export"
+    "export": "next export",
+    "db:setup": "node scripts/setup-database.js",
+    "db:health": "node scripts/db-health.js",
+    "db:cleanup": "node scripts/db-cleanup.js",
+    "db:optimize": "node -e \"require('./modules/database/DatabaseOptimizer').default.optimizeDatabase().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })\""
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
@@ -50,6 +54,7 @@
     "react-dom": "^18.3.1",
     "react-intersection-observer": "^9.13.1",
     "sharp": "^0.33.5",
+    "swr": "^2.3.6",
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
