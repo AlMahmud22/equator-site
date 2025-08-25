@@ -29,17 +29,18 @@ module.exports = {
         PORT: 3000,
         HOST: '0.0.0.0',
         TRUST_PROXY: 'true',
-        DEBUG: 'false', // Disable debug logging in production
-        NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'https://your-domain.com',
+        DEBUG: 'false',
+        NEXTAUTH_URL: 'https://equators.tech',
         COOKIE_PREFIX: 'eqs_'
       },
+
       env_production: {
         NODE_ENV: 'production',
         PORT: 3000,
         HOST: '0.0.0.0',
         TRUST_PROXY: 'true',
         DEBUG: 'false',
-        NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'https://your-domain.com',
+        NEXTAUTH_URL: 'https://equators.tech',
         COOKIE_PREFIX: 'eqs_'
       },
 
