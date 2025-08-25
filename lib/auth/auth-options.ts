@@ -95,6 +95,11 @@ export const authOptions = {
         }
       }
 
+      // If redirecting from login, go to profile page
+      if (url === baseUrl || url === `${baseUrl}/` || url.endsWith('/auth/login')) {
+        return `${baseUrl}/profile`;
+      }
+
       // Default to relative URLs
       if (url.startsWith('/')) {
         return `${baseUrl}${url}`;
@@ -105,7 +110,7 @@ export const authOptions = {
         return url;
       }
       
-      return baseUrl;
+      return `${baseUrl}/profile`;
     },
   },
   debug: process.env.NODE_ENV === "development",

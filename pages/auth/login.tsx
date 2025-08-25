@@ -24,28 +24,23 @@ export default function LoginPage() {
     setError('')
     
     try {
-      const callbackUrl = '/profile'
-      const result = await signIn(provider, { 
-        callbackUrl,
-        redirect: false 
-      })
+      // Check if there's a stored redirect for desktop apps
+      const storedRedirect = sessionStorage.getItem('authRedirect')
+      let callbackUrl = '/profile' // Default to profile page
       
-      if (result?.error) {
-        setError('Sign in failed. Please try again.')
-      } else if (result?.ok) {
-        // Check if there's a stored redirect for desktop apps
-        const storedRedirect = sessionStorage.getItem('authRedirect')
-        if (storedRedirect && storedRedirect.startsWith('equatorschatbot://')) {
-          sessionStorage.removeItem('authRedirect')
-          window.location.href = storedRedirect
-        } else {
-          router.push('/profile')
-        }
+      if (storedRedirect && storedRedirect.startsWith('equatorschatbot://')) {
+        callbackUrl = storedRedirect
+        sessionStorage.removeItem('authRedirect')
       }
+      
+      // Use NextAuth's built-in redirect functionality
+      await signIn(provider, { 
+        callbackUrl,
+        redirect: true // Let NextAuth handle the redirect
+      })
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
       console.error('OAuth error:', err)
-    } finally {
       setIsLoading('')
     }
   }
