@@ -136,7 +136,11 @@ function detectSuspiciousActivity(
   }
   
   // Check for missing or suspicious user agent
-  if (!userAgent || userAgent.length < 10) {
+  if (!userAgent || (userAgent.length < 10 && userAgent !== 'unknown')) {
+    // Don't mark our own 'unknown' fallback as suspicious (used when req isn't available)
+    if (userAgent === 'unknown' && ipAddress === 'unknown') {
+      return { isSuspicious: false }
+    }
     return { isSuspicious: true, reason: 'Missing or suspicious user agent' }
   }
   
@@ -512,9 +516,10 @@ const authOptions: NextAuthOptions = {
       
       // Log sign-out
       try {
-        const req = (this as any).req || {}
-        const ipAddress = getClientIp(req)
-        const userAgent = getUserAgent(req)
+        // NextAuth callback doesn't provide the raw req in v4/v5 callbacks reliably.
+        // Use safe fallbacks instead of trying to access (this as any).req
+        const ipAddress = 'unknown' // Fallback when request object isn't available
+        const userAgent = 'unknown'
         
         await logActivity(
           token?.id as string || null,
