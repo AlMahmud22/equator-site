@@ -14,8 +14,14 @@ const AUTH_COOLDOWN = 15 * 60 * 1000 // 15 minutes
 
 // Helper function to get client IP with safety checks for reverse proxies
 function getClientIp(req: any): string {
-  if (!req || !req.headers) {
-    return 'unknown-missing-request';
+  if (!req) {
+    console.warn('Request object is undefined in getClientIp');
+    return 'unknown-missing-request-object';
+  }
+  
+  if (!req.headers) {
+    console.warn('Request headers are undefined in getClientIp');
+    return 'unknown-missing-headers';
   }
   
   const headers = req.headers;
@@ -30,6 +36,26 @@ function getClientIp(req: any): string {
     (req.socket ? req.socket.remoteAddress : null) ||
     'unknown'
   )
+}
+
+// Helper function to safely get user agent
+function getUserAgent(req: any): string {
+  if (!req) {
+    console.warn('Request object is undefined in getUserAgent');
+    return 'unknown-missing-request-object';
+  }
+  
+  if (!req.headers) {
+    console.warn('Request headers are undefined in getUserAgent');
+    return 'unknown-missing-headers';
+  }
+  
+  // Try multiple header variations to ensure we get the user agent
+  return req.headers['user-agent'] || 
+         req.headers['User-Agent'] || 
+         req.headers['USER-AGENT'] || 
+         req.headers['user_agent'] || 
+         'unknown-user-agent';
 }
 
 // Helper function to check rate limiting
@@ -202,6 +228,8 @@ const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/login',
     error: '/auth/error',
+    signOut: '/',
+    newUser: '/profile',
   },
   
   // Enhanced for production reliability
@@ -240,6 +268,7 @@ const authOptions: NextAuthOptions = {
     }
   },
   callbacks: {
+    
     async jwt({ token, account, user, trigger }) {
       // Handle session refresh
       if (trigger === 'update') {
@@ -290,12 +319,12 @@ const authOptions: NextAuthOptions = {
       return session
     },
     
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile, email, credentials }) {
       try {
-        // Get request info for security logging with safety checks for reverse proxies
-        const req = (this as any).req || {}
-        const ipAddress = getClientIp(req)
-        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
+        // NextAuth callback doesn't provide the raw req in v4/v5 callbacks reliably.
+        // Avoid accessing (this as any).req which can be undefined. Use safe fallbacks.
+        const ipAddress = 'unknown' // Fallback when request object isn't available
+        const userAgent = 'unknown'
         
         // Rate limiting check
         if (!checkRateLimit(ipAddress)) {
@@ -312,7 +341,7 @@ const authOptions: NextAuthOptions = {
           return false
         }
         
-        // Suspicious activity detection
+  // Suspicious activity detection
         const suspiciousCheck = detectSuspiciousActivity(
           ipAddress,
           userAgent
@@ -345,7 +374,7 @@ const authOptions: NextAuthOptions = {
           }
         }
         
-        // Connect to database and update user record
+  // Connect to database and update user record
         await connectDB()
         
         // Find or create enhanced user record
@@ -397,7 +426,7 @@ const authOptions: NextAuthOptions = {
         // Save enhanced user
         await enhancedUser.save()
         
-        // Log successful sign in
+        // Log successful sign in - userId is enhancedUser._id
         await logActivity(
           enhancedUser._id.toString(),
           'sign_in_success',
@@ -405,7 +434,7 @@ const authOptions: NextAuthOptions = {
           ipAddress,
           userAgent,
           true,
-          { 
+          {
             email: user.email,
             name: user.name
           }
@@ -422,20 +451,16 @@ const authOptions: NextAuthOptions = {
       } catch (error) {
         console.error('Sign in error:', error)
         
-        // Log failed sign in
-        const req = (this as any).req || {}
-        const ipAddress = getClientIp(req)
-        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
-        
+        // Log failed sign in with safe fallbacks
         await logActivity(
-          user.id || null,
+          user?.id || null,
           'sign_in_error',
           account?.provider || 'unknown',
-          ipAddress,
-          userAgent,
+          'unknown',
+          'unknown',
           false,
-          { 
-            email: user.email,
+          {
+            email: user?.email,
             error: error instanceof Error ? error.message : 'Unknown error'
           }
         )
@@ -445,42 +470,41 @@ const authOptions: NextAuthOptions = {
     },
     
     async redirect({ url, baseUrl }) {
+      // Handle OAuth protocol errors like "access_denied"
+      const urlObj = url.startsWith('http') ? new URL(url) : null;
+      const hasError = urlObj?.searchParams?.get('error') || url.includes('error=');
+      
+      if (hasError) {
+        console.warn(`OAuth error detected in redirect: ${hasError}`);
+        // Redirect to error page with error information
+        return `${baseUrl}/auth/error?error=${hasError}`;
+      }
+      
+      // For successful logins without specific target, redirect to profile
+      if (url === baseUrl || url === `${baseUrl}/` || url.endsWith('/callback')) {
+        console.log('Redirecting to profile page after successful login');
+        return `${baseUrl}/profile`;
+      }
+      
       // Allows relative callback URLs
-      if (url.startsWith('/')) return `${baseUrl}${url}`
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+      
       // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+      else if (urlObj && urlObj.origin === baseUrl) {
+        return url;
+      }
+      
+      // Default to profile for successful OAuth flows
+      return `${baseUrl}/profile`;
     },
   },
   
   // Enhanced events for logging
   events: {
-    async signIn({ user, account, isNewUser }) {
-      const provider = account?.provider || 'unknown'
-      console.log(`✅ User signed in: ${user.email} via ${provider}${isNewUser ? ' (new user)' : ''}`)
-      
-      // Log successful sign-in
-      try {
-        const req = (this as any).req || {}
-        const ipAddress = getClientIp(req)
-        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
-        
-        await logActivity(
-          user.id || null,
-          'sign_in_success',
-          provider,
-          ipAddress,
-          userAgent,
-          true,
-          { 
-            email: user.email,
-            isNewUser,
-            timestamp: new Date().toISOString()
-          }
-        )
-      } catch (error) {
-        console.error('Failed to log sign-in event:', error)
-      }
+    async createUser(message) {
+      console.log(`✅ New user created: ${message.user.email}`)
     },
     
     async signOut({ token }) {
@@ -490,7 +514,7 @@ const authOptions: NextAuthOptions = {
       try {
         const req = (this as any).req || {}
         const ipAddress = getClientIp(req)
-        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
+        const userAgent = getUserAgent(req)
         
         await logActivity(
           token?.id as string || null,

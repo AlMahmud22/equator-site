@@ -160,9 +160,8 @@ const EnhancedUserSchema = new Schema<IEnhancedUser>({
   // API access
   apiKeys: [{
     keyId: {
-      type: String,
-      required: true,
-      unique: true
+  type: String,
+  required: true
     },
     name: {
       type: String,
@@ -228,6 +227,8 @@ EnhancedUserSchema.index({ email: 1 })
 EnhancedUserSchema.index({ provider: 1, providerId: 1 })
 EnhancedUserSchema.index({ createdAt: -1 })
 EnhancedUserSchema.index({ lastLoginAt: -1 })
-EnhancedUserSchema.index({ 'apiKeys.keyId': 1 })
+// Ensure apiKeys.keyId is unique only when present. sparse: true makes the unique constraint ignore documents
+// where the indexed field is missing or null, preventing duplicate key errors for empty arrays.
+EnhancedUserSchema.index({ 'apiKeys.keyId': 1 }, { unique: true, sparse: true })
 
 export default mongoose.models.EnhancedUser || mongoose.model<IEnhancedUser>('EnhancedUser', EnhancedUserSchema)

@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IAccessLog extends Document {
-  userId?: mongoose.Types.ObjectId
+  // userId may be a MongoDB ObjectId (for internal users) or a provider string id (Google account id)
+  userId?: mongoose.Types.ObjectId | string
   action: 'sign_in_success' | 'sign_in_error' | 'sign_in_rate_limited' | 'sign_in_suspicious' | 'sign_out' | 'session_refresh' | 'api_access' | 'profile_update' | 'password_change' | 'account_deletion'
   loginProvider: 'email' | 'google' | 'github' | 'unknown'
   ipAddress: string
@@ -33,7 +34,8 @@ export interface IAccessLog extends Document {
 
 const AccessLogSchema = new Schema<IAccessLog>({
   userId: {
-    type: Schema.Types.ObjectId,
+    // Allow either ObjectId or string provider id. Use Mixed to avoid cast errors when provider id (string)
+    type: Schema.Types.Mixed,
     ref: 'EnhancedUser',
     required: false,
     index: true

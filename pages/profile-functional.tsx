@@ -13,6 +13,7 @@ import {
   Globe,
   Monitor,
   Mail,
+  Github,
   ExternalLink
 } from 'lucide-react'
 import Layout from '@/components/Layout'
@@ -27,14 +28,12 @@ export default function ProfilePage() {
     if (sessionStatus === 'loading') return // Still loading
     
     if (sessionStatus === 'unauthenticated') {
-      console.log('User is not authenticated, redirecting to login page')
-      router.push('/auth/login?callbackUrl=/profile')
+      router.push('/auth/login')
       return
     }
     
-    console.log('User is authenticated:', session?.user?.email)
     setIsLoading(false)
-  }, [sessionStatus, router, session])
+  }, [sessionStatus, router])
 
   // Handle sign out
   const handleSignOut = async () => {

@@ -299,6 +299,7 @@ export async function middleware(request: NextRequest) {
   
   // Redirect to login if accessing a protected route without auth
   if (isProtectedRoute && !token) {
+    console.log(`Redirecting unauthenticated user from protected route: ${pathname}`);
     const url = new URL(AUTH_CONFIG.PAGES.SIGN_IN, request.url);
     url.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(url);
