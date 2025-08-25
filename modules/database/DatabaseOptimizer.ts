@@ -1,11 +1,8 @@
 import mongoose from 'mongoose';
 import User from './models/User';
 import UserSession from './models/UserSession';
-import App from './models/App';
 import AppToken from './models/AppToken';
-import AppPermission from './models/AppPermission';
 import AccessLog from './models/AccessLog';
-import TrainingLog from './models/TrainingLog';
 
 /**
  * Database Schema Optimization and Migration Utility
@@ -384,7 +381,6 @@ export class DatabaseOptimizer {
       const collections = ['users', 'usersessions', 'apps', 'apptokens', 'apppermissions', 'accesslogs', 'traininglogs'];
       
       for (const collectionName of collections) {
-        const collection = db.collection(collectionName);
         const stats = await db.command({ collStats: collectionName });
         
         analysis.collections[collectionName] = {

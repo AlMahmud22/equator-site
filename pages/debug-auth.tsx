@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'
 import Layout from '@/components/Layout'
 import { useAuth } from '@/components/auth/AuthHook'
 
@@ -139,18 +140,18 @@ export default function AuthDebugPage() {
                     >
                       🚪 Sign Out
                     </button>
-                    <a
+                    <Link
                       href="/profile"
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 inline-block"
                     >
                       👤 View Profile
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="/settings"
                       className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 inline-block"
                     >
                       ⚙️ Settings
-                    </a>
+                    </Link>
                   </>
                 )}
               </div>

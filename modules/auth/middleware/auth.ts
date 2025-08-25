@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { parse as parseCookies } from 'cookie'
 import { getTokenPayload } from '@/modules/auth/services/auth'
 
 interface AuthenticatedRequest extends NextApiRequest {
@@ -53,7 +52,7 @@ export function withOptionalAuth(handler: AuthenticatedHandler) {
       }
 
       return handler(req as AuthenticatedRequest, res)
-    } catch (error) {
+    } catch {
       // For optional auth, we continue even if token is invalid
       return handler(req as AuthenticatedRequest, res)
     }

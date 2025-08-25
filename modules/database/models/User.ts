@@ -591,7 +591,7 @@ UserSchema.methods.createApiKey = function(name: string, permissions: string[]) 
 }
 
 // Method to update analytics
-UserSchema.methods.updateAnalytics = function(sessionDuration: number, country?: string, device?: string) {
+UserSchema.methods.updateAnalytics = function(sessionDuration: number, country?: string) {
   this.analytics = this.analytics || {
     totalLogins: 0,
     uniqueDevices: 0,

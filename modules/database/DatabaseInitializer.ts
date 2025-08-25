@@ -238,7 +238,7 @@ export class DatabaseInitializer {
           avgDocumentSize: stats.avgObjSize || 0,
           indexCount: stats.nindexes || 0
         };
-      } catch (error) {
+      } catch {
         info[collection.name] = { error: 'Could not get stats' };
       }
     }

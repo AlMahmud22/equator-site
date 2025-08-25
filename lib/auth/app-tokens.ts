@@ -128,7 +128,7 @@ export async function generateTokenPair(
   const refreshToken = jwt.sign(refreshTokenPayload, VERIFIED_APP_JWT_SECRET);
   
   // Store tokens in database
-  const accessTokenDoc = await AppToken.create({
+  await AppToken.create({
     appId,
     userId,
     tokenType: 'access',
@@ -142,7 +142,7 @@ export async function generateTokenPair(
     status: 'active'
   });
   
-  const refreshTokenDoc = await AppToken.create({
+  await AppToken.create({
     appId,
     userId,
     tokenType: 'refresh',
@@ -200,7 +200,7 @@ export async function verifyAppToken(token: string, expectedType?: 'access' | 'r
     }
     
     return decoded;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -298,7 +298,7 @@ export async function revokeToken(token: string, reason?: string): Promise<boole
     });
     
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

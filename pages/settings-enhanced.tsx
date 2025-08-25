@@ -9,7 +9,6 @@ import {
   Key, 
   Bell, 
   Eye, 
-  Globe, 
   Save,
   Check,
   AlertCircle,
@@ -17,7 +16,6 @@ import {
   Trash2,
   Plus,
   Monitor,
-  Clock,
   X
 } from 'lucide-react'
 import Layout from '@/components/Layout'
@@ -535,7 +533,7 @@ export default function SettingsPage() {
                             <div>
                               <h4 className="font-medium text-blue-500 mb-1">OAuth Authentication</h4>
                               <p className="text-sm text-blue-200/80">
-                                You're currently signed in with {session?.user?.email ? 'OAuth' : 'social'} authentication. 
+                                You&apos;re currently signed in with {session?.user?.email ? 'OAuth' : 'social'} authentication. 
                                 This is already quite secure!
                               </p>
                             </div>
@@ -760,7 +758,7 @@ export default function SettingsPage() {
                 <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
                   <h4 className="font-medium text-green-400 mb-2">API Key Created</h4>
                   <p className="text-sm text-green-300 mb-3">
-                    Copy this key now - it won't be shown again!
+                    Copy this key now - it won&apos;t be shown again!
                   </p>
                   <div className="flex items-center space-x-2">
                     <code className="flex-1 bg-secondary-800 text-green-400 px-3 py-2 rounded text-sm font-mono">

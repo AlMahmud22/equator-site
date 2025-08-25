@@ -32,7 +32,7 @@ export function verifyToken(token: string): JWTPayload {
       audience: 'equators-users'
     })
     return decoded as JWTPayload
-  } catch (error) {
+  } catch {
     throw new Error('Invalid or expired token')
   }
 }
@@ -55,7 +55,7 @@ export function getTokenPayload(req: NextApiRequest): JWTPayload | null {
     if (!token) return null
     
     return verifyToken(token)
-  } catch (error) {
+  } catch {
     return null
   }
 }

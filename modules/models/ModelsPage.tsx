@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, Grid, List, Download, Star, Users, Calendar, HardDrive, Check, Loader } from 'lucide-react'
+import { Search, Filter, Grid, List, Download, Star, Users, HardDrive, Check, Loader } from 'lucide-react'
 import { cn } from '@/shared/utils'
-import { formatDate } from '@/shared/utils/dateUtils'
 
 // Types
 interface AIModel {
@@ -255,7 +254,6 @@ function ModelCard({ model, layout, onDownload, isDownloading }: ModelCardProps)
 
 // Main ModelsPage Component
 export default function ModelsPage({ className }: ModelsPageProps) {
-  const [models, setModels] = useState<AIModel[]>(mockModels)
   const [filteredModels, setFilteredModels] = useState<AIModel[]>(mockModels)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<string>('all')
@@ -263,7 +261,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
 
   // Filter models based on search and filter criteria
   useEffect(() => {
-    let filtered = models
+    let filtered = mockModels
 
     // Apply text search
     if (searchQuery.trim()) {
@@ -287,7 +285,7 @@ export default function ModelsPage({ className }: ModelsPageProps) {
     }
 
     setFilteredModels(filtered)
-  }, [searchQuery, selectedFilter, models])
+  }, [searchQuery, selectedFilter])
 
   const handleDownload = (modelId: string) => {
     // Implement download logic here
@@ -295,12 +293,12 @@ export default function ModelsPage({ className }: ModelsPageProps) {
   }
 
   const filterOptions = [
-    { value: 'all', label: 'All Models', count: models.length },
-    { value: 'text-generation', label: 'Text Generation', count: models.filter(m => m.modelType === 'text-generation').length },
-    { value: 'image-generation', label: 'Image Generation', count: models.filter(m => m.modelType === 'image-generation').length },
-    { value: 'embedding', label: 'Embeddings', count: models.filter(m => m.modelType === 'embedding').length },
-    { value: 'classification', label: 'Classification', count: models.filter(m => m.modelType === 'classification').length },
-    { value: 'local', label: 'Downloaded', count: models.filter(m => m.isLocal).length },
+    { value: 'all', label: 'All Models', count: mockModels.length },
+    { value: 'text-generation', label: 'Text Generation', count: mockModels.filter((m: AIModel) => m.modelType === 'text-generation').length },
+    { value: 'image-generation', label: 'Image Generation', count: mockModels.filter((m: AIModel) => m.modelType === 'image-generation').length },
+    { value: 'embedding', label: 'Embeddings', count: mockModels.filter((m: AIModel) => m.modelType === 'embedding').length },
+    { value: 'classification', label: 'Classification', count: mockModels.filter((m: AIModel) => m.modelType === 'classification').length },
+    { value: 'local', label: 'Downloaded', count: mockModels.filter((m: AIModel) => m.isLocal).length },
   ]
 
   return (

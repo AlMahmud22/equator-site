@@ -143,7 +143,6 @@ export class SecurityMonitor {
     try {
       const now = new Date()
       const lastHour = new Date(now.getTime() - 60 * 60 * 1000)
-      const lastDay = new Date(now.getTime() - 24 * 60 * 60 * 1000)
       
       // Check for multiple failed attempts from same IP
       const failedAttempts = await AccessLog.countDocuments({

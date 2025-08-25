@@ -60,7 +60,7 @@ export async function redirectToProvider(req: NextApiRequest, res: NextApiRespon
   const { provider, redirect } = req.query
   
   // Get base URL and normalize it (remove trailing slashes and /api paths)
-  let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://equators.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://equators.tech';
 
   // Clean up baseUrl - remove trailing slash and any /api suffix
   // baseUrl = baseUrl.replace(/\/+$/, '') // Remove trailing slashes

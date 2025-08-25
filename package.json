@@ -21,7 +21,10 @@
     "db:setup": "node scripts/setup-database.js",
     "db:health": "node scripts/db-health.js",
     "db:cleanup": "node scripts/db-cleanup.js",
-    "db:optimize": "node -e \"require('./modules/database/DatabaseOptimizer').default.optimizeDatabase().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })\""
+    "db:optimize": "node -e \"require('./modules/database/DatabaseOptimizer').default.optimizeDatabase().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })\"",
+    "deploy:check": "node scripts/pre-deploy.js",
+    "deploy:prod": "node scripts/deploy.js",
+    "health": "curl -f http://localhost:3000/api/health || echo 'Health endpoint not available'"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",

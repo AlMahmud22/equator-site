@@ -7,7 +7,6 @@ import { motion, Variants } from 'framer-motion'
 import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code } from 'lucide-react'
 import { mainProjects } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
-import { getOSSpecificDownload } from '@/shared/utils'
 import BlizzardOverlay from '@/components/BlizzardOverlay'
 
 const containerVariants: Variants = {
@@ -58,8 +57,6 @@ export default function ProductShowcase() {
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {mainProjects.map((project) => {
-              const download = getOSSpecificDownload(project.id)
-              
               return (
                 <motion.div
                   key={project.id}

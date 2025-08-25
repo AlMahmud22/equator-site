@@ -1,4 +1,3 @@
-import { authOptions } from "./auth-options";
 import { ExtendedSession, ExtendedUser } from "./types";
 
 /**

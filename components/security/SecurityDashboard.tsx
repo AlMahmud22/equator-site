@@ -1,14 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Shield, 
   Activity, 
   AlertTriangle, 
-  TrendingUp, 
   Users, 
-  Globe, 
-  Clock, 
-  Eye,
   CheckCircle,
   XCircle,
   BarChart3
@@ -63,11 +59,7 @@ export default function SecurityDashboard() {
   const [error, setError] = useState<string | null>(null)
   const [timeRange, setTimeRange] = useState(7) // days
 
-  useEffect(() => {
-    fetchSecurityData()
-  }, [timeRange])
-
-  const fetchSecurityData = async () => {
+  const fetchSecurityData = useCallback(async () => {
     setLoading(true)
     setError(null)
     
@@ -99,7 +91,11 @@ export default function SecurityDashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeRange])
+
+  useEffect(() => {
+    fetchSecurityData()
+  }, [fetchSecurityData])
 
   const handleResolveAlert = async (alertId: string) => {
     try {
