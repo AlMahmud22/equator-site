@@ -32,9 +32,26 @@ const port = parseInt(process.env.PORT || '3000', 10);
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
+// Helper for safely handling proxy headers
+const trustProxy = process.env.TRUST_PROXY === 'true' || process.env.NODE_ENV === 'production';
+console.log(`🔒 Proxy headers trusted: ${trustProxy}`);
+
 app.prepare().then(() => {
   createServer(async (req, res) => {
     try {
+      // Handle proxy headers for proper IP detection
+      if (trustProxy && req.headers['x-forwarded-for']) {
+        const realIp = req.headers['x-forwarded-for'].split(',')[0].trim();
+        req.realIp = realIp;
+        console.debug(`Proxy request from: ${realIp}`);
+      }
+
+      // Handle proxy protocol
+      if (trustProxy && req.headers['x-forwarded-proto'] === 'https') {
+        req.secure = true;
+        req.protocol = 'https';
+      }
+
       const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     } catch (err) {

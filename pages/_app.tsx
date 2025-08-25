@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { siteConfig } from '@/config/site'
-import { AuthProvider } from '@/shared/hooks/useAuth'
 import '@/styles/globals.css'
 
 // Font configurations
@@ -85,9 +84,7 @@ export default function App({ Component, pageProps }: AppProps) {
       
       <div className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>
         <SessionProvider session={pageProps.session}>
-          <AuthProvider>
-            <Component {...pageProps} />
-          </AuthProvider>
+          <Component {...pageProps} />
         </SessionProvider>
       </div>
     </>

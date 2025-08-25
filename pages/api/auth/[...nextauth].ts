@@ -12,13 +12,22 @@ const authAttempts = new Map<string, { count: number; lastAttempt: number }>()
 const MAX_AUTH_ATTEMPTS = 5
 const AUTH_COOLDOWN = 15 * 60 * 1000 // 15 minutes
 
-// Helper function to get client IP
+// Helper function to get client IP with safety checks for reverse proxies
 function getClientIp(req: any): string {
+  if (!req || !req.headers) {
+    return 'unknown-missing-request';
+  }
+  
+  const headers = req.headers;
+  // Safely access headers with multiple fallbacks for reverse proxy setups
   return (
-    req.headers['x-forwarded-for']?.split(',')[0] ||
-    req.headers['x-real-ip'] ||
-    req.connection?.remoteAddress ||
-    req.socket?.remoteAddress ||
+    (headers['x-forwarded-for'] ? headers['x-forwarded-for'].split(',')[0].trim() : null) ||
+    (headers['cf-connecting-ip'] ? headers['cf-connecting-ip'] : null) ||
+    headers['x-real-ip'] ||
+    headers['x-client-ip'] ||
+    headers['x-cluster-client-ip'] ||
+    (req.connection ? req.connection.remoteAddress : null) ||
+    (req.socket ? req.socket.remoteAddress : null) ||
     'unknown'
   )
 }
@@ -198,32 +207,33 @@ const authOptions: NextAuthOptions = {
   // Enhanced for production reliability
   debug: process.env.NODE_ENV === 'development',
   
-  // Use database strategy for production reliability
+  // Production-ready configuration for reverse proxy setup
   useSecureCookies: process.env.NODE_ENV === 'production',
+  // Adding proxy awareness for production environment
   cookies: {
     sessionToken: {
-      name: 'next-auth.session-token',
+      name: `${process.env.COOKIE_PREFIX || ''}next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain cookies in production
         path: '/',
         secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 24 * 60 * 60 // 30 days
       }
     },
     callbackUrl: {
-      name: 'next-auth.callback-url',
+      name: `${process.env.COOKIE_PREFIX || ''}next-auth.callback-url`,
       options: {
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production'
       }
     },
     csrfToken: {
-      name: 'next-auth.csrf-token',
+      name: `${process.env.COOKIE_PREFIX || ''}next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production'
       }
@@ -282,10 +292,10 @@ const authOptions: NextAuthOptions = {
     
     async signIn({ user, account }) {
       try {
-        // Get request info for security logging
+        // Get request info for security logging with safety checks for reverse proxies
         const req = (this as any).req || {}
         const ipAddress = getClientIp(req)
-        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
         
         // Rate limiting check
         if (!checkRateLimit(ipAddress)) {
@@ -415,7 +425,7 @@ const authOptions: NextAuthOptions = {
         // Log failed sign in
         const req = (this as any).req || {}
         const ipAddress = getClientIp(req)
-        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
         
         await logActivity(
           user.id || null,
@@ -453,7 +463,7 @@ const authOptions: NextAuthOptions = {
       try {
         const req = (this as any).req || {}
         const ipAddress = getClientIp(req)
-        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
         
         await logActivity(
           user.id || null,
@@ -480,7 +490,7 @@ const authOptions: NextAuthOptions = {
       try {
         const req = (this as any).req || {}
         const ipAddress = getClientIp(req)
-        const userAgent = req.headers?.['user-agent'] || 'Unknown'
+        const userAgent = req?.headers ? (req.headers['user-agent'] || req.headers['User-Agent'] || 'Unknown') : 'Unknown'
         
         await logActivity(
           token?.id as string || null,

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, User, Settings, LogOut } from 'lucide-react'
+import { ChevronDown, User, Settings, LogOut, Download } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { cn } from '@/shared/utils'
@@ -160,6 +160,15 @@ export default function ProfileIcon({ user, className, onDropdownChange }: Profi
                 >
                   <Settings className="w-4 h-4 mr-3" />
                   <span>Settings</span>
+                </Link>
+                
+                <Link
+                  href="/products"
+                  className="flex items-center px-4 py-3 text-sm text-secondary-300 hover:text-white hover:bg-secondary-800/50 transition-colors duration-200"
+                  onClick={closeDropdown}
+                >
+                  <Download className="w-4 h-4 mr-3" />
+                  <span>Downloads</span>
                 </Link>
                 
                 <div className="border-t border-secondary-700/30 my-1"></div>
