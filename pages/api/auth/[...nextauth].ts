@@ -7,8 +7,6 @@ import EnhancedUser from '@/modules/database/models/EnhancedUser'
 import AccessLog from '@/modules/database/models/AccessLog'
 import connectDB from '@/modules/database/connection'
 
-// SIMPLIFIED: Removed complex rate limiting and IP detection that was causing OAuth issues
-
 // Helper function to log authentication activities
 async function logActivity(
   userId: string | null,
@@ -41,109 +39,7 @@ async function logActivity(
   }
 }
 
-// Helper function to safely get user agent
-function getUserAgent(req: any): string {
-  if (!req) {
-    console.warn('Request object is undefined in getUserAgent');
-    return 'unknown-missing-request-object';
-  }
-  
-  if (!req.headers) {
-    console.warn('Request headers are undefined in getUserAgent');
-    return 'unknown-missing-headers';
-  }
-  
-  // Try multiple header variations to ensure we get the user agent
-  return req.headers['user-agent'] || 
-         req.headers['User-Agent'] || 
-         req.headers['USER-AGENT'] || 
-         req.headers['user_agent'] || 
-         'unknown-user-agent';
-}
-
-// Helper function to check rate limiting
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const attempts = authAttempts.get(ip)
-  
-  if (!attempts) {
-    authAttempts.set(ip, { count: 1, lastAttempt: now })
-    return true
-  }
-  
-  // Reset if cooldown period has passed
-  if (now - attempts.lastAttempt > AUTH_COOLDOWN) {
-    authAttempts.set(ip, { count: 1, lastAttempt: now })
-    return true
-  }
-  
-  // Check if max attempts exceeded
-  if (attempts.count >= MAX_AUTH_ATTEMPTS) {
-    return false
-  }
-  
-  // Increment attempt count
-  attempts.count++
-  attempts.lastAttempt = now
-  return true
-}
-
-// Helper function to log activity
-async function logActivity(
-  userId: string | null,
-  action: string,
-  provider: string,
-  ipAddress: string,
-  userAgent: string,
-  success: boolean,
-  metadata?: any
-) {
-  try {
-    await connectDB()
-    
-    const logEntry = new AccessLog({
-      userId,
-      action,
-      loginProvider: provider,
-      ipAddress,
-      userAgent,
-      success,
-      metadata: metadata || {},
-      timestamp: new Date()
-    })
-    
-    await logEntry.save()
-  } catch (error) {
-    console.error('Failed to log activity:', error)
-  }
-}
-
-// Helper function to detect suspicious activity
-function detectSuspiciousActivity(
-  ipAddress: string,
-  userAgent: string
-): { isSuspicious: boolean; reason?: string } {
-  // Only check for obvious bot patterns, be more permissive
-  const botPatterns = [
-    /bot/i,
-    /crawler/i,
-    /spider/i,
-    /scraper/i,
-    /curl/i,
-    /wget/i,
-    /python-requests/i
-  ]
-  
-  // Only block obvious bots, allow everything else
-  if (botPatterns.some(pattern => pattern.test(userAgent))) {
-    // Even for bots, just log but don't block in production for now
-    return { isSuspicious: false, reason: 'Bot-like user agent detected (allowing)' }
-  }
-  
-  // Be very permissive - allow unknown user agents and IPs
-  // This prevents legitimate users from being blocked
-  return { isSuspicious: false }
-}
+// Environment validation
 if (!process.env.MONGODB_URI) {
   throw new Error('Missing MONGODB_URI environment variable')
 }
@@ -163,10 +59,9 @@ let clientPromise: Promise<MongoClient>
 
 try {
   client = new MongoClient(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 30000, // Increased timeout
+    serverSelectionTimeoutMS: 30000,
     connectTimeoutMS: 30000,
     socketTimeoutMS: 30000,
-    // Simple SSL configuration - only use one option
     ssl: true,
     retryWrites: true,
     retryReads: true,
