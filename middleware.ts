@@ -12,8 +12,11 @@ const protectedRoutes = [
   /^\/dashboard(\/|$)/,
   /^\/profile(\/|$)/,
   /^\/profile-enhanced(\/|$)/,
+  /^\/settings(\/|$)/,
+  /^\/enhanced-settings(\/|$)/,
   /^\/api\/protected(\/|$)/,
-  /^\/api\/profile(\/|$)/
+  /^\/api\/profile(\/|$)/,
+  /^\/api\/settings(\/|$)/
 ];
 
 // Routes that are public but shouldn't be accessed when authenticated
@@ -305,9 +308,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
   
-  // Redirect to dashboard if accessing auth routes while authenticated
+  // Redirect to profile if accessing auth routes while authenticated
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    console.log(`🔄 Redirecting authenticated user from auth route to profile`);
+    return NextResponse.redirect(new URL("/profile", request.url));
   }
   
   return response;

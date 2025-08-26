@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import connectDB from '@/modules/database/connection'
-import EnhancedUser from '@/modules/database/models/EnhancedUser'
+import UnifiedUser from '@/lib/auth/unified-user-model'
+import { requireAdmin } from '@/lib/auth/admin-utils'
 import crypto from 'crypto'
 
 interface ApiResponse<T = any> {
@@ -26,18 +25,13 @@ export default async function handler(
   res: NextApiResponse<ApiResponse>
 ) {
   try {
-    // Get session
-    const session = await getServerSession(req, res, authOptions)
-    if (!session?.user?.email) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      })
-    }
+    // Only allow admin access to API keys
+    const session = await requireAdmin(req, res)
+    if (!session || !session.user?.email) return
 
     await connectDB()
 
-    const user = await EnhancedUser.findOne({ email: session.user.email })
+    const user = await UnifiedUser.findOne({ email: session.user.email })
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -92,6 +86,7 @@ export default async function handler(
           : ['read']
 
         // Check if user already has maximum number of keys (10)
+        if (!user.apiKeys) user.apiKeys = []
         const activeKeys = user.apiKeys.filter((k: any) => k.isActive)
         if (activeKeys.length >= 10) {
           return res.status(400).json({

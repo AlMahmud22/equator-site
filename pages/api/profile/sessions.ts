@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import connectDB from '@/modules/database/connection'
-import EnhancedUser from '@/modules/database/models/EnhancedUser'
+import UnifiedUser from '@/lib/auth/unified-user-model'
+import { isAdmin } from '@/lib/auth/admin'
 
 interface ApiResponse<T = any> {
   success: boolean
@@ -25,9 +26,17 @@ export default async function handler(
       })
     }
 
+    // Check admin permissions
+    if (!isAdmin(session.user.email, (session.user as any).id)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin privileges required for session management'
+      })
+    }
+
     await connectDB()
 
-    const user = await EnhancedUser.findOne({ email: session.user.email })
+    const user = await UnifiedUser.findOne({ email: session.user.email })
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -38,12 +47,12 @@ export default async function handler(
     if (req.method === 'GET') {
       // Get all active sessions
       try {
+        if (!user.sessions) user.sessions = []
         const sessions = user.sessions
           .filter((s: any) => s.isActive)
           .map((session: any) => ({
             sessionToken: session.sessionToken.substring(0, 8) + '...', // Only show partial token
             deviceInfo: session.deviceInfo,
-            ipAddress: session.ipAddress,
             createdAt: session.createdAt,
             lastActiveAt: session.lastActiveAt,
             isActive: session.isActive

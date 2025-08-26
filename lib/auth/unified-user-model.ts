@@ -23,7 +23,55 @@ export interface IUnifiedUser extends Document {
     theme: 'light' | 'dark' | 'system'
     newsletter: boolean
     notifications: boolean
+    profileVisibility: 'public' | 'private'
+    showEmail: boolean
+    showActivity: boolean
+    securityAlerts: boolean
+    twoFactorEnabled: boolean
+    loginAlerts: boolean
+    emailNotifications: boolean
+    language: string
   }
+
+  // Privacy settings (admin only)
+  privacy?: {
+    dataCollection: boolean
+    analytics: boolean
+    marketing: boolean
+  }
+
+  // Profile information
+  profile?: {
+    bio: string
+    visibility: 'public' | 'private'
+    showEmail: boolean
+    showActivity: boolean
+  }
+  
+  // Admin-only features
+  apiKeys: {
+    keyId: string
+    name: string
+    keyHash: string
+    permissions: string[]
+    createdAt: Date
+    lastUsedAt?: Date
+    expiresAt?: Date
+    isActive: boolean
+  }[]
+  
+  sessions: {
+    sessionToken: string
+    deviceInfo?: {
+      browser?: string
+      os?: string
+      device?: string
+      ip?: string
+    }
+    createdAt: Date
+    lastActiveAt: Date
+    isActive: boolean
+  }[]
   
   // Activity tracking (simplified)
   lastLoginAt: Date
@@ -114,8 +162,139 @@ const UnifiedUserSchema = new Schema<IUnifiedUser>({
     notifications: {
       type: Boolean,
       default: true
+    },
+    profileVisibility: {
+      type: String,
+      enum: ['public', 'private'],
+      default: 'public'
+    },
+    showEmail: {
+      type: Boolean,
+      default: true
+    },
+    showActivity: {
+      type: Boolean,
+      default: true
+    },
+    securityAlerts: {
+      type: Boolean,
+      default: true
+    },
+    twoFactorEnabled: {
+      type: Boolean,
+      default: false
+    },
+    loginAlerts: {
+      type: Boolean,
+      default: true
+    },
+    emailNotifications: {
+      type: Boolean,
+      default: true
+    },
+    language: {
+      type: String,
+      default: 'en'
     }
   },
+
+  // Privacy settings (admin only)
+  privacy: {
+    dataCollection: {
+      type: Boolean,
+      default: false
+    },
+    analytics: {
+      type: Boolean,
+      default: false
+    },
+    marketing: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  // Profile information
+  profile: {
+    bio: {
+      type: String,
+      maxlength: 500,
+      default: ''
+    },
+    visibility: {
+      type: String,
+      enum: ['public', 'private'],
+      default: 'public'
+    },
+    showEmail: {
+      type: Boolean,
+      default: false
+    },
+    showActivity: {
+      type: Boolean,
+      default: true
+    }
+  },
+  
+  // API Keys (admin only)
+  apiKeys: [{
+    keyId: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    keyHash: {
+      type: String,
+      required: true
+    },
+    permissions: [{
+      type: String,
+      enum: ['read', 'write', 'delete', 'admin']
+    }],
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    lastUsedAt: {
+      type: Date
+    },
+    expiresAt: {
+      type: Date
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    }
+  }],
+  
+  // Sessions tracking
+  sessions: [{
+    sessionToken: {
+      type: String,
+      required: true
+    },
+    deviceInfo: {
+      browser: String,
+      os: String,
+      device: String,
+      ip: String
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    lastActiveAt: {
+      type: Date,
+      default: Date.now
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    }
+  }],
   
   // Activity
   lastLoginAt: {

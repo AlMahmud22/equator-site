@@ -1,4 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import { isAdmin } from '@/lib/auth/admin-utils'
 import connectToDatabase from '../../../modules/database/mongodb';
 import { SecurityMonitor } from '../../../lib/security/SecurityMonitor';
 import { verifyAppToken, getClientIP } from '../../../lib/auth/app-tokens';
@@ -18,6 +21,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await connectToDatabase;
     
+    // Check for session-based authentication first (for web app)
+    const session = await getServerSession(req, res, authOptions)
+    if (session?.user?.email) {
+      const userIsAdmin = isAdmin(session.user.email, session.user.name || undefined)
+      return res.status(200).json({
+        success: true,
+        isAdmin: userIsAdmin,
+        role: userIsAdmin ? 'admin' : 'user',
+        permissions: userIsAdmin ? ['read', 'write', 'admin', 'api-keys', 'privacy'] : ['read', 'write']
+      })
+    }
+    
+    // Fall back to token-based authentication (for apps)
     // Extract access token from Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

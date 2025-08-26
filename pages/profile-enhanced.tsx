@@ -405,15 +405,6 @@ export default function ProfilePage() {
                       <Settings className="w-4 h-4" />
                       <span>Settings</span>
                     </button>
-                    {isAdmin && (
-                      <button
-                        onClick={() => router.push('/apps/dashboard')}
-                        className="flex items-center space-x-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-                      >
-                        <Monitor className="w-4 h-4" />
-                        <span>App Dashboard</span>
-                      </button>
-                    )}
                   </>
                 )}
               </div>
@@ -528,11 +519,11 @@ export default function ProfilePage() {
                         </button>
                         {isAdmin && (
                           <button
-                            onClick={() => router.push('/apps/dashboard')}
+                            onClick={() => setActiveTab('apps')}
                             className="w-full flex items-center space-x-3 px-4 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors"
                           >
                             <Plus className="w-4 h-4" />
-                            <span>App Dashboard</span>
+                            <span>Register New App</span>
                           </button>
                         )}
                       </div>
@@ -617,18 +608,58 @@ export default function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-white">Registered Apps</h3>
                     <button 
-                      onClick={() => router.push('/apps/dashboard')}
+                      onClick={() => setShowNewAppForm(true)}
                       className="flex items-center space-x-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
                     >
-                      <Monitor className="w-4 h-4" />
-                      <span>Open App Dashboard</span>
+                      <Plus className="w-4 h-4" />
+                      <span>Register New App</span>
                     </button>
                   </div>
+
+                  {/* New App Form */}
+                  {showNewAppForm && (
+                    <div className="bg-secondary-700/50 rounded-lg p-6 border border-secondary-600">
+                      <h4 className="text-lg font-medium text-white mb-4">Register New App</h4>
+                      <div className="grid md:grid-cols-2 gap-4 mb-4">
+                        <input
+                          type="text"
+                          placeholder="App Name"
+                          value={newAppForm.name}
+                          onChange={(e) => setNewAppForm({ ...newAppForm, name: e.target.value })}
+                          className="px-4 py-2 bg-secondary-700 border border-secondary-600 rounded-lg text-white"
+                        />
+                        <select
+                          value={newAppForm.appType}
+                          onChange={(e) => setNewAppForm({ ...newAppForm, appType: e.target.value })}
+                          className="px-4 py-2 bg-secondary-700 border border-secondary-600 rounded-lg text-white"
+                        >
+                          <option value="desktop">Desktop App</option>
+                          <option value="mobile">Mobile App</option>
+                          <option value="web">Web App</option>
+                          <option value="api">API Client</option>
+                        </select>
+                      </div>
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={createApp}
+                          className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
+                        >
+                          Register App
+                        </button>
+                        <button
+                          onClick={() => setShowNewAppForm(false)}
+                          className="px-4 py-2 bg-secondary-600 hover:bg-secondary-500 text-white rounded-lg transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Apps List */}
                   {registeredApps.length > 0 ? (
                     <div className="space-y-4">
-                      {registeredApps.slice(0, 3).map((app) => (
+                      {registeredApps.map((app) => (
                         <div key={app._id} className="bg-secondary-700/50 rounded-lg p-6">
                           <div className="flex items-center justify-between mb-4">
                             <div>
@@ -650,6 +681,9 @@ export default function ProfilePage() {
                               </span>
                             </div>
                           </div>
+                          <div className="text-sm text-secondary-400">
+                            Client ID: <code className="bg-secondary-800 px-2 py-1 rounded">{app.clientId}</code>
+                          </div>
                           <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-secondary-600">
                             <div className="text-center">
                               <div className="text-lg font-semibold text-primary-400">{app.stats.totalTokensIssued}</div>
@@ -668,16 +702,6 @@ export default function ProfilePage() {
                           </div>
                         </div>
                       ))}
-                      {registeredApps.length > 3 && (
-                        <div className="text-center">
-                          <button
-                            onClick={() => router.push('/apps/dashboard')}
-                            className="text-primary-400 hover:text-primary-300 text-sm font-medium"
-                          >
-                            View all {registeredApps.length} apps →
-                          </button>
-                        </div>
-                      )}
                     </div>
                   ) : (
                     <div className="text-center py-12">

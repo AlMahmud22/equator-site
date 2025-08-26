@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
-import EnhancedUser from '@/modules/database/models/EnhancedUser'
+import UnifiedUser from '@/lib/auth/unified-user-model'
 import SecurityMonitor from '@/lib/security/SecurityMonitor'
 import connectDB from '@/modules/database/connection'
 import crypto from 'crypto'
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'GET') {
       // Get user's active sessions
-      const user = await EnhancedUser.findById(userId)
+      const user = await UnifiedUser.findById(userId)
       if (!user) {
         return res.status(404).json({
           success: false,
@@ -106,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (action === 'create-session') {
         // Create a new session (called during login)
-        const user = await EnhancedUser.findById(userId)
+        const user = await UnifiedUser.findById(userId)
         if (!user) {
           return res.status(404).json({
             success: false,
@@ -166,7 +166,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           })
         }
 
-        const user = await EnhancedUser.findById(userId)
+        const user = await UnifiedUser.findById(userId)
         if (!user) {
           return res.status(404).json({
             success: false,
@@ -213,7 +213,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { sessionToken, terminateAll } = req.body
       const clientInfo = getClientInfo(req)
 
-      const user = await EnhancedUser.findById(userId)
+      const user = await UnifiedUser.findById(userId)
       if (!user) {
         return res.status(404).json({
           success: false,
