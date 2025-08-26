@@ -231,4 +231,33 @@ EnhancedUserSchema.index({ lastLoginAt: -1 })
 // where the indexed field is missing or null, preventing duplicate key errors for empty arrays.
 EnhancedUserSchema.index({ 'apiKeys.keyId': 1 }, { unique: true, sparse: true })
 
+// Method to track downloads without duplicates
+EnhancedUserSchema.methods.trackDownload = function(productId: string, productName: string, fileSize?: number, version?: string) {
+  // Always add new download entry (allowing multiple downloads of same product)
+  this.downloadLogs.push({
+    projectId: productId,
+    projectName: productName,
+    downloadedAt: new Date(),
+    fileSize,
+    version
+  })
+  
+  // Keep only last 100 downloads to prevent collection from growing too large
+  if (this.downloadLogs.length > 100) {
+    this.downloadLogs = this.downloadLogs.slice(-100)
+  }
+  
+  return this.save()
+}
+
+// Method to update profile info
+EnhancedUserSchema.methods.updateProfile = function(updates: { name?: string; image?: string; displayName?: string; bio?: string }) {
+  if (updates.name) this.name = updates.name
+  if (updates.image) this.image = updates.image
+  if (updates.displayName) this.displayName = updates.displayName
+  if (updates.bio) this.bio = updates.bio
+  
+  return this.save()
+}
+
 export default mongoose.models.EnhancedUser || mongoose.model<IEnhancedUser>('EnhancedUser', EnhancedUserSchema)

@@ -17,7 +17,7 @@ async function fixApiKeyIndex() {
 
   console.log('🔌 Connecting to MongoDB...');
   console.log(`🔗 URI: ${process.env.MONGODB_URI.substring(0, 20)}...`);
-  
+
   const client = new MongoClient(process.env.MONGODB_URI, {
     serverSelectionTimeoutMS: 30000,
     connectTimeoutMS: 30000,
@@ -33,20 +33,20 @@ async function fixApiKeyIndex() {
 
     const db = client.db();
     const collection = db.collection('enhancedusers');
-    
+
     // List existing indexes to find the one we need to drop
     console.log('📋 Listing current indexes...');
     const indexes = await collection.indexes();
     console.log(JSON.stringify(indexes, null, 2));
-    
+
     // Find the index on apiKeys.keyId
-    const indexToRemove = indexes.find(idx => 
+    const indexToRemove = indexes.find(idx =>
       idx.key && idx.key['apiKeys.keyId'] === 1 && !idx.sparse
     );
-    
+
     if (indexToRemove) {
       console.log(`🗑️ Found index to remove: ${indexToRemove.name}`);
-      
+
       try {
         await collection.dropIndex(indexToRemove.name);
         console.log('✅ Successfully dropped the old index');
@@ -57,7 +57,7 @@ async function fixApiKeyIndex() {
     } else {
       console.log('ℹ️ No problematic index found on apiKeys.keyId');
     }
-    
+
     // Create new sparse unique index
     console.log('🔧 Creating new sparse unique index on apiKeys.keyId...');
     try {
@@ -73,21 +73,21 @@ async function fixApiKeyIndex() {
         console.log('ℹ️ Index already exists. This is likely fine if it\'s properly configured as sparse.');
       }
     }
-    
+
     // Verify the indexes again
     console.log('📋 Verifying updated indexes...');
     const updatedIndexes = await collection.indexes();
-    
-    const sparseIndex = updatedIndexes.find(idx => 
+
+    const sparseIndex = updatedIndexes.find(idx =>
       idx.key && idx.key['apiKeys.keyId'] === 1 && idx.sparse === true
     );
-    
+
     if (sparseIndex) {
       console.log('✅ Verification successful: sparse unique index exists on apiKeys.keyId');
     } else {
       console.error('❌ Verification failed: couldn\'t find sparse unique index');
     }
-    
+
   } catch (error) {
     console.error('❌ Error:', error);
   } finally {
