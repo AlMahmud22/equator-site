@@ -133,8 +133,8 @@ const UserSchema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
-    index: true
+    lowercase: true
+    // Removed duplicate index: true - using schema.index instead
   },
   authType: {
     type: String,
@@ -249,7 +249,7 @@ const UserSchema = new Schema<IUser>({
         type: Number,
         default: 0
       },
-      errors: {
+      errorCount: { // Renamed from 'errors' to avoid reserved keyword
         type: Number,
         default: 0
       }
@@ -258,12 +258,12 @@ const UserSchema = new Schema<IUser>({
   
   // Enhanced security fields
   lastLoginAt: {
-    type: Date,
-    index: true
+    type: Date
+    // Removed duplicate index: true - using schema.index instead
   },
   lastLoginIp: {
-    type: String,
-    index: true
+    type: String
+    // Removed duplicate index: true - using schema.index instead
   },
   loginAttempts: {
     type: Number,
@@ -434,21 +434,21 @@ const UserSchema = new Schema<IUser>({
   }
 })
 
-// Enhanced indexes for performance and security queries
+// Enhanced indexes for performance and security queries - consolidated to remove duplicates
+UserSchema.index({ email: 1 }, { unique: true }); // Consolidated email index
 UserSchema.index({ createdAt: -1 })
 UserSchema.index({ lastLoginAt: -1 })
 UserSchema.index({ isLocked: 1, lockedUntil: 1 })
-UserSchema.index({ accountStatus: 1 })
+UserSchema.index({ accountStatus: 1 }) // Replaced duplicate field-level index
 UserSchema.index({ 'activeSessions.sessionId': 1 })
 
-// New performance indexes
+// Performance indexes with duplicates removed
 UserSchema.index({ 'apiUsage.totalRequests': -1 })
-UserSchema.index({ 'apiUsage.apiKeys.keyId': 1 })
-UserSchema.index({ 'apiUsage.apiKeys.isActive': 1 })
+UserSchema.index({ 'apiUsage.apiKeys.keyId': 1 }, { sparse: true }) // Using sparse for better performance
 UserSchema.index({ 'subscription.plan': 1, 'subscription.status': 1 })
 UserSchema.index({ 'analytics.engagementScore': -1 })
-UserSchema.index({ 'analytics.lastActiveDate': -1 })
-UserSchema.index({ lastLoginIp: 1 })
+UserSchema.index({ 'analytics.lastActiveDate': -1 }) // Removed duplicate
+UserSchema.index({ lastLoginIp: 1 }) // Replaced duplicate field-level index
 UserSchema.index({ emailVerified: 1, accountStatus: 1 })
 
 // Compound indexes for complex queries

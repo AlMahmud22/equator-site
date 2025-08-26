@@ -161,13 +161,31 @@ function detectSuspiciousRequest(request: NextRequest): { suspicious: boolean; r
 }
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const ip = getClientIp(request)
-  
-  // Handle auth errors properly - allow access to error page without token
-  if (pathname.startsWith('/auth/error')) {
-    return NextResponse.next()
-  }
+  try {
+    const { pathname } = request.nextUrl;
+    const ip = getClientIp(request)
+    
+    // Handle connection and parse errors
+    request.signal.addEventListener('abort', () => {
+      console.debug(`Request aborted for path: ${pathname}`);
+      // Let the request terminate naturally
+    });
+    
+    // Handle auth errors properly - allow access to error page without token
+    if (pathname.startsWith('/auth/error')) {
+      return NextResponse.next()
+    }
+    
+    // Handle HTTP/2 PRI method or non-WebSocket upgrade requests
+    if (request.method === 'PRI') {
+      return new NextResponse('HTTP/2 not supported directly', { status: 501 });
+    }
+    
+    // Special handling for upgrade headers but maintain WebSocket support
+    const upgradeHeader = request.headers.get('upgrade');
+    if (upgradeHeader && upgradeHeader.toLowerCase() !== 'websocket') {
+      return new NextResponse('Upgrade protocol not supported', { status: 426 });
+    }
   
   // Handle preflight OPTIONS requests for CORS
   if (request.method === 'OPTIONS' && externalApiRoutes.some(pattern => pattern.test(pathname))) {
@@ -315,6 +333,12 @@ export async function middleware(request: NextRequest) {
   }
   
   return response;
+  } catch (error) {
+    console.error('Middleware error:', error);
+    // Return a generic error response but allow the request to continue
+    // This prevents the middleware from crashing the entire application
+    return NextResponse.next();
+  }
 }
 
 // Configure matcher

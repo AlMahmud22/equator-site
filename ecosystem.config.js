@@ -9,12 +9,12 @@ module.exports = {
       max_memory_restart: '1G',
 
       // Enhanced restart policy to prevent crash loops
-      min_uptime: '30s', // Increased from 10s
-      max_restarts: 5, // Reduced from 10 to prevent endless restart loops
-      restart_delay: 5000, // 5 second delay between restarts
+      min_uptime: '120s', // Increased to 2 minutes for stability
+      max_restarts: 3, // Reduced to prevent endless restart loops
+      restart_delay: 10000, // 10 second delay between restarts
 
       // Exponential backoff for restart delays
-      exp_backoff_restart_delay: 100,
+      exp_backoff_restart_delay: 500,
 
       // Kill and listen timeouts
       kill_timeout: 10000, // Increased to 10s for graceful shutdown
@@ -23,6 +23,10 @@ module.exports = {
       // Process management
       wait_ready: true, // Wait for app to emit 'ready' event
       shutdown_with_message: true,
+      stop_exit_codes: [0],
+      env_production: {
+        NODE_ENV: 'production',
+      },
 
       env: {
         NODE_ENV: 'production',

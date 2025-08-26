@@ -75,8 +75,14 @@ const envFile = loadEnvironmentVariables();
 
 // Global error handlers for uncaught exceptions and rejections
 process.on('uncaughtException', (error) => {
-  log.error('UNCAUGHT EXCEPTION - Server will attempt graceful shutdown:', error);
-
+  log.error('UNCAUGHT EXCEPTION:', error);
+  
+  // Don't exit for mongoose warnings
+  if (error.name === 'MongooseError' || error.message.includes('Mongoose')) {
+    log.warn('Mongoose warning detected, continuing execution:', error.message);
+    return;
+  }
+  
   // Try to gracefully close the server
   if (global.server) {
     global.server.close(() => {
@@ -84,11 +90,11 @@ process.on('uncaughtException', (error) => {
       process.exit(1);
     });
 
-    // Force exit after 10 seconds if graceful shutdown fails
+    // Force exit after 30 seconds if graceful shutdown fails
     setTimeout(() => {
       log.error('Force exit after uncaught exception timeout');
       process.exit(1);
-    }, 10000);
+    }, 30000);
   } else {
     process.exit(1);
   }
@@ -96,7 +102,21 @@ process.on('uncaughtException', (error) => {
 
 process.on('unhandledRejection', (reason, promise) => {
   log.error('UNHANDLED REJECTION at:', promise, 'reason:', reason);
-  // Don't exit immediately for unhandled rejections, just log them
+  
+  // Filter out non-critical mongoose/db warnings
+  if (reason && (
+    (reason.name === 'MongooseError' || 
+     String(reason).includes('Mongoose') || 
+     String(reason).includes('MongoDB'))
+  )) {
+    log.warn('Non-critical database warning detected:', String(reason).substring(0, 200));
+    return;
+  }
+  
+  // Don't exit for unhandled promises in production to maintain stability
+  if (process.env.NODE_ENV === 'production') {
+    log.error('Production mode - continuing despite unhandled rejection');
+  }
 });
 
 // Graceful shutdown handling for PM2
@@ -273,6 +293,32 @@ async function startServer(retryCount = 0) {
           req.secure = true;
           req.protocol = 'https';
         }
+        
+        // Handle ECONNRESET and Parse Error warnings
+        req.on('error', (err) => {
+          if (err.code === 'ECONNRESET') {
+            log.debug('Client connection reset:', err.message);
+            // Just let the request terminate naturally
+            return;
+          }
+          log.warn('Request error:', err.message);
+        });
+        
+        // Handle PRI/Upgrade parse errors
+        if (req.method === 'PRI' || req.headers.upgrade) {
+          if (req.method === 'PRI') {
+            log.debug('HTTP/2 PRI method detected, responding with 501');
+            res.writeHead(501);
+            res.end('HTTP/2 not supported');
+            return;
+          } else if (req.headers.upgrade && req.headers.upgrade.toLowerCase() !== 'websocket') {
+            // Handle non-websocket upgrades
+            log.debug(`Non-WebSocket upgrade requested: ${req.headers.upgrade}`);
+            res.writeHead(426);
+            res.end('Upgrade protocol not supported');
+            return;
+          }
+        }
 
         const parsedUrl = parse(req.url, true);
         await handle(req, res, parsedUrl);
@@ -333,6 +379,12 @@ async function startServer(retryCount = 0) {
 
       // Health check endpoint logging
       log.info('✅ Server startup completed successfully');
+      
+      // Signal to PM2 that the app is ready (used with wait_ready: true)
+      if (process.send) {
+        log.info('✉️ Sending ready signal to PM2');
+        process.send('ready');
+      }
     });
 
   } catch (error) {

@@ -32,6 +32,7 @@ interface ApiResponse {
   message: string
   data?: any
   errors?: Array<{ field: string; message: string }>
+  errorType?: string // Added for better client-side error handling
 }
 
 export default async function handler(
@@ -125,20 +126,64 @@ export default async function handler(
           if (security.loginAlerts !== undefined) user.preferences.loginAlerts = security.loginAlerts
         }
 
-        // Save changes
-        await user.save()
+        // Save changes with retry logic
+        let savedUser = null;
+        let retries = 0;
+        const maxRetries = 3;
+        
+        while (retries < maxRetries) {
+          try {
+            savedUser = await user.save();
+            break; // Success - exit loop
+          } catch (saveError: any) {
+            retries++;
+            
+            // Check for duplicate key errors or validation errors
+            if (saveError.name === 'MongoError' || saveError.name === 'MongoServerError') {
+              if (saveError.code === 11000) {
+                return res.status(409).json({
+                  success: false,
+                  message: 'Duplicate value detected',
+                  errors: [{ field: Object.keys(saveError.keyValue)[0], message: 'This value already exists' }]
+                });
+              }
+            }
+            
+            // Check for validation errors
+            if (saveError.name === 'ValidationError') {
+              const validationErrors = Object.keys(saveError.errors).map(field => ({
+                field,
+                message: saveError.errors[field].message
+              }));
+              
+              return res.status(400).json({
+                success: false,
+                message: 'Validation error',
+                errors: validationErrors
+              });
+            }
+            
+            // If we've reached max retries, throw the error
+            if (retries === maxRetries) {
+              throw saveError;
+            }
+            
+            // Wait before retrying (exponential backoff)
+            await new Promise(resolve => setTimeout(resolve, 100 * Math.pow(2, retries)));
+          }
+        }
 
-        console.log(`✅ Settings updated for user: ${session.user.email}`)
+        console.log(`✅ Settings updated for user: ${session.user.email}`);
 
         return res.status(200).json({
           success: true,
           message: 'Settings updated successfully',
           data: {
             profile: {
-              displayName: user.name,
-              bio: user.bio || '',
-              company: user.company || '',
-              location: user.location || ''
+              displayName: savedUser.name || user.name,
+              bio: savedUser.bio || user.bio || '',
+              company: savedUser.company || user.company || '',
+              location: savedUser.location || user.location || ''
             }
           }
         })
@@ -159,11 +204,33 @@ export default async function handler(
       message: 'Method not allowed'
     })
 
-  } catch (error) {
-    console.error('Settings API error:', error)
-    return res.status(500).json({
+  } catch (error: any) {
+    console.error('Settings API error:', error);
+    
+    // Enhanced error reporting
+    let errorMessage = 'Internal server error';
+    let statusCode = 500;
+    
+    // Handle specific error types
+    if (error.name === 'MongoNetworkError' || error.name === 'MongooseServerSelectionError') {
+      errorMessage = 'Database connection error, please try again later';
+      console.error('MongoDB connection issue:', error.message);
+    } else if (error.name === 'ValidationError') {
+      statusCode = 400;
+      errorMessage = 'Validation error';
+    } else if (error.name === 'CastError') {
+      statusCode = 400;
+      errorMessage = `Invalid format for field: ${error.path}`;
+    }
+    
+    return res.status(statusCode).json({
       success: false,
-      message: 'Internal server error'
-    })
+      message: errorMessage,
+      errorType: error.name,
+      errors: error.errors ? Object.keys(error.errors).map(field => ({
+        field,
+        message: error.errors[field].message
+      })) : undefined
+    });
   }
 }

@@ -44,10 +44,40 @@ export const authOptions = {
   session: {
     strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // Update session every 24 hours
   },
   jwt: {
     secret: AUTH_CONFIG.JWT.SECRET,
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 60 * 24 * 60 * 60, // 60 days (longer than session for cookie refresh)
+    encode: async ({ secret, token, maxAge }: any) => {
+      const encodedToken = require('jsonwebtoken').sign(token, secret, {
+        algorithm: 'HS512',
+        expiresIn: maxAge
+      });
+      return encodedToken;
+    },
+    decode: async ({ secret, token }: any) => {
+      try {
+        const decodedToken = require('jsonwebtoken').verify(token, secret, {
+          algorithms: ['HS512', 'HS256'] // Support both algorithms during transition
+        });
+        return decodedToken;
+      } catch (error) {
+        console.error('JWT decode error:', error);
+        return null;
+      }
+    }
+  },
+  cookies: {
+    sessionToken: {
+      name: `${process.env.COOKIE_PREFIX || 'next-auth'}.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
   },
   pages: {
     signIn: AUTH_CONFIG.PAGES.SIGN_IN,
