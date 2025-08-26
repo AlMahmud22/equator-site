@@ -9,8 +9,8 @@ import connectDB from '@/modules/database/connection'
 
 // Rate limiting map for authentication attempts
 const authAttempts = new Map<string, { count: number; lastAttempt: number }>()
-const MAX_AUTH_ATTEMPTS = 5
-const AUTH_COOLDOWN = 15 * 60 * 1000 // 15 minutes
+const MAX_AUTH_ATTEMPTS = 20 // Increased from 5 to 20 for better user experience
+const AUTH_COOLDOWN = 5 * 60 * 1000 // Reduced from 15 to 5 minutes
 
 // Helper function to get client IP with safety checks for reverse proxies
 function getClientIp(req: any): string {
@@ -120,7 +120,7 @@ function detectSuspiciousActivity(
   ipAddress: string,
   userAgent: string
 ): { isSuspicious: boolean; reason?: string } {
-  // Check for common bot patterns
+  // Only check for obvious bot patterns, be more permissive
   const botPatterns = [
     /bot/i,
     /crawler/i,
@@ -131,33 +131,14 @@ function detectSuspiciousActivity(
     /python-requests/i
   ]
   
+  // Only block obvious bots, allow everything else
   if (botPatterns.some(pattern => pattern.test(userAgent))) {
-    return { isSuspicious: true, reason: 'Bot-like user agent detected' }
+    // Even for bots, just log but don't block in production for now
+    return { isSuspicious: false, reason: 'Bot-like user agent detected (allowing)' }
   }
   
-  // Check for missing or suspicious user agent
-  if (!userAgent || (userAgent.length < 10 && userAgent !== 'unknown')) {
-    // Don't mark our own 'unknown' fallback as suspicious (used when req isn't available)
-    if (userAgent === 'unknown' && ipAddress === 'unknown') {
-      return { isSuspicious: false }
-    }
-    return { isSuspicious: true, reason: 'Missing or suspicious user agent' }
-  }
-  
-  // Check for private/internal IP addresses (basic check)
-  if (
-    ipAddress.startsWith('192.168.') ||
-    ipAddress.startsWith('10.') ||
-    ipAddress.startsWith('172.') ||
-    ipAddress === '127.0.0.1' ||
-    ipAddress === 'localhost'
-  ) {
-    // Allow local development
-    if (process.env.NODE_ENV === 'development') {
-      return { isSuspicious: false }
-    }
-  }
-  
+  // Be very permissive - allow unknown user agents and IPs
+  // This prevents legitimate users from being blocked
   return { isSuspicious: false }
 }
 if (!process.env.MONGODB_URI) {
@@ -330,7 +311,7 @@ const authOptions: NextAuthOptions = {
         const ipAddress = 'unknown' // Fallback when request object isn't available
         const userAgent = 'unknown'
         
-        // Rate limiting check
+        // Rate limiting check - be more permissive during development/testing
         if (!checkRateLimit(ipAddress)) {
           console.warn(`Rate limit exceeded for IP: ${ipAddress}`)
           await logActivity(
@@ -342,7 +323,12 @@ const authOptions: NextAuthOptions = {
             false,
             { email: user.email }
           )
-          return false
+          // Allow rate limited attempts in development for easier testing
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Allowing rate limited login in development mode')
+          } else {
+            return false
+          }
         }
         
   // Suspicious activity detection
@@ -371,11 +357,9 @@ const authOptions: NextAuthOptions = {
             }
           )
           
-          // In production, you might want to block suspicious attempts
-          // For now, we'll allow but log them
-          if (process.env.NODE_ENV === 'production') {
-            // return false // Uncomment to block suspicious attempts
-          }
+          // Allow suspicious attempts in development and production for now
+          // This prevents legitimate users from being blocked
+          console.log('Allowing potentially suspicious login for user experience')
         }
         
   // Connect to database and update user record

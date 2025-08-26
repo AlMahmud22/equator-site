@@ -33,7 +33,7 @@ export default function AuthError() {
   const getErrorMessage = (errorCode: string): string => {
     const errorMessages: { [key: string]: string } = {
       'Configuration': 'There is a problem with the server configuration.',
-      'AccessDenied': 'Access denied. You do not have permission to sign in.',
+      'AccessDenied': 'Access denied. This could be due to OAuth app configuration or security restrictions.',
       'Verification': 'The verification token has expired or has already been used.',
       'Default': 'An error occurred during authentication.',
       'Cannot read properties of undefined (reading \'x-forwarded-for\')': 'Server configuration issue. Please try again.',
@@ -46,6 +46,25 @@ export default function AuthError() {
     }
     
     return errorMessages[errorCode] || errorMessages['Default']
+  }
+
+  const getErrorSuggestions = (errorCode: string): string[] => {
+    if (errorCode === 'AccessDenied') {
+      return [
+        'Check if your OAuth app (GitHub/Google) is configured correctly',
+        'Verify the callback URLs in your OAuth app settings',
+        'Make sure the OAuth app is not restricted to specific users/organizations',
+        'Check if your email address is authorized in the OAuth app settings',
+        'Try using a different browser or clearing cookies',
+        'Contact the administrator if this persists'
+      ]
+    }
+    return [
+      'Try again in a few minutes',
+      'Clear your browser cookies and cache',
+      'Try using a different browser',
+      'Contact support if the problem persists'
+    ]
   }
 
   const getErrorSolution = (errorCode: string): string => {
@@ -116,10 +135,17 @@ export default function AuthError() {
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-300">Error Details</h3>
                     <div className="mt-2 text-sm text-red-200/80">
-                      <code className="bg-red-500/20 px-2 py-1 rounded text-xs block mb-2">
+                      <code className="bg-red-500/20 px-2 py-1 rounded text-xs block mb-3">
                         {error}
                       </code>
-                      <p className="text-xs">{getErrorSolution(error)}</p>
+                      <div className="space-y-1">
+                        <p className="font-medium text-red-300 text-xs mb-2">Troubleshooting suggestions:</p>
+                        {getErrorSuggestions(error).map((suggestion, index) => (
+                          <p key={index} className="text-xs text-red-200/70">
+                            • {suggestion}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
