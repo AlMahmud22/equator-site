@@ -7,35 +7,38 @@ import EnhancedUser from '@/modules/database/models/EnhancedUser'
 import AccessLog from '@/modules/database/models/AccessLog'
 import connectDB from '@/modules/database/connection'
 
-// Rate limiting map for authentication attempts
-const authAttempts = new Map<string, { count: number; lastAttempt: number }>()
-const MAX_AUTH_ATTEMPTS = 20 // Increased from 5 to 20 for better user experience
-const AUTH_COOLDOWN = 5 * 60 * 1000 // Reduced from 15 to 5 minutes
+// SIMPLIFIED: Removed complex rate limiting and IP detection that was causing OAuth issues
 
-// Helper function to get client IP with safety checks for reverse proxies
-function getClientIp(req: any): string {
-  if (!req) {
-    console.warn('Request object is undefined in getClientIp');
-    return 'unknown-missing-request-object';
+// Helper function to log authentication activities
+async function logActivity(
+  userId: string | null,
+  action: string,
+  provider: string,
+  ipAddress: string,
+  userAgent: string,
+  success: boolean,
+  metadata?: any
+) {
+  try {
+    if (!userId && !success) {
+      return // Skip logging for failed attempts without user ID
+    }
+    
+    const logEntry = new AccessLog({
+      userId,
+      action,
+      loginProvider: provider,
+      ipAddress,
+      userAgent,
+      success,
+      metadata: metadata || {},
+      timestamp: new Date()
+    })
+    
+    await logEntry.save()
+  } catch (error) {
+    console.error('Failed to log activity:', error)
   }
-  
-  if (!req.headers) {
-    console.warn('Request headers are undefined in getClientIp');
-    return 'unknown-missing-headers';
-  }
-  
-  const headers = req.headers;
-  // Safely access headers with multiple fallbacks for reverse proxy setups
-  return (
-    (headers['x-forwarded-for'] ? headers['x-forwarded-for'].split(',')[0].trim() : null) ||
-    (headers['cf-connecting-ip'] ? headers['cf-connecting-ip'] : null) ||
-    headers['x-real-ip'] ||
-    headers['x-client-ip'] ||
-    headers['x-cluster-client-ip'] ||
-    (req.connection ? req.connection.remoteAddress : null) ||
-    (req.socket ? req.socket.remoteAddress : null) ||
-    'unknown'
-  )
 }
 
 // Helper function to safely get user agent
@@ -183,7 +186,8 @@ const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      allowDangerousEmailAccountLinking: true,
+      // SECURITY FIX: Remove dangerous email linking in production
+      allowDangerousEmailAccountLinking: process.env.NODE_ENV === 'development',
       authorization: {
         params: {
           scope: 'read:user user:email',
@@ -193,7 +197,8 @@ const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      allowDangerousEmailAccountLinking: true,
+      // SECURITY FIX: Remove dangerous email linking in production
+      allowDangerousEmailAccountLinking: process.env.NODE_ENV === 'development',
       authorization: {
         params: {
           scope: 'openid email profile',
@@ -222,13 +227,13 @@ const authOptions: NextAuthOptions = {
   
   // Production-ready configuration for reverse proxy setup
   useSecureCookies: process.env.NODE_ENV === 'production',
-  // Adding proxy awareness for production environment
+  // COOKIE FIX: Use more compatible cookie settings for OAuth
   cookies: {
     sessionToken: {
       name: `${process.env.COOKIE_PREFIX || ''}next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain cookies in production
+        sameSite: 'lax', // More compatible than 'none' for OAuth flows
         path: '/',
         secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 24 * 60 * 60 // 30 days
@@ -237,7 +242,7 @@ const authOptions: NextAuthOptions = {
     callbackUrl: {
       name: `${process.env.COOKIE_PREFIX || ''}next-auth.callback-url`,
       options: {
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        sameSite: 'lax', // More compatible than 'none'
         path: '/',
         secure: process.env.NODE_ENV === 'production'
       }
@@ -246,7 +251,7 @@ const authOptions: NextAuthOptions = {
       name: `${process.env.COOKIE_PREFIX || ''}next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        sameSite: 'lax', // More compatible than 'none'
         path: '/',
         secure: process.env.NODE_ENV === 'production'
       }
@@ -304,65 +309,16 @@ const authOptions: NextAuthOptions = {
       return session
     },
     
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account }) {
       try {
-        // NextAuth callback doesn't provide the raw req in v4/v5 callbacks reliably.
-        // Avoid accessing (this as any).req which can be undefined. Use safe fallbacks.
-        const ipAddress = 'unknown' // Fallback when request object isn't available
-        const userAgent = 'unknown'
+        // SIMPLIFIED: Remove complex IP detection and rate limiting that might block legitimate users
+        console.log('OAuth sign-in attempt:', { 
+          provider: account?.provider, 
+          email: user?.email,
+          name: user?.name
+        })
         
-        // Rate limiting check - be more permissive during development/testing
-        if (!checkRateLimit(ipAddress)) {
-          console.warn(`Rate limit exceeded for IP: ${ipAddress}`)
-          await logActivity(
-            user.id || null,
-            'sign_in_rate_limited',
-            account?.provider || 'unknown',
-            ipAddress,
-            userAgent,
-            false,
-            { email: user.email }
-          )
-          // Allow rate limited attempts in development for easier testing
-          if (process.env.NODE_ENV === 'development') {
-            console.log('Allowing rate limited login in development mode')
-          } else {
-            return false
-          }
-        }
-        
-  // Suspicious activity detection
-        const suspiciousCheck = detectSuspiciousActivity(
-          ipAddress,
-          userAgent
-        )
-        
-        if (suspiciousCheck.isSuspicious) {
-          console.warn(`Suspicious activity detected: ${suspiciousCheck.reason}`, {
-            ip: ipAddress,
-            userAgent,
-            email: user.email
-          })
-          
-          await logActivity(
-            user.id || null,
-            'sign_in_suspicious',
-            account?.provider || 'unknown',
-            ipAddress,
-            userAgent,
-            false,
-            { 
-              email: user.email,
-              reason: suspiciousCheck.reason
-            }
-          )
-          
-          // Allow suspicious attempts in development and production for now
-          // This prevents legitimate users from being blocked
-          console.log('Allowing potentially suspicious login for user experience')
-        }
-        
-  // Connect to database and update user record
+        // Connect to database and update user record
         await connectDB()
         
         // Find or create enhanced user record
@@ -395,12 +351,12 @@ const authOptions: NextAuthOptions = {
           })
         }
         
-        // Update login history
+        // Update login history (simplified)
         enhancedUser.loginHistory.push({
           timestamp: new Date(),
           provider: account?.provider || 'unknown',
-          ipAddress,
-          userAgent
+          ipAddress: 'unknown', // Simplified to avoid IP detection issues
+          userAgent: 'unknown'
         })
         
         // Limit login history to last 50 entries
@@ -414,13 +370,13 @@ const authOptions: NextAuthOptions = {
         // Save enhanced user
         await enhancedUser.save()
         
-        // Log successful sign in - userId is enhancedUser._id
+        // Simple success logging
         await logActivity(
           enhancedUser._id.toString(),
           'sign_in_success',
           account?.provider || 'unknown',
-          ipAddress,
-          userAgent,
+          'unknown',
+          'unknown',
           true,
           {
             email: user.email,
@@ -428,16 +384,15 @@ const authOptions: NextAuthOptions = {
           }
         )
         
-        console.log('Successful sign in:', { 
+        console.log('✅ Successful OAuth sign in:', { 
           provider: account?.provider, 
           email: user?.email,
-          name: user?.name,
-          ip: ipAddress
+          name: user?.name
         })
         
         return true
       } catch (error) {
-        console.error('Sign in error:', error)
+        console.error('❌ OAuth sign in error:', error)
         
         // Log failed sign in with safe fallbacks
         await logActivity(

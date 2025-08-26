@@ -63,17 +63,18 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
   env: {
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    // CRITICAL SECURITY FIX: DO NOT expose OAuth client secrets to client-side
+    // Only expose public configuration that's safe for the browser
     API_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || process.env.API_BASE_URL || (
       process.env.NODE_ENV === 'production' 
       ? 'https://equators.tech' 
       : process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     ),
-    JWT_SECRET: process.env.JWT_SECRET,
-    MONGODB_URI: process.env.MONGODB_URI,
+    // OAuth client IDs are public and safe to expose
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    // REMOVED: OAuth client secrets, JWT secrets, and MongoDB URI are server-side only
+    // These should never be exposed to the client-side bundle
   },
   // Allow external redirects for OAuth
   async redirects() {

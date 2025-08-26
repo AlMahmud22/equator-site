@@ -4,9 +4,11 @@ node_modules/
 # Environment files
 .env
 .env.local
+.env.local.example
 .env.development.local
 .env.test.local
 .env.production.local
+.enc.example
 
 # Next.js
 .next/

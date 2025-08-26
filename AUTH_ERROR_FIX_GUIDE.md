@@ -7,6 +7,7 @@ The authentication error you're experiencing is typically caused by OAuth app co
 ## 🔍 Root Cause Analysis
 
 The `AccessDenied` error usually occurs due to:
+
 1. **OAuth App Configuration**: Incorrect callback URLs or app restrictions
 2. **Environment Variables**: Missing or incorrect OAuth credentials
 3. **Security Restrictions**: OAuth app limited to specific users/organizations
@@ -17,12 +18,14 @@ The `AccessDenied` error usually occurs due to:
 I've made the following changes to make authentication more permissive:
 
 ### 1. **Reduced Security Restrictions**
+
 - Increased rate limiting from 5 to 20 attempts
 - Reduced cooldown from 15 to 5 minutes
 - Made suspicious activity detection more permissive
 - Disabled blocking of legitimate users in development mode
 
 ### 2. **Improved Error Handling**
+
 - Enhanced error page with troubleshooting suggestions
 - Better logging for debugging authentication issues
 - More descriptive error messages
@@ -30,6 +33,7 @@ I've made the following changes to make authentication more permissive:
 ## 🛠️ Configuration Steps
 
 ### Step 1: Check Environment Variables
+
 Ensure your `.env.local` file has correct values:
 
 ```bash
@@ -41,7 +45,7 @@ NEXTAUTH_SECRET=your-nextauth-secret-32-chars-minimum
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
 
-# Google OAuth App  
+# Google OAuth App
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 
@@ -75,6 +79,7 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/equators-tech?re
 ### Step 4: Database Check
 
 Ensure MongoDB is accessible:
+
 ```bash
 # Test connection
 npm run db:health
@@ -87,6 +92,7 @@ npm run db:health
    - Try incognito/private browsing mode
 
 2. **Test authentication**:
+
    ```bash
    npm run dev
    # Navigate to http://localhost:3000/auth/login
@@ -103,6 +109,7 @@ npm run db:health
 If issues persist, check the following:
 
 ### Server Logs
+
 ```bash
 # Check NextAuth logs
 npm run dev
@@ -110,10 +117,12 @@ npm run dev
 ```
 
 ### OAuth App Status
+
 - **GitHub**: Ensure app is active and not suspended
 - **Google**: Ensure app is published or you're in test users list
 
 ### Network Issues
+
 - Check if you're behind a corporate firewall
 - Try different network connection
 - Disable browser extensions temporarily
@@ -143,6 +152,7 @@ If none of these solutions work:
 ## ✅ Success Indicators
 
 You'll know it's working when:
+
 - Login redirects to GitHub/Google without errors
 - You're redirected back to the profile page
 - No "Access Denied" errors appear
