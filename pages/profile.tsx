@@ -264,8 +264,25 @@ export default function ProfilePage() {
   }
 
   if (status === 'unauthenticated') {
-    router.push('/auth/login')
-    return null
+    return (
+      <Layout>
+        <div className="min-h-screen bg-primary-950 pt-20">
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-md mx-auto bg-secondary-900 rounded-lg p-8 text-center">
+              <User className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+              <h1 className="text-2xl font-bold text-white mb-4">Access Profile</h1>
+              <p className="text-gray-400 mb-6">Please sign in to view your profile and settings.</p>
+              <button
+                onClick={() => router.push('/auth/login')}
+                className="btn-primary w-full"
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
   }
 
   // Define available tabs based on admin status

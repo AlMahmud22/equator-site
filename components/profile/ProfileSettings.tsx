@@ -1,59 +1,96 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, Edit3, Save, X, Camera, Shield, Lock } from 'lucide-react'
-import { useProfile, useProfileUpdate } from '@/hooks/useProfile'
+import { User, Edit3, Save, X, Camera, Shield, Lock, CheckCircle, AlertTriangle, Eye, EyeOff, Globe, Users } from 'lucide-react'
+import { useSettings, useSettingsUpdate } from '@/hooks/useSettings'
+import { useSession } from 'next-auth/react'
+import { isAdminEmail } from '@/lib/auth/admin-utils'
 
 interface ProfileSettingsProps {
   onClose?: () => void
 }
 
 export default function ProfileSettings({ onClose }: ProfileSettingsProps) {
-  const { profile, mutate } = useProfile()
-  const { updateProfile, isUpdating, updateError } = useProfileUpdate()
+  const { data: session } = useSession()
+  const { settings, mutate, isLoading } = useSettings()
+  const { updateSettings, isUpdating, updateError, updateSuccess, clearMessages } = useSettingsUpdate()
   
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
-    displayName: profile?.user?.displayName || profile?.user?.name || '',
-    bio: profile?.user?.bio || '',
-    preferences: {
-      theme: profile?.user?.preferences?.theme || 'dark',
-      newsletter: profile?.user?.preferences?.newsletter || false,
-      notifications: profile?.user?.preferences?.notifications !== false,
-      privacy: {
-        showEmail: profile?.user?.preferences?.privacy?.showEmail || false,
-        showActivity: profile?.user?.preferences?.privacy?.showActivity !== false
-      }
+    displayName: '',
+    bio: '',
+    theme: 'dark' as 'dark' | 'light' | 'system',
+    language: 'en',
+    profileVisibility: 'public' as 'public' | 'private',
+    emailNotifications: true,
+    securityAlerts: true,
+    showEmail: false,
+    showActivity: true,
+    privacy: {
+      dataCollection: false,
+      analytics: false,
+      marketing: false
     }
   })
 
+  const isAdmin = session?.user?.email ? isAdminEmail(session.user.email) : false
+
+  // Update form data when settings load
+  useEffect(() => {
+    if (settings) {
+      setFormData({
+        displayName: settings.displayName || '',
+        bio: settings.bio || '',
+        theme: settings.theme || 'dark',
+        language: settings.language || 'en',
+        profileVisibility: settings.profileVisibility || 'public',
+        emailNotifications: settings.emailNotifications !== false,
+        securityAlerts: settings.securityAlerts !== false,
+        showEmail: settings.showEmail || false,
+        showActivity: settings.showActivity !== false,
+        privacy: {
+          dataCollection: settings.privacy?.dataCollection || false,
+          analytics: settings.privacy?.analytics || false,
+          marketing: settings.privacy?.marketing || false
+        }
+      })
+    }
+  }, [settings])
+
   const handleSave = async () => {
     try {
-      await updateProfile(formData)
-      await mutate() // Refresh profile data
+      clearMessages()
+      await updateSettings(formData)
+      await mutate() // Refresh settings data
       setIsEditing(false)
     } catch (error) {
-      console.error('Failed to update profile:', error)
+      console.error('Failed to update settings:', error)
     }
   }
 
   const handleCancel = () => {
-    setFormData({
-      displayName: profile?.user?.displayName || profile?.user?.name || '',
-      bio: profile?.user?.bio || '',
-      preferences: {
-        theme: profile?.user?.preferences?.theme || 'dark',
-        newsletter: profile?.user?.preferences?.newsletter || false,
-        notifications: profile?.user?.preferences?.notifications !== false,
+    if (settings) {
+      setFormData({
+        displayName: settings.displayName || '',
+        bio: settings.bio || '',
+        theme: settings.theme || 'dark',
+        language: settings.language || 'en',
+        profileVisibility: settings.profileVisibility || 'public',
+        emailNotifications: settings.emailNotifications !== false,
+        securityAlerts: settings.securityAlerts !== false,
+        showEmail: settings.showEmail || false,
+        showActivity: settings.showActivity !== false,
         privacy: {
-          showEmail: profile?.user?.preferences?.privacy?.showEmail || false,
-          showActivity: profile?.user?.preferences?.privacy?.showActivity !== false
+          dataCollection: settings.privacy?.dataCollection || false,
+          analytics: settings.privacy?.analytics || false,
+          marketing: settings.privacy?.marketing || false
         }
-      }
-    })
+      })
+    }
     setIsEditing(false)
+    clearMessages()
   }
 
-  if (!profile) {
+  if (isLoading) {
     return (
       <div className="card">
         <div className="animate-pulse">
@@ -77,6 +114,11 @@ export default function ProfileSettings({ onClose }: ProfileSettingsProps) {
         <div className="flex items-center">
           <User className="w-5 h-5 mr-2 text-green-400" />
           <h2 className="text-xl font-semibold text-white">Profile Settings</h2>
+          {isAdmin && (
+            <span className="ml-2 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">
+              Admin
+            </span>
+          )}
         </div>
         <div className="flex items-center space-x-2">
           {!isEditing ? (
@@ -107,221 +149,245 @@ export default function ProfileSettings({ onClose }: ProfileSettingsProps) {
             </>
           )}
           {onClose && (
-            <button onClick={onClose} className="btn-ghost text-sm">
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white"
+            >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
 
+      {/* Status Messages */}
+      {updateSuccess && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center"
+        >
+          <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
+          <span className="text-green-400 text-sm">Settings saved successfully!</span>
+        </motion.div>
+      )}
+
       {updateError && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
-          <p className="text-red-400 text-sm">{updateError}</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center"
+        >
+          <AlertTriangle className="w-4 h-4 text-red-400 mr-2" />
+          <span className="text-red-400 text-sm">{updateError}</span>
+        </motion.div>
       )}
 
       <div className="space-y-6">
-        {/* Profile Picture */}
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            {profile.user.image ? (
-              <img 
-                src={profile.user.image} 
-                alt={profile.user.name}
-                className="w-20 h-20 rounded-full border-2 border-green-500/30"
-              />
-            ) : (
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-400 flex items-center justify-center text-white font-semibold text-2xl">
-                {profile.user.name.charAt(0).toUpperCase()}
-              </div>
-            )}
-            {isEditing && (
-              <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white hover:bg-green-600 transition-colors">
-                <Camera className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-white">{profile.user.name}</h3>
-            <p className="text-secondary-300">{profile.user.email}</p>
-            <div className="flex items-center mt-1">
-              <Shield className="w-4 h-4 mr-1 text-green-400" />
-              <span className="text-sm text-green-400 capitalize">{profile.user.provider} Account</span>
+        {/* Basic Information */}
+        <div>
+          <h3 className="text-lg font-medium text-white mb-4 flex items-center">
+            <User className="w-4 h-4 mr-2" />
+            Basic Information
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Display Name
+              </label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={formData.displayName}
+                  onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                  className="input w-full"
+                  placeholder="Your display name"
+                />
+              ) : (
+                <p className="text-white">{formData.displayName || 'Not set'}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Bio
+              </label>
+              {isEditing ? (
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  className="input w-full"
+                  rows={3}
+                  placeholder="Tell us about yourself"
+                />
+              ) : (
+                <p className="text-white">{formData.bio || 'No bio provided'}</p>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Basic Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-secondary-300 mb-2">
-              Display Name
-            </label>
-            {isEditing ? (
-              <input
-                type="text"
-                value={formData.displayName}
-                onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-                className="w-full px-3 py-2 bg-secondary-800 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-green-500 focus:outline-none"
-                placeholder="Your display name"
-              />
-            ) : (
-              <p className="text-white">{profile.user.displayName || profile.user.name}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-secondary-300 mb-2">
-              Email Address
-            </label>
-            <p className="text-white">{profile.user.email}</p>
-            <p className="text-xs text-secondary-400 mt-1">Managed by {profile.user.provider}</p>
-          </div>
-        </div>
-
-        {/* Bio */}
-        <div>
-          <label className="block text-sm font-medium text-secondary-300 mb-2">
-            Bio
-          </label>
-          {isEditing ? (
-            <textarea
-              value={formData.bio}
-              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              rows={3}
-              className="w-full px-3 py-2 bg-secondary-800 border border-secondary-600 rounded-lg text-white placeholder-secondary-400 focus:border-green-500 focus:outline-none resize-none"
-              placeholder="Tell us about yourself..."
-              maxLength={500}
-            />
-          ) : (
-            <p className="text-white">{profile.user.bio || 'No bio added yet.'}</p>
-          )}
-          {isEditing && (
-            <p className="text-xs text-secondary-400 mt-1">
-              {formData.bio.length}/500 characters
-            </p>
-          )}
-        </div>
-
         {/* Preferences */}
-        <div className="border-t border-secondary-700 pt-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Preferences</h3>
-          
+        <div>
+          <h3 className="text-lg font-medium text-white mb-4 flex items-center">
+            <Shield className="w-4 h-4 mr-2" />
+            Preferences
+          </h3>
           <div className="space-y-4">
-            {/* Theme */}
             <div>
-              <label className="block text-sm font-medium text-secondary-300 mb-2">
-                Theme Preference
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Theme
               </label>
               {isEditing ? (
                 <select
-                  value={formData.preferences.theme}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    preferences: {
-                      ...formData.preferences,
-                      theme: e.target.value as 'dark' | 'light' | 'system'
-                    }
-                  })}
-                  className="w-full px-3 py-2 bg-secondary-800 border border-secondary-600 rounded-lg text-white focus:border-green-500 focus:outline-none"
+                  value={formData.theme}
+                  onChange={(e) => setFormData({ ...formData, theme: e.target.value as any })}
+                  className="input w-full"
                 >
                   <option value="dark">Dark</option>
                   <option value="light">Light</option>
                   <option value="system">System</option>
                 </select>
               ) : (
-                <p className="text-white capitalize">{profile.user.preferences.theme}</p>
+                <p className="text-white capitalize">{formData.theme}</p>
               )}
             </div>
 
-            {/* Checkboxes */}
-            <div className="space-y-3">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.preferences.newsletter}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    preferences: {
-                      ...formData.preferences,
-                      newsletter: e.target.checked
-                    }
-                  })}
-                  disabled={!isEditing}
-                  className="w-4 h-4 text-green-500 bg-secondary-800 border-secondary-600 rounded focus:ring-green-500 focus:ring-2"
-                />
-                <span className="ml-2 text-white">Subscribe to newsletter</span>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Profile Visibility
               </label>
-
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.preferences.notifications}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    preferences: {
-                      ...formData.preferences,
-                      notifications: e.target.checked
-                    }
-                  })}
-                  disabled={!isEditing}
-                  className="w-4 h-4 text-green-500 bg-secondary-800 border-secondary-600 rounded focus:ring-green-500 focus:ring-2"
-                />
-                <span className="ml-2 text-white">Enable notifications</span>
-              </label>
+              {isEditing ? (
+                <select
+                  value={formData.profileVisibility}
+                  onChange={(e) => setFormData({ ...formData, profileVisibility: e.target.value as any })}
+                  className="input w-full"
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              ) : (
+                <div className="flex items-center">
+                  {formData.profileVisibility === 'public' ? (
+                    <Globe className="w-4 h-4 mr-2 text-green-400" />
+                  ) : (
+                    <Lock className="w-4 h-4 mr-2 text-yellow-400" />
+                  )}
+                  <span className="text-white capitalize">{formData.profileVisibility}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Privacy Settings */}
-        <div className="border-t border-secondary-700 pt-6">
-          <div className="flex items-center mb-4">
-            <Lock className="w-5 h-5 mr-2 text-blue-400" />
-            <h3 className="text-lg font-semibold text-white">Privacy Settings</h3>
-          </div>
-          
+        {/* Notifications */}
+        <div>
+          <h3 className="text-lg font-medium text-white mb-4 flex items-center">
+            <Lock className="w-4 h-4 mr-2" />
+            Notifications
+          </h3>
           <div className="space-y-3">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={formData.preferences.privacy.showEmail}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  preferences: {
-                    ...formData.preferences,
-                    privacy: {
-                      ...formData.preferences.privacy,
-                      showEmail: e.target.checked
-                    }
-                  }
-                })}
+                checked={formData.emailNotifications}
+                onChange={(e) => setFormData({ ...formData, emailNotifications: e.target.checked })}
                 disabled={!isEditing}
-                className="w-4 h-4 text-blue-500 bg-secondary-800 border-secondary-600 rounded focus:ring-blue-500 focus:ring-2"
+                className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
               />
-              <span className="ml-2 text-white">Make email address public</span>
+              <span className="text-white">Email Notifications</span>
             </label>
 
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={formData.preferences.privacy.showActivity}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  preferences: {
-                    ...formData.preferences,
-                    privacy: {
-                      ...formData.preferences.privacy,
-                      showActivity: e.target.checked
-                    }
-                  }
-                })}
+                checked={formData.securityAlerts}
+                onChange={(e) => setFormData({ ...formData, securityAlerts: e.target.checked })}
                 disabled={!isEditing}
-                className="w-4 h-4 text-blue-500 bg-secondary-800 border-secondary-600 rounded focus:ring-blue-500 focus:ring-2"
+                className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
               />
-              <span className="ml-2 text-white">Show activity publicly</span>
+              <span className="text-white">Security Alerts</span>
+            </label>
+
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={formData.showEmail}
+                onChange={(e) => setFormData({ ...formData, showEmail: e.target.checked })}
+                disabled={!isEditing}
+                className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
+              />
+              <span className="text-white">Show Email Publicly</span>
+            </label>
+
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={formData.showActivity}
+                onChange={(e) => setFormData({ ...formData, showActivity: e.target.checked })}
+                disabled={!isEditing}
+                className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
+              />
+              <span className="text-white">Show Activity</span>
             </label>
           </div>
         </div>
+
+        {/* Admin-only Privacy Settings */}
+        {isAdmin && (
+          <div>
+            <h3 className="text-lg font-medium text-white mb-4 flex items-center">
+              <Eye className="w-4 h-4 mr-2" />
+              Privacy Controls (Admin)
+            </h3>
+            <div className="space-y-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+              <p className="text-yellow-400 text-sm mb-3">
+                Admin-only privacy settings for data governance
+              </p>
+              
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.privacy.dataCollection}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    privacy: { ...formData.privacy, dataCollection: e.target.checked }
+                  })}
+                  disabled={!isEditing}
+                  className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
+                />
+                <span className="text-white">Enable Data Collection</span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.privacy.analytics}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    privacy: { ...formData.privacy, analytics: e.target.checked }
+                  })}
+                  disabled={!isEditing}
+                  className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
+                />
+                <span className="text-white">Enable Analytics Tracking</span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.privacy.marketing}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    privacy: { ...formData.privacy, marketing: e.target.checked }
+                  })}
+                  disabled={!isEditing}
+                  className="mr-3 rounded border-gray-600 text-green-400 focus:ring-green-400"
+                />
+                <span className="text-white">Enable Marketing Communications</span>
+              </label>
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   )
