@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, Edit3, Save, X, Camera, Shield, Lock, CheckCircle, AlertTriangle, Eye, EyeOff, Globe, Users } from 'lucide-react'
+import { User, Edit3, Save, X, Shield, Lock, CheckCircle, AlertTriangle, Eye, Globe } from 'lucide-react'
 import { useSettings, useSettingsUpdate } from '@/hooks/useSettings'
 import { useSession } from 'next-auth/react'
 import { isAdminEmail } from '@/lib/auth/admin-utils'
