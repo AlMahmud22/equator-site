@@ -178,24 +178,42 @@ const authOptions: NextAuthOptions = {
     },
     
     async redirect({ url, baseUrl }) {
+      console.log('NextAuth redirect called with:', { url, baseUrl })
+      
       // Handle OAuth errors
       if (url.includes('error=')) {
         console.warn('OAuth error detected in redirect:', url)
         return `${baseUrl}/auth/error?error=${new URL(url).searchParams.get('error')}`
       }
       
-      // Always redirect to profile after successful login
-      if (url === baseUrl || url === `${baseUrl}/` || url.includes('/callback')) {
+      // For successful authentication, always redirect to profile
+      // This handles various OAuth callback scenarios
+      if (
+        url === baseUrl || 
+        url === `${baseUrl}/` || 
+        url.includes('/callback') ||
+        url.includes('/api/auth/callback') ||
+        url === `${baseUrl}/auth/login`
+      ) {
+        console.log('Redirecting to profile after successful authentication')
         return `${baseUrl}/profile`
       }
       
-      // Allow relative URLs
+      // Handle relative URLs
       if (url.startsWith('/')) {
+        // If it's the login page, redirect to profile instead
+        if (url === '/auth/login') {
+          return `${baseUrl}/profile`
+        }
         return `${baseUrl}${url}`
       }
       
       // Allow same origin URLs
       if (new URL(url).origin === baseUrl) {
+        // If it's the login page, redirect to profile instead
+        if (new URL(url).pathname === '/auth/login') {
+          return `${baseUrl}/profile`
+        }
         return url
       }
       

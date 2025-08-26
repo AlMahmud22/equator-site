@@ -258,7 +258,11 @@ export default function Navbar() {
                       </div>
                       <Link href="/profile" className="btn-ghost w-full">
                         <User className="w-4 h-4 mr-2" />
-                        View Profile
+                        Profile
+                      </Link>
+                      <Link href="/products" className="btn-ghost w-full">
+                        <Download className="w-4 h-4 mr-2" />
+                        Downloads
                       </Link>
                       <button onClick={logout} className="btn-secondary w-full text-red-400 hover:text-red-300">
                         <LogOut className="w-4 h-4 mr-2" />

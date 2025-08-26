@@ -3,22 +3,40 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import { Github, Mail, ArrowRight, Shield, Users, Briefcase, Code, GraduationCap } from 'lucide-react'
-import { signIn, getSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Layout from '@/components/Layout'
 
 export default function LoginPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState('')
   const [error, setError] = useState('')
+  const { data: session, status } = useSession()
 
-  // Check if user is already logged in
+  // Check if user is already logged in and redirect immediately
   useEffect(() => {
-    getSession().then((session) => {
-      if (session) {
-        router.push('/profile')
-      }
-    })
-  }, [router])
+    if (status === 'authenticated' && session) {
+      console.log('User already authenticated, redirecting to profile')
+      router.replace('/profile')
+    }
+  }, [session, status, router])
+
+  // Don't render anything if user is authenticated or still loading
+  if (status === 'loading') {
+    return (
+      <Layout title="Loading...">
+        <div className="min-h-screen bg-gradient-to-br from-secondary-950 via-secondary-900 to-primary-950/50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-400 mx-auto"></div>
+            <p className="text-secondary-300 mt-4">Loading...</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  if (status === 'authenticated') {
+    return null // Will redirect via useEffect
+  }
 
   // Handle OAuth login
   const handleOAuthLogin = async (provider: 'google' | 'github') => {
