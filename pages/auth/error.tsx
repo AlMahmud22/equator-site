@@ -67,23 +67,6 @@ export default function AuthError() {
     ]
   }
 
-  const getErrorSolution = (errorCode: string): string => {
-    const errorSolutions: { [key: string]: string } = {
-      'Configuration': 'Please contact support. This is a server issue.',
-      'AccessDenied': 'Contact an administrator if you believe this is an error.',
-      'Verification': 'Request a new verification email or try signing in again.',
-      'OAuthCreateAccount': 'Try signing in instead of creating a new account, or use a different email.',
-      'EmailCreateAccount': 'Try using a different email address or sign in with an existing account.',
-      'Callback': 'Clear your browser cookies and try again.',
-      'OAuthCallback': 'The authentication provider may be temporarily unavailable.',
-      'OAuthSignin': 'Try a different sign-in method or contact support.',
-      'SessionRequired': 'Please sign in to continue.',
-      'Default': 'Clear your browser cookies and try again.',
-    }
-    
-    return errorSolutions[errorCode] || errorSolutions['Default']
-  }
-
   return (
     <Layout
       title="Authentication Error - Equators"

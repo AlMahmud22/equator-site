@@ -46,6 +46,9 @@ if (!process.env.MONGODB_URI) {
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('Missing NEXTAUTH_SECRET environment variable')
 }
+if (!process.env.NEXTAUTH_URL) {
+  console.warn('⚠️ NEXTAUTH_URL not set - this may cause OAuth callback issues')
+}
 if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
   throw new Error('Missing GitHub OAuth credentials')
 }
@@ -77,6 +80,7 @@ const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   
   adapter: MongoDBAdapter(clientPromise),
+  
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
@@ -206,20 +210,35 @@ const authOptions: NextAuthOptions = {
     
     async signIn({ user, account }) {
       try {
-        // SIMPLIFIED: Remove complex IP detection and rate limiting that might block legitimate users
-        console.log('OAuth sign-in attempt:', { 
+        // ENHANCED: Detailed logging for AccessDenied debugging
+        console.log('🔐 OAuth sign-in attempt:', { 
           provider: account?.provider, 
           email: user?.email,
-          name: user?.name
+          name: user?.name,
+          accountId: account?.providerAccountId,
+          accountType: account?.type
         })
+
+        // VALIDATION: Ensure we have required OAuth data
+        if (!user?.email) {
+          console.error('❌ No email provided by OAuth provider')
+          return false
+        }
+
+        if (!account?.provider) {
+          console.error('❌ No provider information in account')
+          return false
+        }
         
         // Connect to database and update user record
         await connectDB()
+        console.log('✅ Database connection established')
         
         // Find or create enhanced user record
         let enhancedUser = await EnhancedUser.findOne({ email: user.email })
         
         if (!enhancedUser) {
+          console.log('👤 Creating new user for:', user.email)
           // Create new enhanced user
           enhancedUser = new EnhancedUser({
             name: user.name || 'Unknown User',
@@ -244,6 +263,8 @@ const authOptions: NextAuthOptions = {
             isActive: true,
             lastLoginAt: new Date()
           })
+        } else {
+          console.log('👤 Existing user found:', user.email)
         }
         
         // Update login history (simplified)

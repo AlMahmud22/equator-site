@@ -17,14 +17,6 @@ import {
 } from 'lucide-react'
 import Layout from '@/components/Layout'
 
-interface DownloadLog {
-  projectId: string
-  projectName: string
-  downloadedAt: string
-  fileSize?: number
-  version?: string
-}
-
 export default function ProfilePage() {
   const { data: session, status: sessionStatus } = useSession()
   const router = useRouter()

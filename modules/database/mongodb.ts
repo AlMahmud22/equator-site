@@ -37,7 +37,6 @@ const options: MongoClientOptions = {
   }),
 };
 
-let mongoClient: MongoClient;
 let mongoClientPromise: Promise<MongoClient>;
 
 // Enhanced connection function with retry logic
