@@ -1,102 +1,114 @@
-# Equators - Privacy-Focused AI Desktop Suite
+# Equators - Privacy-Focused Software Portfolio
 
-Equators is a decentralized, privacy-first desktop software suite featuring secure AI applications built for digital sovereignty and user control.
+Equators is a professional portfolio showcasing privacy-focused desktop applications and web tools with secure authentication and download management.
 
 ## 🌟 Features
 
-- **Privacy-First Design**: All processing happens locally with zero data transmission
-- **Decentralized Architecture**: Open-source, transparent algorithms with user sovereignty
-- **Product Showcase**: Privacy-focused Chatbot, secure AI Playground, and freedom-focused Browser
-- **Secure Downloads**: Verified downloads for Windows (.exe), macOS (.dmg), and Linux (.AppImage)
-- **Authentication**: Local-first user management with encrypted storage
-- **News & Updates**: Privacy-focused announcements and security updates
+- **Product Showcase**: Browse desktop applications, web tools, and security utilities
+- **Secure Authentication**: OAuth login via Google/GitHub for download access
+- **Protected Downloads**: Download links restricted to authenticated users only
+- **Public Browsing**: All products can be viewed without authentication
 - **Responsive Design**: Fully responsive across all device sizes
+- **Production Ready**: Optimized build with PM2 deployment
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 14 with TypeScript
-- **Styling**: Tailwind CSS with custom design system
-- **Animations**: Framer Motion & ScrollReveal
-- **Icons**: Lucide React
-- **Fonts**: Inter & JetBrains Mono
-- **Build**: Modern ES6+ with full TypeScript support
+- **Framework**: Next.js 15 with TypeScript
+- **Database**: MongoDB with NextAuth adapter
+- **Authentication**: NextAuth.js with OAuth providers
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Deployment**: PM2 process manager
 
-## 📦 Installation
+## 📦 Production Setup
 
-1. Clone the repository:
+### Prerequisites
+
+- Node.js 18+
+- MongoDB database
+- Google OAuth app credentials
+- GitHub OAuth app credentials
+
+### Installation
+
+1. Clone and install:
 
    ```bash
-   git clone https://github.com/AlMahmud22/equators-site.git
+   git clone <repository-url>
    cd equators-site
+   npm install --legacy-peer-deps
    ```
 
-2. Install dependencies:
+2. Configure environment variables:
 
    ```bash
-   npm install
+   cp .env.local.example .env.production
+   # Edit .env.production with your values
    ```
 
-3. Start the development server:
-
+3. Build and deploy:
    ```bash
-   npm run dev
+   npm run build
+   pm2 start equators-site
    ```
 
-4. Open [https://equators.tech](https://equators.tech) in your browser for production, or [http://localhost:3000](http://localhost:3000) for development.
+### Environment Variables
+
+Required in `.env.production`:
+
+```bash
+MONGODB_URI=mongodb+srv://...
+NEXTAUTH_SECRET=your-secret-32-chars-min
+NEXTAUTH_URL=https://your-domain.com
+GITHUB_CLIENT_ID=your-github-id
+GITHUB_CLIENT_SECRET=your-github-secret
+GOOGLE_CLIENT_ID=your-google-id
+GOOGLE_CLIENT_SECRET=your-google-secret
+```
 
 ## 🏗️ Project Structure
 
 ```
 equators-site/
 ├── components/           # React components
-│   ├── Navbar/          # Navigation component
+│   ├── auth/            # Authentication components
+│   ├── profile/         # Profile management
+│   ├── Navbar/          # Navigation
 │   ├── Hero/            # Hero section
 │   ├── Product/         # Product showcase
-│   ├── Footer/          # Footer component
 │   └── Layout/          # Layout wrapper
 ├── pages/               # Next.js pages
 │   ├── products/        # Product pages
-│   ├── auth/           # Authentication pages
-│   ├── about.tsx       # About page
-│   ├── news.tsx        # News page
-│   └── index.tsx       # Homepage
-├── public/              # Static assets
-│   ├── images/         # Images and graphics
-│   └── downloads/      # Downloadable files
-├── styles/             # CSS and styling
-├── utils/              # Utility functions
-├── hooks/              # Custom React hooks
-├── config/             # Configuration files
-└── data/               # Static data
+│   ├── auth/            # Login/consent pages
+│   ├── api/             # API routes
+│   ├── profile.tsx      # User profile
+│   ├── settings.tsx     # User settings
+│   └── index.tsx        # Homepage
+├── lib/                 # Core utilities
+├── modules/             # Database & auth modules
+├── config/              # Site configuration
+└── public/              # Static assets
 ```
 
-## 🎨 Design System
+## 🚀 Deployment Commands
 
-The website uses a carefully crafted design system with:
-
-- **Colors**: Primary (blue), Secondary (gray), Accent (purple)
-- **Typography**: Inter for body text, JetBrains Mono for code
-- **Components**: Reusable button variants, cards, and animations
-- **Spacing**: Consistent spacing using Tailwind's scale
-- **Responsive**: Mobile-first approach with breakpoints
-
-## 🚀 Deployment
-
-The site is optimized for deployment on:
-
-- **Vercel** (recommended for Next.js)
-- **Netlify**
-- **DigitalOcean** (as mentioned in requirements)
-- Any static hosting provider
-
-Build for production:
+For production server:
 
 ```bash
+git pull origin main
+npm install --legacy-peer-deps
 npm run build
-npm start
+pm2 start equators-site
 ```
 
-## 📝 Content Management
+## 📋 Features
+
+- **Public Access**: Browse all products without login
+- **Protected Downloads**: Login required for file downloads
+- **OAuth Authentication**: Google & GitHub login
+- **User Profiles**: Basic profile management
+- **Download Tracking**: Monitor download activity
+- **Responsive Design**: Mobile-friendly interface
 
 - Product information is managed in `config/site.ts`
 - Navigation links and site metadata in the same config file

@@ -67,10 +67,6 @@ export const siteConfig = {
       ]
     },
     {
-      name: 'Models',
-      href: '/models',
-    },
-    {
       name: 'Contact',
       href: '/contact',
     },

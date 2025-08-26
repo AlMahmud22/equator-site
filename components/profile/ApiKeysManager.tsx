@@ -36,8 +36,7 @@ export default function ApiKeysManager() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      // You could add a toast notification here
-      console.log('Copied to clipboard')
+      // Clipboard copy successful (silent in production)
     })
   }
 

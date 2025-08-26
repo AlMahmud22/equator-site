@@ -13,12 +13,7 @@ import {
   Globe,
   Monitor,
   Mail,
-  ExternalLink,
-  Download,
-  Edit3,
-  Save,
-  X,
-  Package
+  ExternalLink
 } from 'lucide-react'
 import Layout from '@/components/Layout'
 
@@ -30,33 +25,10 @@ interface DownloadLog {
   version?: string
 }
 
-interface UserProfile {
-  id: string
-  name: string
-  email: string
-  image?: string
-  displayName?: string
-  bio?: string
-  provider: string
-  providerId: string
-  downloadHistory: DownloadLog[]
-  totalDownloads: number
-  lastLoginAt: string
-  createdAt: string
-}
-
 export default function ProfilePage() {
   const { data: session, status: sessionStatus } = useSession()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [isEditing, setIsEditing] = useState(false)
-  const [editForm, setEditForm] = useState({
-    name: '',
-    displayName: '',
-    bio: ''
-  })
-  const [isSaving, setIsSaving] = useState(false)
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -68,54 +40,9 @@ export default function ProfilePage() {
       return
     }
     
-    // Fetch user profile
-    fetchProfile()
+    // User is authenticated, stop loading
+    setIsLoading(false)
   }, [sessionStatus, router])
-
-  const fetchProfile = async () => {
-    try {
-      const response = await fetch('/api/profile/update')
-      if (response.ok) {
-        const data = await response.json()
-        setProfile(data.data)
-        setEditForm({
-          name: data.data.name || '',
-          displayName: data.data.displayName || '',
-          bio: data.data.bio || ''
-        })
-      }
-    } catch (error) {
-      console.error('Failed to fetch profile:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleSaveProfile = async () => {
-    setIsSaving(true)
-    try {
-      const response = await fetch('/api/profile/update', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editForm)
-      })
-
-      if (response.ok) {
-        await fetchProfile() // Refresh profile data
-        setIsEditing(false)
-      } else {
-        const error = await response.json()
-        alert(error.message || 'Failed to update profile')
-      }
-    } catch (error) {
-      console.error('Failed to update profile:', error)
-      alert('Failed to update profile')
-    } finally {
-      setIsSaving(false)
-    }
-  }
 
   // Handle sign out
   const handleSignOut = async () => {
