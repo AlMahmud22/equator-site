@@ -3,14 +3,15 @@ module.exports = {
     {
       name: 'equators-production',
       script: 'server.js',
-      instances: 1,
+      instances: 'max', // Cluster mode using all available CPUs
+      exec_mode: 'cluster',
       autorestart: true,
       watch: false,
       max_memory_restart: '1G',
 
       // Enhanced restart policy to prevent crash loops
-      min_uptime: '120s', // Increased to 2 minutes for stability
-      max_restarts: 3, // Reduced to prevent endless restart loops
+      min_uptime: '120s', // 2 minutes for stability
+      max_restarts: 5, // Max 5 restarts per time window
       restart_delay: 10000, // 10 second delay between restarts
 
       // Exponential backoff for restart delays
@@ -102,11 +103,11 @@ module.exports = {
   deploy: {
     production: {
       user: 'deploy',
-      host: ['your-server-ip'],
+      host: ['${process.env.DEPLOY_HOST || "127.0.0.1"}'],
       ref: 'origin/main',
-      repo: 'git@github.com:your-username/equators-site.git',
+      repo: 'git@github.com:AlMahmud22/equators-site.git',
       path: '/var/www/equators-site',
-      'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --env production',
+      'post-deploy': 'npm ci && npm run build && pm2 reload ecosystem.config.js --env production',
       env: {
         NODE_ENV: 'production'
       }

@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string
   authType: 'google' | 'github'
   avatar?: string
+  role: string // Default 'user', 'admin', 'app_developer', etc.
   
   // Profile preferences
   profile?: {
@@ -144,6 +145,12 @@ const UserSchema = new Schema<IUser>({
   avatar: {
     type: String,
     required: false
+  },
+  role: {
+    type: String,
+    required: true,
+    default: 'user',
+    index: true
   },
   
   // Profile preferences
