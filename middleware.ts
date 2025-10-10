@@ -108,7 +108,7 @@ function addCORSHeaders(response: NextResponse, request: NextRequest): NextRespo
     'https://localhost:3000',
     'https://localhost:8080',
     // Add your production domains here
-    'https://yourdomain.com'
+    'https://equators.tech/'
   ];
   
   // Allow custom schemes for desktop apps

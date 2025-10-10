@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 // Admin emails from the provided data context
 const ADMIN_EMAILS = [
-  'almahmud2122@gmail.com',
   'mahmud23k@gmail.com'
 ]
 

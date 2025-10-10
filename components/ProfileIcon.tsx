@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, User, LogOut, Download, Settings } from 'lucide-react'
+import { ChevronDown, User, LogOut, Download, Settings, Shield, Plus, FolderPlus } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { cn } from '@/shared/utils'
@@ -154,6 +154,24 @@ export default function ProfileIcon({ user, className, onDropdownChange }: Profi
                 </Link>
                 
                 <Link
+                  href="/projects"
+                  className="flex items-center px-4 py-3 text-sm text-secondary-300 hover:text-white hover:bg-secondary-800/50 transition-colors duration-200"
+                  onClick={closeDropdown}
+                >
+                  <FolderPlus className="w-4 h-4 mr-3" />
+                  <span>Projects</span>
+                </Link>
+                
+                <Link
+                  href="/create-project"
+                  className="flex items-center px-4 py-3 text-sm text-secondary-300 hover:text-white hover:bg-secondary-800/50 transition-colors duration-200"
+                  onClick={closeDropdown}
+                >
+                  <Plus className="w-4 h-4 mr-3" />
+                  <span>Add Project</span>
+                </Link>
+                
+                <Link
                   href="/settings"
                   className="flex items-center px-4 py-3 text-sm text-secondary-300 hover:text-white hover:bg-secondary-800/50 transition-colors duration-200"
                   onClick={closeDropdown}
@@ -161,6 +179,18 @@ export default function ProfileIcon({ user, className, onDropdownChange }: Profi
                   <Settings className="w-4 h-4 mr-3" />
                   <span>Settings</span>
                 </Link>
+                
+                {/* Admin Link - only for admin users */}
+                {user?.email === 'mahmud23k@gmail.com' && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center px-4 py-3 text-sm text-primary-400 hover:text-primary-300 hover:bg-secondary-800/50 transition-colors duration-200"
+                    onClick={closeDropdown}
+                  >
+                    <Shield className="w-4 h-4 mr-3" />
+                    <span>Admin Dashboard</span>
+                  </Link>
+                )}
                 
                 <Link
                   href="/products"

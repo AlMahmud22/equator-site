@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from '@/styles/ConnectionManager.module.css';
 
@@ -16,7 +16,11 @@ interface Token {
   lastUsed?: string;
 }
 
-export default function ConnectionManager() {
+interface ScopeDescriptions {
+  [key: string]: string;
+}
+
+export default function ConnectionManager(): ReactElement {
   const { data: session } = useSession();
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +51,7 @@ export default function ConnectionManager() {
   }, [session]);
 
   // Function to revoke a token
-  const revokeToken = async (tokenId: string) => {
+  const revokeToken = async (tokenId: string): Promise<void> => {
     try {
       const res = await fetch('/api/tokens', {
         method: 'POST',
@@ -103,7 +107,7 @@ export default function ConnectionManager() {
   }
 
   // Format date for display
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -113,7 +117,7 @@ export default function ConnectionManager() {
   };
 
   // Get scope descriptions
-  const getScopeDescription = (scope: string) => {
+  const getScopeDescription = (scope: string): string => {
     const descriptions: Record<string, string> = {
       'profile:read': 'Read your profile',
       'email:read': 'Access your email',
@@ -131,11 +135,11 @@ export default function ConnectionManager() {
       
       {tokens.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>You haven't connected any applications yet.</p>
+          <p>You haven&apos;t connected any applications yet.</p>
         </div>
       ) : (
         <div className={styles.tokensList}>
-          {tokens.map(token => (
+          {tokens.map((token: Token) => (
             <div key={token._id} className={styles.tokenCard}>
               <div className={styles.tokenHeader}>
                 <div className={styles.appInfo}>
@@ -183,7 +187,7 @@ export default function ConnectionManager() {
               <div className={styles.scopesContainer}>
                 <h4 className={styles.scopesTitle}>Permissions</h4>
                 <ul className={styles.scopesList}>
-                  {token.scopes.map(scope => (
+                  {token.scopes.map((scope: string) => (
                     <li key={scope} className={styles.scopeItem}>
                       {getScopeDescription(scope)}
                     </li>

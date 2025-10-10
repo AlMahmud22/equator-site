@@ -12,7 +12,11 @@ export const siteConfig = {
       href: '/',
     },
     {
-      name: 'Projects',
+      name: 'Community',
+      href: '/projects',
+    },
+    {
+      name: 'Portfolio',
       href: '/products',
       children: [
         // Desktop Apps

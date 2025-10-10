@@ -12,11 +12,16 @@ export interface IUnifiedUser extends Document {
   providerId: string
   
   // User profile
-  role: 'student' | 'teacher' | 'employer' | 'developer' | 'other'
+  role: 'admin' | 'user' | 'visitor'
   shortName?: string // nickname or preferred name
   bio?: string
   company?: string
   location?: string
+  
+  // Email verification
+  isEmailConfirmed?: boolean
+  emailConfirmationToken?: string
+  emailConfirmationSentAt?: Date
   
   // Preferences
   preferences: {
@@ -128,8 +133,18 @@ const UnifiedUserSchema = new Schema<IUnifiedUser>({
   // Profile
   role: {
     type: String,
-    enum: ['student', 'teacher', 'employer', 'developer', 'other'],
-    default: 'student'
+    enum: ['admin', 'user', 'visitor'],
+    default: 'user'
+  },
+  isEmailConfirmed: {
+    type: Boolean,
+    default: false
+  },
+  emailConfirmationToken: {
+    type: String
+  },
+  emailConfirmationSentAt: {
+    type: Date
   },
   shortName: {
     type: String,

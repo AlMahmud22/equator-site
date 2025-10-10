@@ -32,10 +32,11 @@ function validateAuthRequest(req: NextApiRequest): { valid: boolean; error?: str
   return { valid: true };
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   // This endpoint only processes GET requests
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
   }
 
   try {
@@ -44,10 +45,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Validate the authorization request
     const validation = validateAuthRequest(req);
     if (!validation.valid) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'invalid_request',
         error_description: validation.error
       });
+      return;
     }
 
     const { 
@@ -64,7 +66,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!session?.user) {
       // User not authenticated, redirect to login with return URL
       const returnUrl = encodeURIComponent(req.url || '');
-      return res.redirect(`/auth/login?returnUrl=${returnUrl}`);
+      res.redirect(`/auth/login?returnUrl=${returnUrl}`);
+      return;
     }
 
     // Find the app by client ID
@@ -124,7 +127,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         params.append('code_challenge_method', code_challenge_method as string || 'S256');
       }
       
-      return res.redirect(`/oauth/consent?${params.toString()}`);
+      res.redirect(`/oauth/consent?${params.toString()}`);
+      return;
     }
     
     // Auto-approved application, create authorization code directly
@@ -148,12 +152,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     // Redirect to client's redirect URI with auth code
-    return res.redirect(redirectUrl.toString());
+    res.redirect(redirectUrl.toString());
+    return;
   } catch (error) {
     console.error('OAuth authorization error:', error);
-    return res.status(500).json({
+    res.status(500).json({
       error: 'server_error',
       error_description: 'Internal server error'
     });
+    return;
   }
 }
