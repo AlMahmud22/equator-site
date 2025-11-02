@@ -1,25 +1,43 @@
+# ===================================
+# ROOT GITIGNORE - Monorepo Structure
+# ===================================
+
 # Dependencies
 node_modules/
+**/node_modules/
 
-# Environment files
+# Environment files - Keep these secure!
 .env
 .env.local
-.env.local.example
 .env.development.local
 .env.test.local
 .env.production.local
-.enc.example
+
+# Frontend specific
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+
+# Backend specific  
+backend/.env
+backend/.env.local
+backend/.env.development
 
 # Next.js
 .next/
 out/
+frontend/.next/
+frontend/out/
 
 # Build outputs
 dist/
 build/
+frontend/dist/
+backend/dist/
 
 # Testing
 coverage/
+**/coverage/
 
 # Logs
 *.log
@@ -32,14 +50,32 @@ lerna-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
 
 # IDE
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+
+# TypeScript
+*.tsbuildinfo
+frontend/*.tsbuildinfo
+
+# PM2
+.pm2/
+backend/.pm2/
 
 # Downloads (keep these blocked)
-/public/downloads/*.exe
-/public/downloads/*.dmg
-/public/downloads/*.AppImage
-/public/downloads/*.zip
-/public/downloads/*.tar.gz
+frontend/public/downloads/*.exe
+frontend/public/downloads/*.dmg
+frontend/public/downloads/*.AppImage
+frontend/public/downloads/*.zip
+frontend/public/downloads/*.tar.gz
+
+# Temporary files
+tmp/
+temp/
+*.tmp
