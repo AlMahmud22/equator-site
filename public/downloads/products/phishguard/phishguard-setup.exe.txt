@@ -1,0 +1,1 @@
+PhishGuard v1.0.0 - Windows Installer

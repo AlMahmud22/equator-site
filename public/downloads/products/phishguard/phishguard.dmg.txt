@@ -1,0 +1,3 @@
+PhishGuard v1.0.0 - macOS Installer
+This is a placeholder file for testing download functionality.
+Replace this with your actual installer: phishguard-setup.exe

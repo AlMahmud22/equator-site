@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { motion, Variants } from 'framer-motion'
-import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code } from 'lucide-react'
+import { ArrowRight, Download, ExternalLink, Github, Star, Calendar, Code, Loader2 } from 'lucide-react'
 import { mainProjects } from '@/config/site'
 import { useScrollReveal } from '@/shared/hooks/useAnimations'
 import BlizzardOverlay from '@/components/BlizzardOverlay'
@@ -30,7 +31,27 @@ const itemVariants: Variants = {
 
 export default function ProductShowcase() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
+  const [downloadingProject, setDownloadingProject] = useState<string | null>(null)
+  const router = useRouter()
   const sectionRef = useScrollReveal()
+
+  const handleCardClick = (projectId: string) => {
+    router.push(`/products/${projectId}`)
+  }
+
+  const handleDownloadClick = (e: React.MouseEvent, projectId: string, downloadUrl: string) => {
+    e.stopPropagation()
+    setDownloadingProject(projectId)
+    const link = document.createElement('a')
+    link.href = downloadUrl
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    setTimeout(() => {
+      setDownloadingProject(null)
+      router.push(`/products/${projectId}`)
+    }, 1500)
+  }
 
   return (
     <section className="section-padding bg-pitch-black relative">
@@ -57,13 +78,15 @@ export default function ProductShowcase() {
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {mainProjects.map((project) => {
+              const isDownloading = downloadingProject === project.id
               return (
                 <motion.div
                   key={project.id}
                   variants={itemVariants}
-                  className="group"
+                  className="group cursor-pointer"
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
+                  onClick={() => handleCardClick(project.id)}
                 >
                   <div className="card-hover h-full relative overflow-hidden flex flex-col">
                     {/* Project Image */}
@@ -165,7 +188,7 @@ export default function ProductShowcase() {
                               <Link
                                 href={project.links.github}
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
                                 className="btn-ghost group/btn text-center flex items-center justify-center text-xs py-2 px-3 min-h-[36px]"
                               >
                                 <Github className="w-3 h-3 mr-1.5 flex-shrink-0" />
@@ -173,6 +196,7 @@ export default function ProductShowcase() {
                               </Link>
                               <Link
                                 href={`/products/${project.id}`}
+                                onClick={(e) => e.stopPropagation()}
                                 className="btn-ghost group/btn text-center flex items-center justify-center text-xs py-2 px-3 min-h-[36px]"
                               >
                                 <span className="truncate">View Details</span>
@@ -182,6 +206,7 @@ export default function ProductShowcase() {
                           ) : (
                             <Link
                               href={`/products/${project.id}`}
+                              onClick={(e) => e.stopPropagation()}
                               className="btn-ghost group/btn text-center flex items-center justify-center text-xs py-2 px-3 min-h-[36px] w-full"
                             >
                               <span className="truncate">View Details</span>
@@ -190,15 +215,23 @@ export default function ProductShowcase() {
                           )}
                           
                           {/* Bottom Row - Download Button (Full Width) */}
-                          <Link
-                            href={project.links.download}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn-primary group/btn text-center flex items-center justify-center text-xs py-2.5 px-4 min-h-[38px] w-full"
+                          <button
+                            onClick={(e) => handleDownloadClick(e, project.id, project.downloads.windows)}
+                            disabled={isDownloading}
+                            className="btn-primary group/btn text-center flex items-center justify-center text-xs py-2.5 px-4 min-h-[38px] w-full disabled:opacity-75"
                           >
-                            <Download className="w-3 h-3 mr-1.5 group-hover/btn:animate-bounce flex-shrink-0" />
-                            <span className="truncate">Download</span>
-                          </Link>
+                            {isDownloading ? (
+                              <>
+                                <Loader2 className="w-3 h-3 mr-1.5 animate-spin flex-shrink-0" />
+                                <span className="truncate">Downloading...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Download className="w-3 h-3 mr-1.5 group-hover/btn:animate-bounce flex-shrink-0" />
+                                <span className="truncate">Download</span>
+                              </>
+                            )}
+                          </button>
                         </div>
                       </div>
                     </div>

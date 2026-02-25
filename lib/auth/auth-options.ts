@@ -5,13 +5,16 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import { getMongoClient } from "@/lib/auth/mongodb";
 import { AUTH_CONFIG } from "./auth-config";
 
-/**
- * Simplified NextAuth configuration for personal portfolio
- * OAuth-only authentication for basic user tracking and download analytics
- */
-export const authOptions = {
-  adapter: MongoDBAdapter(getMongoClient()),
-  providers: [
+// Check if auth is fully configured
+const hasMongoDb = !!process.env.MONGODB_URI;
+const hasGitHub = !!(AUTH_CONFIG.PROVIDERS.GITHUB.clientId && AUTH_CONFIG.PROVIDERS.GITHUB.clientSecret);
+const hasGoogle = !!(AUTH_CONFIG.PROVIDERS.GOOGLE.clientId && AUTH_CONFIG.PROVIDERS.GOOGLE.clientSecret);
+
+// Build providers array dynamically
+const providers: any[] = [];
+
+if (hasGitHub) {
+  providers.push(
     GitHubProvider({
       clientId: AUTH_CONFIG.PROVIDERS.GITHUB.clientId,
       clientSecret: AUTH_CONFIG.PROVIDERS.GITHUB.clientSecret,
@@ -25,7 +28,12 @@ export const authOptions = {
           authType: "github",
         };
       },
-    }),
+    })
+  );
+}
+
+if (hasGoogle) {
+  providers.push(
     GoogleProvider({
       clientId: AUTH_CONFIG.PROVIDERS.GOOGLE.clientId,
       clientSecret: AUTH_CONFIG.PROVIDERS.GOOGLE.clientSecret,
@@ -39,8 +47,27 @@ export const authOptions = {
           authType: "google",
         };
       },
-    }),
-  ],
+    })
+  );
+}
+
+// Log auth status
+if (!hasMongoDb || providers.length === 0) {
+  console.warn('⚠️  Authentication is not fully configured:');
+  if (!hasMongoDb) console.warn('   - MONGODB_URI is missing');
+  if (!hasGitHub) console.warn('   - GitHub OAuth credentials are missing');
+  if (!hasGoogle) console.warn('   - Google OAuth credentials are missing');
+  console.warn('💡 The site will run with auth features disabled');
+}
+
+/**
+ * Simplified NextAuth configuration for personal portfolio
+ * OAuth-only authentication for basic user tracking and download analytics
+ */
+export const authOptions: any = {
+  // Only use MongoDB adapter if configured
+  ...(hasMongoDb ? { adapter: MongoDBAdapter(getMongoClient()) } : {}),
+  providers,
   session: {
     strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days

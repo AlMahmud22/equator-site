@@ -1,0 +1,3 @@
+Gecko Chatbot v1.0.0 - Linux Installer
+This is a placeholder file for testing download functionality.
+Replace this with your actual installer: gecko-chatbot-setup.exe

@@ -4,9 +4,10 @@ import mongoose from 'mongoose';
 // MongoDB connection string
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
-// Check if we have a connection string
+// Check if we have a connection string (warn but don't throw for development)
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
+  console.warn("⚠️  MONGODB_URI not defined - authentication features will be disabled");
+  console.warn("💡 To enable auth, create a .env.local file with MONGODB_URI");
 }
 
 let cachedClient: MongoClient | null = null;
@@ -15,6 +16,10 @@ let cachedClient: MongoClient | null = null;
  * Create a MongoDB client for NextAuth adapter
  */
 export function getMongoClient(): Promise<MongoClient> {
+  if (!MONGODB_URI) {
+    return Promise.reject(new Error("MongoDB URI not configured"));
+  }
+  
   if (cachedClient) {
     return Promise.resolve(cachedClient);
   }
