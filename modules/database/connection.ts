@@ -45,9 +45,9 @@ async function connectDB(): Promise<typeof mongoose> {
       dbName: 'equator-tech',
       // Enhanced connection options for production stability
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 60000,
-      connectTimeoutMS: 30000,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 20000,
+      connectTimeoutMS: 8000,
       family: 4, // Use IPv4, skip trying IPv6
       autoIndex: process.env.NODE_ENV !== 'production', // Disable auto-indexing in production
     }
@@ -55,8 +55,8 @@ async function connectDB(): Promise<typeof mongoose> {
     console.log('🔌 Connecting to MongoDB Atlas...');
     console.log('🔗 URI:', MONGODB_URI!.substring(0, 20) + '...');
 
-    // Implement connection retry logic
-    const maxRetries = 5;
+    // Limit retries to avoid hanging the build or crashing the dev server
+    const maxRetries = 2;
     let retries = 0;
     
     const connectWithRetry = async (): Promise<typeof mongoose> => {
@@ -83,7 +83,7 @@ async function connectDB(): Promise<typeof mongoose> {
         
         if (retries < maxRetries) {
           retries++;
-          const delay = Math.min(1000 * Math.pow(2, retries), 30000); // Exponential backoff with 30s max
+          const delay = Math.min(1000 * Math.pow(2, retries), 8000); // Max 8s backoff
           console.log(`Retrying connection in ${delay/1000} seconds...`);
           
           await new Promise(resolve => setTimeout(resolve, delay));
@@ -96,6 +96,9 @@ async function connectDB(): Promise<typeof mongoose> {
     };
     
     cached.promise = connectWithRetry();
+    // Attach a no-op catch so Node.js doesn't treat this as an unhandled rejection
+    // (the real error handling happens in the try/catch below)
+    cached.promise.catch(() => {});
   }
 
   try {

@@ -17,9 +17,9 @@ const options: MongoClientOptions = {
   // Connection pool settings
   maxPoolSize: 10,
   minPoolSize: 2,
-  serverSelectionTimeoutMS: 10000, // Increased from 5s
-  socketTimeoutMS: 45000,
-  connectTimeoutMS: 15000, // Increased from 10s
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 20000,
+  connectTimeoutMS: 8000, // Fail fast so builds don't hang
   family: 4, // Use IPv4, skip trying IPv6
   
   // Retry logic
@@ -70,8 +70,8 @@ async function createMongoConnection(retryCount = 0): Promise<MongoClient> {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error(`[MongoDB] ❌ Connection failed on attempt ${retryCount + 1}:`, errorMessage);
     
-    if (retryCount < 5) {
-      const delay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff, max 30s
+    if (retryCount < 2) {
+      const delay = Math.min(1000 * Math.pow(2, retryCount), 8000); // Max 8s backoff
       console.log(`[MongoDB] 🔄 Retrying connection in ${delay}ms...`);
       
       await new Promise(resolve => setTimeout(resolve, delay));
@@ -92,11 +92,13 @@ if (process.env.NODE_ENV === 'development') {
 
   if (!globalWithMongo._mongoClientPromise) {
     globalWithMongo._mongoClientPromise = createMongoConnection();
+    globalWithMongo._mongoClientPromise.catch(() => {}); // Prevent unhandled rejection
   }
   mongoClientPromise = globalWithMongo._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
   mongoClientPromise = createMongoConnection();
+  mongoClientPromise.catch(() => {}); // Prevent unhandled rejection
 }
 
 // Export a module-scoped MongoClient promise. By doing this in a
