@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { authOptions } from '@/lib/auth/auth-options';
 import connectDB from '@/modules/database/connection';
 import UnifiedUser from '@/lib/auth/unified-user-model';
 import crypto from 'crypto';

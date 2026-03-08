@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import { authOptions } from '@/lib/auth/auth-options'
 import { isAdmin } from '@/lib/auth/admin-utils'
 import connectToDatabase from '../../../modules/database/mongodb';
 import { SecurityMonitor } from '../../../lib/security/SecurityMonitor';

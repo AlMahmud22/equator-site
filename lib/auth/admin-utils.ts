@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import { authOptions } from '@/lib/auth/auth-options'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // Admin emails from the provided data context

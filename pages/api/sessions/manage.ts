@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import { authOptions } from '@/lib/auth/auth-options'
 import UnifiedUser from '@/lib/auth/unified-user-model'
 import SecurityMonitor from '@/lib/security/SecurityMonitor'
 import connectDB from '@/modules/database/connection'

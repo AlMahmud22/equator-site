@@ -353,9 +353,13 @@ export default function ProductPage({ product }: ProductPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = products.map((product) => ({
-    params: { id: product.id },
-  }))
+  // Exclude products that have their own dedicated static pages
+  const dedicatedPages = ['gecko-chatbot', 'phishguard']
+  const paths = products
+    .filter((product) => !dedicatedPages.includes(product.id))
+    .map((product) => ({
+      params: { id: product.id },
+    }))
 
   return {
     paths,
