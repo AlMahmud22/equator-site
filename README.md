@@ -1,4 +1,4 @@
-# Equators Application Platform
+# Equators  Platform
 
 
 official Equators brand website and API platform - Showcase and distribute desktop apps with modern Next.js App Router architecture.
