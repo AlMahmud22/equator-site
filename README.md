@@ -1,6 +1,6 @@
 # Equators  Platform
 
-
+This is a text project
 official Equators brand website and API platform - Showcase and distribute desktop apps with modern Next.js App Router architecture.
 
 ## 🚀 Quick Start
